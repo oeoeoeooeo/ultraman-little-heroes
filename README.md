@@ -4,6 +4,15 @@
 
 **版本：v1.4.0（2026-10-15）**。首頁頁尾與側欄顯示版號，`version.json` 提供部署版本。
 
+**資料整理版本：v1.4.1（2026-10-15）**。此 GitHub 發布更新文件；線上遊戲與程式套件版號仍為 v1.4.0。v1.5 功能尚未實作。
+
+## 專案資料入口
+
+- [資料索引](DATA_GUIDE.md)：角色資料、素材、玩法與驗證紀錄的對照。
+- [版本紀錄](CHANGELOG.md)：每版完成內容及遊戲／文件版本範圍。
+- [下一版開發順序](ROADMAP.md)：v1.5 兄弟合作方向、優先級與驗收條件。
+- [家庭試玩紀錄表](PLAYTEST.md)：10～15 分鐘觀察流程，可在本機填寫。
+
 線上遊戲：[ultraman-heroes-base.web.app](https://ultraman-heroes-base.web.app)。公開原始碼：[oeoeoeooeo/ultraman-little-heroes](https://github.com/oeoeoeooeo/ultraman-little-heroes)。
 
 ## 立即玩
