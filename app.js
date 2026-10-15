@@ -3787,7 +3787,7 @@ function reactionSetup(level=1){
 function reactionBegin(){
  const setup=state.game;if(setup?.type!=='reaction-setup')return;const level=setup.level;
  leave();state.game={type:'reaction',level,round:0,clock:0,lastTick:performance.now(),paused:false,phase:'',phaseLeft:0,streak:0,best:0,quick:0,samples:[[],[]]};
- main.innerHTML=screenHead('兄弟反應特訓','⚡ 發光　🛡 守護　☁ 先等等',REACTION_LEVELS[level].name)+`<section class="reaction-board"><div class="reaction-hud"><strong id="reaction-progress"></strong><span id="reaction-stars">★ 節奏星 0</span><button class="secondary" data-action="reaction-pause">Ⅱ 暫停</button></div><div class="reaction-stage" id="reaction-stage"><div class="reaction-scene" aria-hidden="true">${state.team.map(id=>heroImage(HEROES.find(h=>h.id===id))).join('')}<span>✦</span></div><h2 id="reaction-rule"></h2><div id="reaction-signals" class="reaction-signals"></div><p id="reaction-message" role="status"></p><div class="reaction-pause" hidden><strong>休息一下，默契不會跑掉！</strong><button class="primary" data-action="reaction-pause">▶ 繼續特訓</button></div></div><div class="reaction-controls">${['哥哥','弟弟'].map((n,i)=>`<section><h3>${n}的操作</h3><button data-action="reaction-input" data-index="${i}" data-kind="light">⚡ 發光 <kbd>${i?'L':'A'}</kbd></button><button data-action="reaction-input" data-index="${i}" data-kind="shield">🛡 守護 <kbd>${i?'K':'S'}</kbd></button><p id="reaction-pilot-${i}">準備好了！</p></section>`).join('')}</div><p class="reaction-note">看清楚再按，不用一直連打。暫停可休息，慢慢完成也有冒險星星！</p></section>`;
+ main.innerHTML=screenHead('兄弟反應特訓','⚡ 發光　🛡 守護　☁ 先等等',REACTION_LEVELS[level].name)+`<section class="reaction-board"><div class="reaction-hud"><strong id="reaction-progress"></strong><span id="reaction-stars">★ 節奏星 0</span><button class="secondary" data-action="reaction-pause">Ⅱ 暫停</button></div><div class="reaction-stage" id="reaction-stage"><div class="reaction-scene" aria-hidden="true">${state.team.map(id=>heroImage(HEROES.find(h=>h.id===id))).join('')}<span>✦</span></div><h2 id="reaction-rule"></h2><div id="reaction-signals" class="reaction-signals"></div><p id="reaction-message" role="status"></p><div class="reaction-pause" hidden><strong>休息一下，默契不會跑掉！</strong><button class="primary" data-action="reaction-pause">▶ 繼續特訓</button></div></div><div class="reaction-controls">${['哥哥','弟弟'].map((n,i)=>`<section><h3>${n}的操作</h3><button data-action="reaction-input" data-index="${i}" data-kind="light"><small>${n}</small>⚡ 發光 <kbd>${i?'L':'A'}</kbd></button><button data-action="reaction-input" data-index="${i}" data-kind="shield"><small>${n}</small>🛡 守護 <kbd>${i?'K':'S'}</kbd></button><p id="reaction-pilot-${i}">準備好了！</p></section>`).join('')}</div><p class="reaction-note">看清楚再按，不用一直連打。暫停可休息，慢慢完成也有冒險星星！</p></section>`;
  reactionRound();tone('flip');reactionTick();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
 }
 function reactionRound(){
@@ -3800,10 +3800,11 @@ function reactionRound(){
  const kinds=g.level===0?['parallel','relay']:g.level===1?['parallel','relay','lure']:['parallel','relay','lure','memory'];
  g.kind=kinds[g.round%kinds.length];const first=Math.random()<.5?0:1,actions=[Math.random()<.5?'light':'shield',Math.random()<.5?'light':'shield'];
  g.steps=[{pilot:first,action:actions[first]},{pilot:1-first,action:actions[1-first]}];
+ if(g.kind==='parallel'||g.kind==='lure')g.steps.sort((a,b)=>a.pilot-b.pilot);
  if(g.kind==='memory')g.steps.push({pilot:first,action:actions[first]==='light'?'shield':'light'},{pilot:1-first,action:actions[1-first]==='light'?'shield':'light'});
  g.done=[];g.errors=0;g.early=false;g.roundQuick=true;g.phase='preview';g.phaseLeft=g.kind==='memory'?2600:900;g.turnStart=g.clock;
  $('#reaction-stage').classList.remove('reaction-win');$('#reaction-progress').textContent=`第 ${g.round+1} / ${REACTION_LEVELS[g.level].rounds} 回合`;
- $('#reaction-rule').textContent={parallel:'雙人出擊！各自看自己的訊號',relay:'輪流接力！按照左到右的順序',lure:'真假星光！雲朵時先等等',memory:'記憶接力！先記住四個動作'}[g.kind];
+ $('#reaction-rule').textContent={parallel:'雙人出擊！各自看訊號',relay:'輪流接力！按照左到右的順序',lure:'真假星光！雲朵時先等等',memory:'記憶接力！先記住四個動作'}[g.kind];
  $('#reaction-message').textContent=g.kind==='memory'?'先記住順序，訊號藏起來後再接力！':'準備觀察，訊號還沒亮起！';reactionSignals();
  for(let i=0;i<2;i++)$(`#reaction-pilot-${i}`).textContent='準備觀察';
 }

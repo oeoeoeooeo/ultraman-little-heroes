@@ -203,7 +203,7 @@ for(const level of [0,1,2]){
  assert.equal(r.run('state.game.level'),1);r.click(`[data-action="reaction-level"][data-index="${level}"]`);r.click('[data-action="reaction-begin"]');
  const rounds=r.run('REACTION_LEVELS[state.game.level].rounds');let sawLure=false,sawMemory=false,sawRelay=false;
  for(let round=0;round<rounds;round++){
-  assert.equal(r.run('state.game.round'),round);r.advance(r.run('state.game.phaseLeft')+50);
+  assert.equal(r.run('state.game.round'),round);if(['parallel','lure'].includes(r.run('state.game.kind')))assert.deepEqual(r.json('state.game.steps.map(s=>s.pilot)'),[0,1],'signals align with brother controls');r.advance(r.run('state.game.phaseLeft')+50);
   if(r.run('state.game.phase')==='lure'){
    sawLure=true;r.key('a');assert.equal(r.run('state.game.done.length'),0);assert.equal(r.run('state.game.errors'),1);r.advance(r.run('state.game.phaseLeft')+50);
   }

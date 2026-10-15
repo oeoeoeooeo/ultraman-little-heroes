@@ -167,3 +167,5 @@ button{min-height:44px;letter-spacing:0}
 
 .reaction-stage{position:sticky;top:8px;align-self:start}
 @media(max-height:550px) and (min-width:701px){.reaction-stage{min-height:220px;padding:12px 10px;top:0}.reaction-stage h2{font-size:20px;line-height:1.4;margin-bottom:10px}.reaction-signal{padding:8px 4px}.reaction-signal b{font-size:16px}.reaction-signal>span{font-size:30px}.reaction-signal small{font-size:14px}.reaction-stage>p{font-size:16px;line-height:1.4;margin-top:10px;min-height:24px}.reaction-signals{gap:8px}}
+
+.reaction-controls button small{display:block;font-size:14px;line-height:1.2;margin-bottom:4px;font-weight:600;color:#416279}.reaction-controls button{padding:10px}
