@@ -3815,12 +3815,11 @@ const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'
 function cueUrl(id){return `assets/voice-${id}.mp3`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
-  voiceTimer=setTimeout(()=>{voiceTimer=null;if(epoch!==voiceEpoch||!state.sound||document.hidden)return;
-    if(!window.Audio){speak(CUES[id]+(after?'。'+after:''));return;}
-    const clip=new window.Audio(cueUrl(id));state.cue=clip;clip.volume=.85;
-    clip.addEventListener('ended',()=>{if(epoch!==voiceEpoch||state.cue!==clip)return;state.cue=null;if(after)speak(after);});
-    clip.play().catch(()=>{if(epoch===voiceEpoch&&state.cue===clip){state.cue=null;speak(CUES[id]+(after?'。'+after:''));}});
-  },160);
+  // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
+  if(!window.Audio){speak(CUES[id]+(after?'。'+after:''));return;}
+  const clip=new window.Audio(cueUrl(id));state.cue=clip;clip.volume=.85;
+  clip.addEventListener('ended',()=>{if(epoch!==voiceEpoch||state.cue!==clip)return;state.cue=null;if(after)speak(after);});
+  clip.play().catch(()=>{if(epoch===voiceEpoch&&state.cue===clip){state.cue=null;speak(CUES[id]+(after?'。'+after:''));}});
 }
 function tone(type){
   if(!state.sound||voiceTimer!==null||speechActive||(state.cue&&!state.cue.paused))return;

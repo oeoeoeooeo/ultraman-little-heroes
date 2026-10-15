@@ -188,9 +188,9 @@ for(const mode of ['quiz','forms','device']){
  voice.run(`startGame('${mode}');state.game.deck[0].hint='答案就是'+state.game.deck[0].name;nextQuiz()`);voice.advance(151);
  assert.equal(voice.run('spoken.length'),1);assert.ok(!voice.run('spoken[0]').includes('答案就是'));assert.ok(!voice.el('.quiz-hint').textContent.includes('答案就是'));
  const right=voice.run('state.game.options.findIndex(o=>o.id===state.game.deck[0].id)');voice.click(`[data-action="answer"][data-index="${right}"]`);
- voice.advance(159);assert.equal(voice.run('clips.length'),0,'do not begin cheer during speech cancellation');voice.advance(1);assert.equal(voice.run('clips.length'),1);assert.equal(voice.run('spoken.length'),1,'reveal cannot speak over cheer');
+ assert.equal(voice.run('clips.length'),1,'start the padded cheer during the user gesture');assert.equal(voice.run('spoken.length'),1,'reveal cannot speak over cheer');
  voice.advance(2000);assert.equal(voice.run('spoken.length'),1);voice.run('clips[0].end()');voice.advance(149);assert.equal(voice.run('spoken.length'),1);voice.advance(1);assert.equal(voice.run('spoken.length'),2,'reveal follows cheer and pause');
  voice.run('playCue("correct","不應播出的舊答案")');voice.advance(160);voice.click('[data-action="next-question"]');voice.run('clips[1].end()');voice.advance(500);assert.ok(!voice.json('spoken').includes('不應播出的舊答案'),'next question cancels pending reveal');voice.run('stopVoice();spoken=[];clips=[]');
 }
 voice.run('var stopped=0;activeTones.add({stop(){stopped++}});playCue("correct");stopVoice()');voice.advance(1000);assert.equal(voice.run('stopped'),1);assert.equal(voice.run('state.cue'),null);assert.equal(voice.run('activeTones.size'),0);
-console.log('PASS: all quiz modes use neutral prompts, never raw answer hints; cheer/reveal are serialized with gaps; next question and mute cancel pending sound and tones.');
+console.log('PASS: all quiz modes use neutral prompts, never raw answer hints; cheer/reveal are serialized with gaps; gesture-started MP3, next question and mute cancel pending sound and tones.');
