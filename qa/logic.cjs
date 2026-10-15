@@ -57,7 +57,7 @@ expanded.click('[data-nav="home"]');
 storage.set('ultra-base-v1',JSON.stringify({sound:false}));
 let t=boot();
 assert.equal(t.document.documentElement.lang,'zh-Hant');
-assert.equal(t.document.querySelectorAll('.game-card').length,6);
+assert.equal(t.document.querySelectorAll('.game-card').length,7);
 assert.equal(t.document.querySelectorAll('.player-button.selected').length,1);
 for(const e of t.document.querySelectorAll('img[src]'))assert.ok(fs.existsSync(path.join(root,e.getAttribute('src'))),'image exists');
 // Use actual click and keyboard events for quiz retry and completion.
@@ -118,7 +118,7 @@ t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="battle"]'
 t.click('[data-action="home"]');t.click('[data-action="help"]');assert.equal(t.el('dialog').open,true);t.click('[data-action="close-help"]');assert.equal(t.el('dialog').open,false);
 t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'true');t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'false');
 // Unavailable storage is handled and game still loads.
-const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,6);storage.set('ultra-base-v1',last);
+const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,7);storage.set('ultra-base-v1',last);
 console.log(`PASS: 6 complete game modes; actual click/keyboard handlers; quiz retries; age difficulty; 2-player transform/energy; pause including beams; shields; memory mismatch; 9 badges; ${total} persistent stars; navigation cancellation; background pause; dialog; audio toggle; corrupt-storage recovery.`);
 console.log('Browser screenshots and responsive layout are not validated by this DOM test.');
 
@@ -194,3 +194,38 @@ for(const mode of ['quiz','forms','device']){
 }
 voice.run('var stopped=0;activeTones.add({stop(){stopped++}});playCue("correct");stopVoice()');voice.advance(1000);assert.equal(voice.run('stopped'),1);assert.equal(voice.run('state.cue'),null);assert.equal(voice.run('activeTones.size'),0);
 console.log('PASS: all quiz modes use neutral prompts, never raw answer hints; cheer/reveal are serialized with gaps; gesture-started MP3, next question and mute cancel pending sound and tones.');
+
+// Reaction training: replayable difficulty, genuinely different signals and partner turns.
+storage.set('ultra-base-v1',JSON.stringify({sound:false}));
+for(const level of [0,1,2]){
+ storage.set('ultra-base-v1',JSON.stringify({sound:false}));
+ const r=boot();r.click('[data-action="start"][data-game="reaction"]');
+ assert.equal(r.run('state.game.level'),1);r.click(`[data-action="reaction-level"][data-index="${level}"]`);r.click('[data-action="reaction-begin"]');
+ const rounds=r.run('REACTION_LEVELS[state.game.level].rounds');let sawLure=false,sawMemory=false,sawRelay=false;
+ for(let round=0;round<rounds;round++){
+  assert.equal(r.run('state.game.round'),round);r.advance(r.run('state.game.phaseLeft')+50);
+  if(r.run('state.game.phase')==='lure'){
+   sawLure=true;r.key('a');assert.equal(r.run('state.game.done.length'),0);assert.equal(r.run('state.game.errors'),1);r.advance(r.run('state.game.phaseLeft')+50);
+  }
+  assert.equal(r.run('state.game.phase'),'live');
+  if(round===0){
+   r.key('Escape');const clock=r.run('state.game.clock');r.advance(3000);r.key('a');assert.equal(r.run('state.game.clock'),clock);assert.equal(r.run('state.game.done.length'),0);r.key('Escape');
+   const first=r.json('state.game.steps[0]');r.run(`reactionInput(${first.pilot},'${first.action==='light'?'shield':'light'}')`);assert.equal(r.run('state.game.done.length'),0);assert.equal(r.run('state.game.errors'),1);
+  }
+  if(r.run('state.game.kind')==='relay'){
+   sawRelay=true;const other=1-r.run('state.game.steps[0].pilot');r.run(`reactionInput(${other},'light')`);assert.equal(r.run('state.game.done.length'),0,'cannot skip partner turn');
+  }
+  if(r.run('state.game.kind')==='memory'){
+   sawMemory=true;assert.equal(r.document.querySelectorAll('.reaction-signal').length,4);assert.ok(r.el('#reaction-signals').textContent.includes('想想剛才的動作'));
+   const first=r.json('state.game.steps[0]');r.run(`reactionInput(${first.pilot},'${first.action==='light'?'shield':'light'}')`);assert.equal(r.run('state.game.phase'),'preview');r.advance(2700);assert.equal(r.run('state.game.phase'),'live');
+  }
+  const steps=r.json('state.game.steps');
+  for(const s of steps){r.advance(100);r.key(s.pilot?s.action==='light'?'l':'k':s.action==='light'?'a':'s');}
+  assert.equal(r.run('state.game.phase'),'reward');const quick=r.run('state.game.quick');r.key('a');assert.equal(r.run('state.game.quick'),quick,'no repeated reward');r.advance(750);
+ }
+ assert.equal(r.run('state.game.type'),'result');assert.equal(r.run('state.completed.reaction'),1);assert.ok(r.el('.result').textContent.includes('平均'));assert.ok(sawRelay);assert.equal(sawLure,level>0);assert.equal(sawMemory,level===2);
+ r.click('[data-action="start"][data-game="reaction"]');assert.equal(r.run('state.game.level'),level,'replay preserves selected difficulty');r.click('[data-action="reaction-begin"]');r.click('[data-action="home"]');r.advance(5000);assert.equal(r.run('state.game'),null,'leaving cancels reaction clock');
+}
+const slow=boot();slow.click('[data-action="start"][data-game="reaction"]');slow.click('[data-action="reaction-begin"]');slow.advance(1000);slow.advance(10000);for(const s of slow.json('state.game.steps'))slow.run(`reactionInput(${s.pilot},'${s.action}')`);assert.equal(slow.run('state.game.phase'),'reward');assert.equal(slow.run('state.game.quick'),0,'slow responses still complete without bonus');
+slow.document.hidden=true;slow.document.dispatchEvent(new slow.document.defaultView.Event('visibilitychange'));assert.equal(slow.run('state.game.paused'),true,'background pauses reaction training');
+console.log('PASS: all three reaction difficulties, two-player input, relay ordering, lure restraint, concealed four-step memory/retry, pause, slow completion, one-time rewards, replay difficulty and navigation cancellation.');

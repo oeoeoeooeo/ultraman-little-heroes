@@ -3410,6 +3410,7 @@ const GAMES = [
   {id:'device',title:'這是誰的變身器？',copy:'神奇的道具，藏著變身的秘密！',tag:'變身小專家',meta:'認識道具 · 配對找答案',bg:'#f3e9ce',tagColor:'#b8a063'},
   {id:'battle',title:'變身！怪獸對戰',copy:'選擇你的英雄，勇敢守護地球！',tag:'勇氣出任務',meta:'單人冒險 · 鍵盤也能玩',bg:'#f2e1d6',tagColor:'#c18c70'},
   {id:'coop',title:'兄弟合體出任務',copy:'一人一份力量，合作就是最強！',tag:'兩個人更好玩',meta:'雙人合作 · 一起發射光線',bg:'#dde9cf',tagColor:'#8c9f6b'},
+  {id:'reaction',title:'兄弟反應特訓',copy:'真假訊號、輪流接力，挑戰你們的默契！',tag:'全新反應挑戰',meta:'三種難度 · 記憶與合作',bg:'#d8e9f6',tagColor:'#5588ab'},
   {id:'memory',title:'英雄翻翻樂',copy:'翻開小卡片，找出變身好搭檔。',tag:'記憶力練習',meta:'翻牌配對 · 慢慢想沒關係',bg:'#dceae6',tagColor:'#7a9d91'}
 ];
 let saved = {};
@@ -3425,7 +3426,7 @@ const state = {
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
 function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns}));}catch{}}
-function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
+function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.filter(g=>g.id!=='reaction').every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
 function updateChrome(){
   $('#star-total').textContent = state.stars;
   $('#badge-count').textContent = BADGES.filter(b=>hasBadge(b.id)).length;
@@ -3490,6 +3491,7 @@ function cardArt(game){
   if(game.id==='forms')return FORMS.slice(0,3).map(f=>formFigure(f,'form-figure')).join('');
   if(game.id==='device')return devicePicture(HEROES[2],'art-device');
   if(game.id==='battle')return heroImage(HEROES[2],'card-hero',false)+monster('art-monster')+'<span class="vs">VS</span>';
+  if(game.id==='reaction')return heroImage(HEROES[2],'card-hero',false)+heroImage(HEROES[3],'card-hero second',false)+'<span class="question-bubble">⚡</span>';
   if(game.id==='coop')return heroImage(HEROES[3],'card-hero',false)+heroImage(HEROES[4],'card-hero second',false);
   return '<div class="mini-memory"><span>✦</span><span>?</span></div>';
 }
@@ -3539,7 +3541,7 @@ function renderBadges(){main.innerHTML=stickerBook()+screenHead('我的小成就
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
   $('#breadcrumb-text').textContent=GAMES.find(g=>g.id===mode).title;
-  if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='memory')startMemory();else startSelection(mode==='coop');
+  if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
   const pool = mode==='forms'?FORMS:mode==='device'?DEVICES.filter(d=>d.kind!=='武器').map(deviceQuestion):HEROES;
@@ -3685,7 +3687,7 @@ function startSelection(coop){
 }
 function renderSelection(){
   const g=state.game;if(!g||g.type!=='selection')return;
-  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div>${selectionExtras(g)}<div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button><button class="secondary quest-team-button" data-action="quest-with-team">🌍 用這組英雄玩三站救援！</button></section>`;
+  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div>${g.coop?'<button class="secondary reaction-entry" data-action="start" data-game="reaction">⚡ 想挑戰默契？玩兄弟反應特訓 →</button>':''}${selectionExtras(g)}<div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button><button class="secondary quest-team-button" data-action="quest-with-team">🌍 用這組英雄玩三站救援！</button></section>`;
   restoreHeroTools();
 }
 function prepareTransform(){
@@ -3772,6 +3774,72 @@ function pauseBattle(value){
   else{const delta=performance.now()-g.pauseAt;g.shieldUntil=g.shieldUntil.map(t=>t? t+delta:0);$('.battle-paused')?.remove();g.lastTick=performance.now();}
   const button=$('.pause-button');button.textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';updateEnergy();
 }
+const REACTION_LEVELS=[
+ {name:'暖身隊',rounds:8,windows:[2800,3800],copy:'看圖反應與輪流接力，先熟悉按鈕。'},
+ {name:'勇氣隊',rounds:10,windows:[1800,2800],copy:'加入假訊號！雲朵時先等等，星光亮起才出手。'},
+ {name:'超能隊',rounds:12,windows:[1300,2200],copy:'假訊號加記憶接力，記住四個動作的順序！'}
+];
+function reactionSetup(level=1){
+ leave();state.page='home';state.game={type:'reaction-setup',level};updateChrome();
+ main.innerHTML=screenHead('兄弟反應特訓','看訊號、選動作、互相接力！','全新合作挑戰')+`<section class="panel reaction-setup center"><div class="reaction-team">${state.team.map(id=>heroImage(HEROES.find(h=>h.id===id))).join('')}<span>⚡</span></div><h2>這次，挑戰你們的默契！</h2><p>⚡ 星光 → 發光　🛡 護盾 → 守護<br>☁ 雲朵 → 先等等，別被假訊號騙了！</p><div class="reaction-levels">${REACTION_LEVELS.map((l,i)=>`<button class="${i===level?'selected':''}" data-action="reaction-level" data-index="${i}" aria-pressed="${i===level}"><b>${['🌱','🚀','🌌'][i]} ${l.name} · ${l.rounds} 回合</b><span>${l.copy}</span></button>`).join('')}</div><p>哥哥：A 發光／S 守護　弟弟：L 發光／K 守護<br>反應快可收集節奏星；慢一點也能完成，答錯就再試！</p><button class="primary" data-action="reaction-begin">✦ 雙人特訓，開始！</button></section>`;
+ window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
+}
+function reactionBegin(){
+ const setup=state.game;if(setup?.type!=='reaction-setup')return;const level=setup.level;
+ leave();state.game={type:'reaction',level,round:0,clock:0,lastTick:performance.now(),paused:false,phase:'',phaseLeft:0,streak:0,best:0,quick:0,samples:[[],[]]};
+ main.innerHTML=screenHead('兄弟反應特訓','⚡ 發光　🛡 守護　☁ 先等等',REACTION_LEVELS[level].name)+`<section class="reaction-board"><div class="reaction-hud"><strong id="reaction-progress"></strong><span id="reaction-stars">★ 節奏星 0</span><button class="secondary" data-action="reaction-pause">Ⅱ 暫停</button></div><div class="reaction-stage" id="reaction-stage"><div class="reaction-scene" aria-hidden="true">${state.team.map(id=>heroImage(HEROES.find(h=>h.id===id))).join('')}<span>✦</span></div><h2 id="reaction-rule"></h2><div id="reaction-signals" class="reaction-signals"></div><p id="reaction-message" role="status"></p><div class="reaction-pause" hidden><strong>休息一下，默契不會跑掉！</strong><button class="primary" data-action="reaction-pause">▶ 繼續特訓</button></div></div><div class="reaction-controls">${['哥哥','弟弟'].map((n,i)=>`<section><h3>${n}的操作</h3><button data-action="reaction-input" data-index="${i}" data-kind="light">⚡ 發光 <kbd>${i?'L':'A'}</kbd></button><button data-action="reaction-input" data-index="${i}" data-kind="shield">🛡 守護 <kbd>${i?'K':'S'}</kbd></button><p id="reaction-pilot-${i}">準備好了！</p></section>`).join('')}</div><p class="reaction-note">看清楚再按，不用一直連打。暫停可休息，慢慢完成也有冒險星星！</p></section>`;
+ reactionRound();tone('flip');reactionTick();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
+}
+function reactionRound(){
+ const g=state.game;if(g?.type!=='reaction')return;
+ if(g.round>=REACTION_LEVELS[g.level].rounds){
+  const stats=g.samples.map((s,i)=>`${i?'弟弟':'哥哥'}平均 ${Math.round(s.reduce((a,b)=>a+b,0)/(s.length||1))}ms`);const level=g.level;
+  finish('reaction',g.round+g.quick,'默契升級！兄弟特訓完成！',`${g.round} 回合成功，收集 ${g.quick} 顆節奏星！最佳連續合作 ${g.best} 回合。<br>${stats.join(' · ')}<br>這是自己的練習紀錄，不用和別人比快。`);
+  state.game.reactionLevel=level;return;
+ }
+ const kinds=g.level===0?['parallel','relay']:g.level===1?['parallel','relay','lure']:['parallel','relay','lure','memory'];
+ g.kind=kinds[g.round%kinds.length];const first=Math.random()<.5?0:1,actions=[Math.random()<.5?'light':'shield',Math.random()<.5?'light':'shield'];
+ g.steps=[{pilot:first,action:actions[first]},{pilot:1-first,action:actions[1-first]}];
+ if(g.kind==='memory')g.steps.push({pilot:first,action:actions[first]==='light'?'shield':'light'},{pilot:1-first,action:actions[1-first]==='light'?'shield':'light'});
+ g.done=[];g.errors=0;g.early=false;g.roundQuick=true;g.phase='preview';g.phaseLeft=g.kind==='memory'?2600:900;g.turnStart=g.clock;
+ $('#reaction-stage').classList.remove('reaction-win');$('#reaction-progress').textContent=`第 ${g.round+1} / ${REACTION_LEVELS[g.level].rounds} 回合`;
+ $('#reaction-rule').textContent={parallel:'雙人出擊！各自看自己的訊號',relay:'輪流接力！按照左到右的順序',lure:'真假星光！雲朵時先等等',memory:'記憶接力！先記住四個動作'}[g.kind];
+ $('#reaction-message').textContent=g.kind==='memory'?'先記住順序，訊號藏起來後再接力！':'準備觀察，訊號還沒亮起！';reactionSignals();
+ for(let i=0;i<2;i++)$(`#reaction-pilot-${i}`).textContent='準備觀察';
+}
+function reactionSignals(){
+ const g=state.game;if(g?.type!=='reaction')return;const concealed=g.kind==='memory'&&g.phase==='live';
+ $('#reaction-signals').innerHTML=g.steps.map((s,i)=>`<div class="reaction-signal ${g.done.includes(i)?'done':''} ${g.phase==='live'&&!g.done.includes(i)&&(g.kind==='parallel'||g.kind==='lure'||i===g.done.length)?'active':''}"><b>${g.kind==='parallel'||g.kind==='lure'?'':(i+1)+'. '}${s.pilot?'弟弟':'哥哥'}</b><span>${g.done.includes(i)?'✓':g.phase==='lure'?'☁':concealed?'?':g.phase==='preview'&&g.kind!=='memory'?'✧':s.action==='light'?'⚡':'🛡'}</span><small>${g.done.includes(i)?'完成！':g.phase==='lure'?'先等等':concealed?'想想剛才的動作':g.phase==='preview'&&g.kind!=='memory'?'準備':s.action==='light'?'發光':'守護'}</small></div>`).join('');
+}
+function reactionLive(){const g=state.game;g.phase='live';g.turnStart=g.clock;$('#reaction-message').textContent=g.kind==='memory'?'訊號藏起來了！按剛才的順序接力！':g.kind==='relay'?`${g.steps[0].pilot?'弟弟':'哥哥'}先出手，另一位等接力！`:'真正的訊號亮起！兩人各自出手！';reactionSignals();tone('signal');}
+function reactionTick(){
+ const g=state.game;if(g?.type!=='reaction')return;const now=performance.now(),dt=Math.min(200,Math.max(0,now-g.lastTick));g.lastTick=now;
+ if(!g.paused){g.clock+=dt;if(g.phase!=='live'){
+  g.phaseLeft-=dt;if(g.phaseLeft<=0){
+   if(g.phase==='preview'){if(g.kind==='lure'){g.phase='lure';g.phaseLeft=900+Math.random()*900;$('#reaction-message').textContent='☁ 這是假訊號！先等等，別按喔！';reactionSignals();}else reactionLive();}
+   else if(g.phase==='lure')reactionLive();else if(g.phase==='reward'){g.round++;reactionRound();}
+  }
+ }}
+ if(state.game===g)later(reactionTick,50);
+}
+function reactionInput(pilot,action){
+ const g=state.game;if(g?.type!=='reaction'||g.paused||![0,1].includes(pilot)||!['light','shield'].includes(action))return;
+ if(g.phase==='lure'){if(!g.early){g.early=true;g.errors++;g.streak=0;$('#reaction-message').textContent='被雲朵騙到啦！先停手，等真正的星光。';tone('try');}return;}
+ if(g.phase!=='live')return;
+ const parallel=g.kind==='parallel'||g.kind==='lure';const index=parallel?g.steps.findIndex((s,i)=>s.pilot===pilot&&!g.done.includes(i)):g.done.length;
+ if(index<0)return;const target=g.steps[index];
+ if(target.pilot!==pilot||target.action!==action){g.errors++;g.streak=0;g.roundQuick=false;$('#reaction-message').textContent=target.pilot!==pilot?'還沒輪到你！等夥伴完成再接力。':'動作不一樣喔！再看一次訊號，試試看。';tone('try');if(g.kind==='memory'){g.done=[];g.phase='preview';g.phaseLeft=2600;reactionSignals();}return;}
+ const elapsed=Math.max(0,g.clock-g.turnStart);g.samples[pilot].push(elapsed);if(elapsed>REACTION_LEVELS[g.level].windows[pilot])g.roundQuick=false;
+ g.done.push(index);$(`#reaction-pilot-${pilot}`).textContent=`✓ ${elapsed}ms · ${g.done.length===g.steps.length?'合作成功！':'好棒！'}`;tone('attack');
+ if(!parallel)g.turnStart=g.clock;reactionSignals();
+ if(g.done.length===g.steps.length){g.phase='reward';g.phaseLeft=700;g.streak=g.errors?0:g.streak+1;g.best=Math.max(g.best,g.streak);const fast=g.roundQuick&&!g.errors;if(fast)g.quick++;$('#reaction-stars').textContent=`★ 節奏星 ${g.quick} · 連續合作 ${g.streak}`;$('#reaction-message').textContent=fast?'漂亮！兩份力量都接上了，節奏星 +1！':'合作完成！慢慢觀察也能成功！';$('#reaction-stage').classList.add('reaction-win');tone('success');}
+ else if(!parallel)$('#reaction-message').textContent=`接力！換${g.steps[g.done.length].pilot?'弟弟':'哥哥'}出手。`;
+}
+function reactionPause(force){
+ const g=state.game;if(g?.type!=='reaction')return;g.paused=force===undefined?!g.paused:force;g.lastTick=performance.now();if(g.paused)stopVoice();$('#reaction-stage').classList.toggle('is-paused',g.paused);$('.reaction-pause').hidden=!g.paused;
+ $$('[data-action="reaction-input"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="reaction-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
+}
+
 function startMemory(){
   const count=state.player==='big'?6:4,seen=new Set(),unique=shuffle(DEVICES.filter(d=>d.kind!=='武器')).map(deviceQuestion).filter(h=>{if(seen.has(h.id))return false;seen.add(h.id);return true;}),selected=shuffle(unique).slice(0,count);
   state.game={type:'memory',mode:'memory',cards:shuffle(selected.flatMap(h=>[{id:h.id,kind:'hero',hero:h},{id:h.id,kind:'device',hero:h}])),flipped:[],matched:[],locked:false,pairs:count,tries:0};
@@ -3791,7 +3859,7 @@ function finish(mode,stars,title,copy){
   leave();state.game={type:'result',mode};const before=BADGES.filter(b=>hasBadge(b.id)).length;
   state.stars+=stars;state.completed[mode]=(state.completed[mode]||0)+1;save();updateChrome();
   const earned=BADGES.filter(b=>hasBadge(b.id)).length-before;
-  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p>${defeated?`<div class="earned-sticker">${monster('sticker-image',defeated)}<b>${defeated.name}</b><small>${freshSticker?'✨ 新夥伴貼紙！':'💚 又和朋友冒險了！'}</small></div>`:''}<div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="${journey?'start-quest':'start'}" data-game="${mode}">${journey?'再出發，找新朋友！':'再玩一次'} ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
+  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${['coop','reaction'].includes(mode)?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p>${defeated?`<div class="earned-sticker">${monster('sticker-image',defeated)}<b>${defeated.name}</b><small>${freshSticker?'✨ 新夥伴貼紙！':'💚 又和朋友冒險了！'}</small></div>`:''}<div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="${journey?'start-quest':'start'}" data-game="${mode}">${journey?'再出發，找新朋友！':'再玩一次'} ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
   confetti();playCue('victory');main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});
 }
 let voiceEpoch=0,voiceTimer=null,speechActive=false;
@@ -3800,7 +3868,7 @@ function speak(text){
   if(!state.sound||document.hidden||!('speechSynthesis'in window))return;
   stopVoice();const epoch=voiceEpoch;
   voiceTimer=setTimeout(()=>{voiceTimer=null;if(epoch!==voiceEpoch||!state.sound||document.hidden)return;
-    const utterance=new SpeechSynthesisUtterance(text);utterance.lang='zh-TW';utterance.rate=.96;utterance.pitch=1.12;
+    const utterance=new SpeechSynthesisUtterance(text);utterance.lang='zh-TW';utterance.rate=1.02;utterance.pitch=1.18;
     const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/zh[-_]TW/i.test(v.lang)&&/Flo|Sandy|Meijia|美佳/i.test(v.name))||voices.find(v=>/zh[-_]TW/i.test(v.lang))||voices.find(v=>/^zh/i.test(v.lang));if(voice)utterance.voice=voice;
     speechActive=true;const done=()=>{if(epoch===voiceEpoch)speechActive=false;};utterance.onend=done;utterance.onerror=done;speechSynthesis.speak(utterance);
   },150);
@@ -3811,8 +3879,8 @@ function stopVoice(){
   if('speechSynthesis'in window)speechSynthesis.cancel();
   for(const node of activeTones){try{node.stop();}catch{}}activeTones.clear();
 }
-const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'好朋友需要幫忙！把溫暖的光送給牠吧！',kindness:'友善之光！謝謝你幫助我！',victory:'耶！任務成功！小英雄，你們超棒！',challenge:'小挑戰來囉！仔細看，一起試試！'};
-function cueUrl(id){return `assets/voice-${id}.mp3?v=1.4.2`;}
+const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！太棒了，你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'救援隊，出動！把溫暖的光，送給好朋友！',kindness:'友善之光！耶！我們一起幫助了好朋友！',victory:'耶！任務成功！擊個掌，你們超棒！',challenge:'注意囉！小挑戰來了，仔細看！'};
+function cueUrl(id){return `assets/voice-${id}.mp3?v=1.5.0`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
   // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
@@ -3821,32 +3889,50 @@ function playCue(id,after=''){
   clip.addEventListener('ended',()=>{if(epoch!==voiceEpoch||state.cue!==clip)return;state.cue=null;if(after)speak(after);});
   clip.play().catch(()=>{if(epoch===voiceEpoch&&state.cue===clip){state.cue=null;speak(CUES[id]+(after?'。'+after:''));}});
 }
+let lastToneAt=-Infinity;
 function tone(type){
   if(!state.sound||voiceTimer!==null||speechActive||(state.cue&&!state.cue.paused))return;
   try{
     const C=window.AudioContext||window.webkitAudioContext;if(!C)return;state.audio ||= new C();if(state.audio.state==='suspended')state.audio.resume();
-    const notes={success:[523,659,784],try:[392,330],transform:[261,392,523,784],attack:[180,100],shield:[440,660],beam:[220,440,880,660],warning:[330,330],flip:[520],victory:[523,659,784,1047]}[type]||[440];
-    notes.forEach((hz,i)=>{const o=state.audio.createOscillator(),gain=state.audio.createGain(),t=state.audio.currentTime+i*.09;o.type=['attack','beam'].includes(type)?'triangle':'sine';o.frequency.setValueAtTime(hz,t);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.055,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(gain);gain.connect(state.audio.destination);activeTones.add(o);o.onended=()=>activeTones.delete(o);o.start(t);o.stop(t+.2);});
+    const now=state.audio.currentTime;if(type==='attack'&&now-lastToneAt<.075)return;lastToneAt=now;
+    // Replace the previous accent instead of letting rapid taps stack into a loud chord.
+    for(const old of activeTones){try{old.stop();}catch{}}activeTones.clear();
+    const profile={
+      success:[[523,0,.20],[659,.07,.22],[784,.14,.24],[1047,.21,.25]],
+      try:[[440,0,.13],[392,.10,.18]],transform:[[262,0,.16,524],[392,.08,.18,784],[784,.18,.28,1047]],
+      attack:[[210,0,.12,90],[840,.025,.08,420]],shield:[[440,0,.28,660],[880,.025,.28,990]],
+      beam:[[160,0,.28,800],[320,.09,.32,1280]],warning:[[440,0,.12],[554,.16,.16]],
+      flip:[[660,0,.09,880],[1320,.025,.09]],victory:[[523,0,.22],[659,.10,.24],[784,.20,.24],[1047,.30,.36]],
+      signal:[[784,0,.13],[1175,.07,.17]]
+    }[type]||[[660,0,.14]];
+    for(const [hz,offset,duration,to] of profile){for(const [harmonic,volume] of [[1,.042],[2,.009]]){
+      const o=state.audio.createOscillator(),gain=state.audio.createGain(),t=now+offset;o.type=type==='attack'||type==='beam'?'triangle':'sine';o.frequency.setValueAtTime(hz*harmonic,t);if(to)o.frequency.exponentialRampToValueAtTime(to*harmonic,t+duration*.8);
+      gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(volume,t+.008);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(gain);gain.connect(state.audio.destination);activeTones.add(o);o.onended=()=>{activeTones.delete(o);o.disconnect();gain.disconnect();};o.start(t);o.stop(t+duration+.015);
+    }}
   }catch{}
 }
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
 document.addEventListener('click',event=>{
   const nav=event.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return;}
   const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const action=el.dataset.action,index=Number(el.dataset.index);
-  if(action==='start-quest')startQuest();
+  if(action==='reaction-level'){if(state.game?.type==='reaction-setup'&&REACTION_LEVELS[index])reactionSetup(index);}
+  else if(action==='reaction-begin')reactionBegin();
+  else if(action==='reaction-input')reactionInput(index,el.dataset.kind);
+  else if(action==='reaction-pause')reactionPause();
+  else if(action==='start-quest')startQuest();
   else if(action==='quest-with-team')startQuest(true);
   else if(action==='quest-transform')questTransform();
   else if(action==='quest-next')questNext();
   else if(action==='quest-target')questTarget(index);
   else if(action==='home')navigate('home');
   else if(action==='badges')navigate('badges');
-  else if(action==='start')startGame(el.dataset.game);
+  else if(action==='start'){if(el.dataset.game==='reaction'&&state.game?.type==='result')reactionSetup(state.game.reactionLevel??1);else startGame(el.dataset.game);}
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
   else if(action==='encyclopedia-tab'){encyclopediaTab=el.dataset.tab;renderHeroes();}
   else if(action==='read-entry'){stopVoice();const rows={forms:FORMS,devices:DEVICES,moves:MOVES,monsters:MONSTERS}[el.dataset.tab];const x=rows.find(x=>x.id===el.dataset.id);speak(`${x.name}。${x.description||x.fact||'光之力量，準備發射！'}`);}
@@ -3880,6 +3966,9 @@ document.addEventListener('input',event=>{if(event.target.id==='hero-search'){ca
 document.addEventListener('keydown',event=>{
   if($('#info-dialog').open||event.ctrlKey||event.altKey||event.metaKey||event.target.matches('input,textarea,select'))return;
   const g=state.game;if(!g)return;const key=event.key.toLowerCase();
+  if(g.type==='reaction'){
+    if(['a','s','l','k','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')reactionPause();else reactionInput(['l','k'].includes(key)?1:0,['a','l'].includes(key)?'light':'shield');}return;
+  }
   if(g.type==='quiz'){
     if(/^[1-4]$/.test(key)){event.preventDefault();if(!event.repeat)answer(Number(key)-1);}
     if(key==='enter'&&g.answered&&!event.target.closest('button')){event.preventDefault();g.index++;nextQuiz();}
@@ -3897,7 +3986,7 @@ document.addEventListener('pointerdown',holdAttack);
 document.addEventListener('pointerup',releaseHeld);
 document.addEventListener('pointercancel',releaseHeld);
 window.addEventListener('blur',releaseHeld);
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);stopVoice();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);reactionPause(true);stopVoice();}});
 $('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});
 $('#help-button').addEventListener('click',showHelp);
