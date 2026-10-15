@@ -164,7 +164,7 @@ for(let stage=1;stage<3;stage++){
  for(let k=0;k<3;k++){const answer=play.run('state.game.questTarget');play.key(String((answer+1)%3+1));assert.equal(play.run('state.game.questFound'),k);play.key(String(answer+1));}
  winStage(play);
 }
-assert.equal(play.run('state.questRuns'),1);assert.equal(play.run('state.completed.battle'),1);assert.equal(play.run('state.stars'),20);assert.ok(route.every(id=>play.run('state.collection.includes('+JSON.stringify(id)+')')));const earnedCount=play.run('state.collection.length');
+assert.equal(play.run('state.questRuns'),1);assert.equal(play.run('state.completed.battle'),1);assert.equal(play.run('state.stars'),20);assert.ok(route.every(id=>play.run('state.collection.includes('+JSON.stringify(id)+')')));const earnedCount=play.run('state.collection.length');play.click('.result .primary');assert.equal(play.run('state.game.type'),'quest-map','replay must return to the rescue journey');assert.equal(play.run('state.stars'),20);
 play.run('rememberMonster(MONSTERS.find(m=>m.id===\'pucchi\'))');assert.equal(play.run('state.collection.length'),earnedCount,'no duplicated sticker');
 play.click('[data-action="badges"]');assert.equal(play.document.querySelectorAll('.sticker.collected').length,earnedCount);const reloaded=boot();assert.equal(reloaded.run('state.collection.length'),earnedCount);assert.equal(reloaded.run('state.questRuns'),1);
 // Holding stops on release, pause and navigation, and does not create a delayed attack.

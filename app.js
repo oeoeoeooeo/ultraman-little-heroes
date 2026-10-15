@@ -3786,11 +3786,11 @@ function flip(index){
   else{$('#memory-status').textContent='還不是同一組，記住位置，再試一次！';later(()=>{[a,b].forEach(i=>{const e=$$('[data-action="flip"]')[i];e.classList.remove('flipped');e.innerHTML='<img class="card-back-icon" src="assets/emblem.svg" alt="">';e.setAttribute('aria-label',`第 ${i+1} 張卡片，尚未翻開`);});g.flipped=[];g.locked=false;},1600);}
 }
 function finish(mode,stars,title,copy){
-  const defeated=state.game?.type==='battle'?state.game.monster:null;const freshSticker=rememberMonster(defeated);
+  const journey=Boolean(state.game?.quest);const defeated=state.game?.type==='battle'?state.game.monster:null;const freshSticker=rememberMonster(defeated);
   leave();state.game={type:'result',mode};const before=BADGES.filter(b=>hasBadge(b.id)).length;
   state.stars+=stars;state.completed[mode]=(state.completed[mode]||0)+1;save();updateChrome();
   const earned=BADGES.filter(b=>hasBadge(b.id)).length-before;
-  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p>${defeated?`<div class="earned-sticker">${monster('sticker-image',defeated)}<b>${defeated.name}</b><small>${freshSticker?'✨ 收到新的夥伴貼紙！':'💚 又和朋友冒險了！'}</small></div>`:''}<div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="start" data-game="${mode}">再玩一次 ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
+  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p>${defeated?`<div class="earned-sticker">${monster('sticker-image',defeated)}<b>${defeated.name}</b><small>${freshSticker?'✨ 收到新的夥伴貼紙！':'💚 又和朋友冒險了！'}</small></div>`:''}<div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="${journey?'start-quest':'start'}" data-game="${mode}">${journey?'再出發，找新朋友！':'再玩一次'} ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
   confetti();tone('victory');playCue('victory');main.focus({preventScroll:true});
 }
 function speak(text){
