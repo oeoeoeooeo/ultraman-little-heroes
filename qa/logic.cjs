@@ -36,6 +36,24 @@ function boot() {
   function advance(ms){const end=clock+ms;let limit=0;while(true){const entry=[...timers.entries()].sort((a,b)=>a[1].at-b[1].at)[0];if(!entry||entry[1].at>end)break;assert.ok(++limit<2000,'runaway timers');clock=entry[1].at;timers.delete(entry[0]);entry[1].fn();}clock=end;}
   return {document,run,json,el,click,key,advance,timers};
 }
+// Expanded encyclopaedia: source/asset integrity, filters and shared-device ambiguity.
+const catalogue=JSON.parse(fs.readFileSync(path.join(root,'hero-catalogue.json'),'utf8'));
+assert.equal(catalogue.length,53);assert.equal(new Set(catalogue.map(h=>h.id)).size,53);
+for(const h of catalogue){assert.ok(h.source.startsWith('https://tsuburaya-prod.com/heroes/'));assert.equal(fs.readFileSync(path.join(root,'assets',h.id+'.png')).subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
+const expanded=boot();assert.deepEqual(expanded.json('HEROES'),catalogue);
+expanded.click('[data-nav="heroes"]');expanded.click('[data-filter="latest"]');assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,4);
+expanded.run("catalogueSearch='teo';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,1);
+expanded.run("catalogueSearch='<img onerror=alert(1)>';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,0);
+expanded.run("catalogueSearch='';catalogueFilter='all';filterHeroCards()");expanded.click('[data-nav="home"]');expanded.click('[data-action="start"][data-game="device"]');
+for(const h of catalogue.filter(h=>h.deviceQuiz)){
+ expanded.run(`state.game.deck[0]=HEROES.find(h=>h.id===${JSON.stringify(h.id)});state.game.index=0;nextQuiz()`);
+ const options=expanded.json('state.game.options');assert.ok(options.filter(o=>o.deviceKey===h.deviceKey).length===1,'shared device ambiguous: '+h.id);
+ assert.match(expanded.el('.question-visual').textContent,new RegExp(h.device.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+}
+expanded.click('[data-action="home"]');expanded.click('[data-action="start"][data-game="battle"]');expanded.click('[data-action="pick-hero"][data-index="52"]');expanded.click('[data-action="prepare-transform"]');assert.equal(expanded.run('state.game.heroes[0].id'),'teo');expanded.key(' ');expanded.advance(1300);assert.equal(expanded.run('state.game.heroes[0].id'),'teo');
+for(let i=0;i<20;i++){expanded.run('startMemory()');const keys=expanded.json("state.game.cards.filter(c=>c.kind==='device').map(c=>c.hero.deviceKey)");assert.equal(new Set(keys).size,keys.length);}
+expanded.click('[data-nav="home"]');
+
 storage.set('ultra-base-v1',JSON.stringify({sound:false}));
 let t=boot();
 assert.equal(t.document.documentElement.lang,'zh-Hant');
@@ -92,9 +110,9 @@ for(let round=0;round<2;round++){
 assert.equal(t.run('state.completed.battle'),1);
 t.click('[data-action="badges"]');assert.equal(t.document.querySelectorAll('.achievement.earned').length,9);
 const total=t.run('state.stars');t=boot();assert.equal(t.run('state.stars'),total);assert.equal(t.run('hasBadge("explorer")'),true);
-t.click('[data-nav="heroes"]');assert.equal(t.document.querySelectorAll('.library-card').length,6);
+t.click('[data-nav="heroes"]');assert.equal(t.document.querySelectorAll('.library-card').length,53);
 // Leaving an in-progress game cancels delayed work and cannot overwrite the library.
-t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="memory"]');const mismatch=t.run('state.game.cards.findIndex(c=>c.id!==state.game.cards[0].id)');t.click('[data-action="flip"][data-index="0"]');t.click(`[data-action="flip"][data-index="${mismatch}"]`);t.click('[data-nav="heroes"]');t.advance(3000);assert.equal(t.document.querySelectorAll('.library-card').length,6);assert.equal(t.run('state.game'),null);
+t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="memory"]');const mismatch=t.run('state.game.cards.findIndex(c=>c.id!==state.game.cards[0].id)');t.click('[data-action="flip"][data-index="0"]');t.click(`[data-action="flip"][data-index="${mismatch}"]`);t.click('[data-nav="heroes"]');t.advance(3000);assert.equal(t.document.querySelectorAll('.library-card').length,53);assert.equal(t.run('state.game'),null);
 // Backgrounding a battle pauses it; dialog and audio controls update their state.
 t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="battle"]');t.click('[data-action="prepare-transform"]');t.key(' ');t.advance(1300);t.document.hidden=true;t.document.dispatchEvent(new (t.document.defaultView.Event)('visibilitychange'));assert.equal(t.run('state.game.paused'),true);t.document.hidden=false;
 t.click('[data-action="home"]');t.click('[data-action="help"]');assert.equal(t.el('dialog').open,true);t.click('[data-action="close-help"]');assert.equal(t.el('dialog').open,false);

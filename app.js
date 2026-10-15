@@ -25,12 +25,901 @@ $$('[data-icon]').forEach(el => el.innerHTML = icon(el.dataset.icon));
 $('#fullscreen-button').innerHTML = icon('expand');
 
 const HEROES = [
-  {id:'ultraman',name:'初代超人力霸王',short:'初代',en:'ULTRAMAN',color:'#edf0df',device:'貝塔膠囊',hint:'我是紅色與銀色的英雄，胸口有藍色的彩色計時器。',fact:'來自 M78 星雲的光之國，為了守護地球，和早田一起奮戰。',move:'斯派修姆光線'},
-  {id:'seven',name:'超人七號',short:'七號',en:'ULTRASEVEN',color:'#f3e8de',device:'超人力霸王之眼',hint:'我全身紅紅的，頭上有一把可以飛出去的頭鏢！',fact:'愛護地球生命的紅色英雄。額頭能發出光線，頭上還有厲害的頭鏢！',move:'艾梅利姆光線'},
-  {id:'tiga',name:'超人力霸王迪卡',short:'迪卡',en:'ULTRAMAN TIGA',color:'#eae5f2',device:'閃光劍',hint:'我有紅色、紫色和銀色，還能變成三種型態！',fact:'從超古代甦醒的光之巨人，可以切換複合型、力量型與天空型。',move:'哉佩利敖光線'},
-  {id:'zero',name:'超人力霸王傑洛',short:'傑洛',en:'ULTRAMAN ZERO',color:'#e2edf1',device:'傑洛之眼',hint:'我是七號的兒子，頭上有兩把帥氣的頭鏢！',fact:'超人七號的兒子。跟雷歐學過宇宙拳法，擅長快速的戰鬥。',move:'廣域傑洛射線'},
-  {id:'z',name:'超人力霸王傑特',short:'傑特',en:'ULTRAMAN Z',color:'#e1eeee',device:'Z 昇華器',hint:'我很崇拜傑洛師父，我的名字是一個英文字母 Z！',fact:'充滿熱情的新手英雄，把傑洛當成師父，努力守護和平。',move:'傑斯帝姆光線'},
-  {id:'mebius',name:'超人力霸王梅比斯',short:'梅比斯',en:'ULTRAMAN MEBIUS',color:'#f3e7d9',device:'梅比斯氣息',hint:'我的變身器戴在手腕上，我的名字叫梅比斯！',fact:'和 GUYS 隊員一起守護地球，從彼此的友情中獲得力量。',move:'梅比姆射線'}
+  {
+    "id": "ultraman",
+    "name": "初代超人力霸王",
+    "short": "初代",
+    "en": "ULTRAMAN",
+    "color": "#edf0df",
+    "device": "貝塔膠囊",
+    "hint": "我是紅色與銀色的英雄，胸口有藍色的彩色計時器。",
+    "fact": "來自 M78 星雲的光之國，為了守護地球，和早田一起奮戰。",
+    "move": "斯派修姆光線",
+    "year": 1966,
+    "era": "classic",
+    "deviceQuiz": true,
+    "deviceKey": "貝塔膠囊",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman"
+  },
+  {
+    "id": "seven",
+    "name": "超人七號",
+    "short": "七號",
+    "en": "ULTRASEVEN",
+    "color": "#f3e8de",
+    "device": "超人力霸王之眼",
+    "hint": "我全身紅紅的，頭上有一把可以飛出去的頭鏢！",
+    "fact": "愛護地球生命的紅色英雄。額頭能發出光線，頭上還有厲害的頭鏢！",
+    "move": "艾梅利姆光線",
+    "year": 1967,
+    "era": "classic",
+    "deviceQuiz": true,
+    "deviceKey": "超人力霸王之眼",
+    "source": "https://tsuburaya-prod.com/heroes/ultraseven"
+  },
+  {
+    "id": "tiga",
+    "name": "超人力霸王迪卡",
+    "short": "迪卡",
+    "en": "ULTRAMAN TIGA",
+    "color": "#eae5f2",
+    "device": "神光棒（亦稱閃光棒）",
+    "hint": "我有紅色、紫色和銀色，還能變成三種型態！",
+    "fact": "從超古代甦醒的光之巨人，可以切換複合型、力量型與天空型。",
+    "move": "哉佩利敖光線",
+    "year": 1996,
+    "era": "heisei",
+    "deviceQuiz": true,
+    "deviceKey": "神光棒",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-tiga"
+  },
+  {
+    "id": "zero",
+    "name": "超人力霸王傑洛",
+    "short": "傑洛",
+    "en": "ULTRAMAN ZERO",
+    "color": "#e2edf1",
+    "device": "傑洛之眼",
+    "hint": "我是七號的兒子，頭上有兩把帥氣的頭鏢！",
+    "fact": "超人七號的兒子。跟雷歐學過宇宙拳法，擅長快速的戰鬥。",
+    "move": "廣域傑洛射線",
+    "year": 2009,
+    "era": "heisei",
+    "deviceQuiz": true,
+    "deviceKey": "傑洛之眼",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-zero"
+  },
+  {
+    "id": "z",
+    "name": "超人力霸王傑特",
+    "short": "傑特",
+    "en": "ULTRAMAN Z",
+    "color": "#e1eeee",
+    "device": "Z 昇華器",
+    "hint": "我很崇拜傑洛師父，我的名字是一個英文字母 Z！",
+    "fact": "充滿熱情的新手英雄，把傑洛當成師父，努力守護和平。",
+    "move": "傑斯帝姆光線",
+    "year": 2020,
+    "era": "new",
+    "deviceQuiz": true,
+    "deviceKey": "Z 昇華器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-z"
+  },
+  {
+    "id": "mebius",
+    "name": "超人力霸王梅比斯",
+    "short": "梅比斯",
+    "en": "ULTRAMAN MEBIUS",
+    "color": "#f3e7d9",
+    "device": "梅比斯氣息",
+    "hint": "我的變身器戴在手腕上，我的名字叫梅比斯！",
+    "fact": "和 GUYS 隊員一起守護地球，從彼此的友情中獲得力量。",
+    "move": "梅比姆射線",
+    "year": 2006,
+    "era": "heisei",
+    "deviceQuiz": true,
+    "deviceKey": "梅比斯氣息",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-mebius"
+  },
+  {
+    "id": "zoffy",
+    "short": "佐菲",
+    "name": "超人力霸王佐菲",
+    "en": "ZOFFY",
+    "year": 1966,
+    "era": "classic",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "宇宙警衛隊的隊長，也是超人兄弟的可靠夥伴。",
+    "hint": "我是佐菲！宇宙警衛隊的隊長，也是超人兄弟的可靠夥伴。",
+    "move": "M87 光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/zoffy"
+  },
+  {
+    "id": "jack",
+    "short": "傑克",
+    "name": "超人力霸王傑克",
+    "en": "ULTRAMAN JACK",
+    "year": 1971,
+    "era": "classic",
+    "device": "意念變身",
+    "deviceKind": "none",
+    "deviceKey": "意念變身",
+    "deviceQuiz": false,
+    "fact": "與鄉秀樹一起保護地球，擅長使用七號贈送的超級手鐲。",
+    "hint": "我是傑克！與鄉秀樹一起保護地球，擅長使用七號贈送的超級手鐲。",
+    "move": "斯派修姆光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-jack"
+  },
+  {
+    "id": "ace",
+    "short": "衛司",
+    "name": "超人力霸王衛司",
+    "en": "ULTRAMAN ACE",
+    "year": 1972,
+    "era": "classic",
+    "device": "超級戒指",
+    "deviceKind": "ring",
+    "deviceKey": "超級戒指",
+    "deviceQuiz": true,
+    "fact": "額頭和胸口都有能量來源，擅長各式各樣的光線招式。",
+    "hint": "我是衛司！額頭和胸口都有能量來源，擅長各式各樣的光線招式。",
+    "move": "梅塔利姆光線",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ace"
+  },
+  {
+    "id": "taro",
+    "short": "太郎",
+    "name": "超人力霸王太郎",
+    "en": "ULTRAMAN TARO",
+    "year": 1973,
+    "era": "classic",
+    "device": "超級徽章",
+    "deviceKind": "badge",
+    "deviceKey": "超級徽章",
+    "deviceQuiz": true,
+    "fact": "超人之父與超人之母的兒子，頭上有一對超級之角。",
+    "hint": "我是太郎！超人之父與超人之母的兒子，頭上有一對超級之角。",
+    "move": "斯特利姆光線",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taro"
+  },
+  {
+    "id": "leo",
+    "short": "雷歐",
+    "name": "超人力霸王雷歐",
+    "en": "ULTRAMAN LEO",
+    "year": 1974,
+    "era": "classic",
+    "device": "獅子之瞳",
+    "deviceKind": "ring",
+    "deviceKey": "獅子之瞳",
+    "deviceQuiz": true,
+    "fact": "來自獅子座 L77 星，努力鍛鍊拳腳功夫，也教導過傑洛。",
+    "hint": "我是雷歐！來自獅子座 L77 星，努力鍛鍊拳腳功夫，也教導過傑洛。",
+    "move": "雷歐飛踢",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-leo"
+  },
+  {
+    "id": "astra",
+    "short": "阿斯特拉",
+    "name": "阿斯特拉",
+    "en": "ASTRA",
+    "year": 1974,
+    "era": "classic",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "雷歐的弟弟，與哥哥一起守護和平。",
+    "hint": "我是阿斯特拉！雷歐的弟弟，與哥哥一起守護和平。",
+    "move": "兄弟合體光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/astra"
+  },
+  {
+    "id": "king",
+    "short": "尊王",
+    "name": "超人力霸王尊王",
+    "en": "ULTRAMAN KING",
+    "year": 1974,
+    "era": "classic",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "神祕而強大的長者，會在英雄需要幫助時伸出援手。",
+    "hint": "我是尊王！神祕而強大的長者，會在英雄需要幫助時伸出援手。",
+    "move": "尊王閃光",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-king"
+  },
+  {
+    "id": "father-of-ultra",
+    "short": "超人之父",
+    "name": "超人之父",
+    "en": "FATHER OF ULTRA",
+    "year": 1972,
+    "era": "classic",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "宇宙警衛隊的大隊長，也是太郎的爸爸。",
+    "hint": "我是超人之父！宇宙警衛隊的大隊長，也是太郎的爸爸。",
+    "move": "光之力量",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/father-of-ultra"
+  },
+  {
+    "id": "mother-of-ultra",
+    "short": "超人之母",
+    "name": "超人之母",
+    "en": "MOTHER OF ULTRA",
+    "year": 1973,
+    "era": "classic",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "溫柔的銀十字軍隊長，使用治癒力量幫助受傷的英雄。",
+    "hint": "我是超人之母！溫柔的銀十字軍隊長，使用治癒力量幫助受傷的英雄。",
+    "move": "治癒之光",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/mother-of-ultra"
+  },
+  {
+    "id": "80",
+    "short": "80",
+    "name": "超人力霸王80",
+    "en": "ULTRAMAN 80",
+    "year": 1980,
+    "era": "classic",
+    "device": "電光棒",
+    "deviceKind": "spark",
+    "deviceKey": "電光棒",
+    "deviceQuiz": true,
+    "fact": "在人類世界擔任老師，守護孩子，也用靈活身手保護地球。",
+    "hint": "我是80！在人類世界擔任老師，守護孩子，也用靈活身手保護地球。",
+    "move": "沙庫修姆光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-80"
+  },
+  {
+    "id": "yullian",
+    "short": "尤莉安",
+    "name": "尤莉安",
+    "en": "YULLIAN",
+    "year": 1980,
+    "era": "classic",
+    "device": "閃光手鐲",
+    "deviceKind": "wrist",
+    "deviceKey": "閃光手鐲",
+    "deviceQuiz": true,
+    "fact": "光之國的公主，曾經來到地球，與 80 一起作戰。",
+    "hint": "我是尤莉安！光之國的公主，曾經來到地球，與 80 一起作戰。",
+    "move": "雙重力量",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/yullian"
+  },
+  {
+    "id": "joneus",
+    "short": "喬尼亞斯",
+    "name": "超人力霸王喬尼亞斯",
+    "en": "ULTRAMAN JONEUS",
+    "year": 1979,
+    "era": "classic",
+    "device": "閃光之星",
+    "deviceKind": "badge",
+    "deviceKey": "閃光之星",
+    "deviceQuiz": true,
+    "fact": "來自 U40 星的戰士，胸口有醒目的星形標誌。",
+    "hint": "我是喬尼亞斯！來自 U40 星的戰士，胸口有醒目的星形標誌。",
+    "move": "普拉尼姆光線",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-joneus"
+  },
+  {
+    "id": "scott",
+    "short": "史考特",
+    "name": "超人力霸王史考特",
+    "en": "ULTRAMAN SCOTT",
+    "year": 1987,
+    "era": "classic",
+    "device": "意念變身",
+    "deviceKind": "none",
+    "deviceKey": "意念變身",
+    "deviceQuiz": false,
+    "fact": "與飛行員史考特合為一體，和查克、貝絲組成 Ultra Force。",
+    "hint": "我是史考特！與飛行員史考特合為一體，和查克、貝絲組成 Ultra Force。",
+    "move": "光線招式",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-scott"
+  },
+  {
+    "id": "chuck",
+    "short": "查克",
+    "name": "超人力霸王查克",
+    "en": "ULTRAMAN CHUCK",
+    "year": 1987,
+    "era": "classic",
+    "device": "意念變身",
+    "deviceKind": "none",
+    "deviceKey": "意念變身",
+    "deviceQuiz": false,
+    "fact": "Ultra Force 的年長夥伴，能認出友善怪獸並幫助牠。",
+    "hint": "我是查克！Ultra Force 的年長夥伴，能認出友善怪獸並幫助牠。",
+    "move": "光線招式",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-chuck"
+  },
+  {
+    "id": "beth",
+    "short": "貝絲",
+    "name": "女超人力霸王貝絲",
+    "en": "ULTRAWOMAN BETH",
+    "year": 1987,
+    "era": "classic",
+    "device": "意念變身",
+    "deviceKind": "none",
+    "deviceKey": "意念變身",
+    "deviceQuiz": false,
+    "fact": "Ultra Force 的女英雄，與史考特、查克一起守護和平。",
+    "hint": "我是貝絲！Ultra Force 的女英雄，與史考特、查克一起守護和平。",
+    "move": "光線招式",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultrawoman-beth"
+  },
+  {
+    "id": "great",
+    "short": "葛雷",
+    "name": "超人力霸王葛雷",
+    "en": "ULTRAMAN GREAT",
+    "year": 1990,
+    "era": "heisei",
+    "device": "電漿三角",
+    "deviceKind": "pendant",
+    "deviceKey": "電漿三角",
+    "deviceQuiz": true,
+    "fact": "與傑克辛道一起奮戰，用多種光線和拳腳功夫保護地球。",
+    "hint": "我是葛雷！與傑克辛道一起奮戰，用多種光線和拳腳功夫保護地球。",
+    "move": "燃燒電漿",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-great"
+  },
+  {
+    "id": "powered",
+    "short": "帕瓦德",
+    "name": "超人力霸王帕瓦德",
+    "en": "ULTRAMAN POWERED",
+    "year": 1993,
+    "era": "heisei",
+    "device": "閃光稜鏡",
+    "deviceKind": "spark",
+    "deviceKey": "閃光稜鏡",
+    "deviceQuiz": true,
+    "fact": "與健一凱伊合為一體，追蹤巴爾坦星人並守護地球。",
+    "hint": "我是帕瓦德！與健一凱伊合為一體，追蹤巴爾坦星人並守護地球。",
+    "move": "超級斯派修姆光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-powered"
+  },
+  {
+    "id": "dyna",
+    "short": "帝納",
+    "name": "超人力霸王帝納",
+    "en": "ULTRAMAN DYNA",
+    "year": 1997,
+    "era": "heisei",
+    "device": "閃光劍",
+    "deviceKind": "spark",
+    "deviceKey": "閃光劍",
+    "deviceQuiz": true,
+    "fact": "與飛鳥真一起奮戰，可以切換閃光型、強壯型與奇蹟型。",
+    "hint": "我是帝納！與飛鳥真一起奮戰，可以切換閃光型、強壯型與奇蹟型。",
+    "move": "索爾捷特光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-dyna"
+  },
+  {
+    "id": "gaia",
+    "short": "蓋亞",
+    "name": "超人力霸王蓋亞",
+    "en": "ULTRAMAN GAIA",
+    "year": 1998,
+    "era": "heisei",
+    "device": "藍寶錐",
+    "deviceKind": "crystal",
+    "deviceKey": "藍寶錐",
+    "deviceQuiz": true,
+    "fact": "由地球意志誕生的紅色光之巨人，與高山我夢一起守護生命。",
+    "hint": "我是蓋亞！由地球意志誕生的紅色光之巨人，與高山我夢一起守護生命。",
+    "move": "光子冰刀",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-gaia"
+  },
+  {
+    "id": "agul",
+    "short": "亞格",
+    "name": "超人力霸王亞格",
+    "en": "ULTRAMAN AGUL",
+    "year": 1998,
+    "era": "heisei",
+    "device": "藍寶鐲",
+    "deviceKind": "wrist",
+    "deviceKey": "藍寶鐲",
+    "deviceQuiz": true,
+    "fact": "擁有海洋的藍色光芒，與蓋亞一起守護地球。",
+    "hint": "我是亞格！擁有海洋的藍色光芒，與蓋亞一起守護地球。",
+    "move": "光子粉碎機",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-agul"
+  },
+  {
+    "id": "neos",
+    "short": "雷歐斯",
+    "name": "超人力霸王雷歐斯",
+    "en": "ULTRAMAN NEOS",
+    "year": 2000,
+    "era": "heisei",
+    "device": "星辰器",
+    "deviceKind": "spark",
+    "deviceKey": "星辰器",
+    "deviceQuiz": true,
+    "fact": "光之國的年輕戰士，與七號 21 一起保護地球。",
+    "hint": "我是雷歐斯！光之國的年輕戰士，與七號 21 一起保護地球。",
+    "move": "新馬格紐姆光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-neos"
+  },
+  {
+    "id": "ultraseven-21",
+    "short": "七號 21",
+    "name": "超人力霸王七號 21",
+    "en": "ULTRASEVEN 21",
+    "year": 2000,
+    "era": "heisei",
+    "device": "意念變身",
+    "deviceKind": "none",
+    "deviceKey": "意念變身",
+    "deviceQuiz": false,
+    "fact": "擅長調查與偵察的戰士，會在雷歐斯遇到危險時出現。",
+    "hint": "我是七號 21！擅長調查與偵察的戰士，會在雷歐斯遇到危險時出現。",
+    "move": "雷吉亞射線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraseven-21"
+  },
+  {
+    "id": "cosmos",
+    "short": "高斯",
+    "name": "超人力霸王高斯",
+    "en": "ULTRAMAN COSMOS",
+    "year": 2001,
+    "era": "heisei",
+    "device": "日月同輝",
+    "deviceKind": "spark",
+    "deviceKey": "日月同輝",
+    "deviceQuiz": true,
+    "fact": "溫柔又熱愛和平，會先嘗試安撫怪獸，保護各種生命。",
+    "hint": "我是高斯！溫柔又熱愛和平，會先嘗試安撫怪獸，保護各種生命。",
+    "move": "滿月光波",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-cosmos"
+  },
+  {
+    "id": "justice",
+    "short": "正義",
+    "name": "超人力霸王正義",
+    "en": "ULTRAMAN JUSTICE",
+    "year": 2002,
+    "era": "heisei",
+    "device": "正義之槍",
+    "deviceKind": "spark",
+    "deviceKey": "正義之槍",
+    "deviceQuiz": true,
+    "fact": "來自宇宙的正義戰士，與高斯一起思考如何守護生命。",
+    "hint": "我是正義！來自宇宙的正義戰士，與高斯一起思考如何守護生命。",
+    "move": "維克托利姆光線",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-justice"
+  },
+  {
+    "id": "nexus",
+    "short": "納克斯",
+    "name": "超人力霸王納克斯",
+    "en": "ULTRAMAN NEXUS",
+    "year": 2004,
+    "era": "heisei",
+    "device": "進化信徒",
+    "deviceKind": "spark",
+    "deviceKey": "進化信徒",
+    "deviceQuiz": true,
+    "fact": "光之力量會由不同的適格者接棒，讓希望持續傳下去。",
+    "hint": "我是納克斯！光之力量會由不同的適格者接棒，讓希望持續傳下去。",
+    "move": "十字光線風暴",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-nexus"
+  },
+  {
+    "id": "max",
+    "short": "馬克斯",
+    "name": "超人力霸王馬克斯",
+    "en": "ULTRAMAN MAX",
+    "year": 2005,
+    "era": "heisei",
+    "device": "馬克斯火花",
+    "deviceKind": "wrist",
+    "deviceKey": "馬克斯火花",
+    "deviceQuiz": true,
+    "fact": "兼具速度與力量，頭上藏著武器，與東馬快斗一起奮戰。",
+    "hint": "我是馬克斯！兼具速度與力量，頭上藏著武器，與東馬快斗一起奮戰。",
+    "move": "馬克修姆加農",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-max"
+  },
+  {
+    "id": "xenon",
+    "short": "傑諾",
+    "name": "超人力霸王傑諾",
+    "en": "ULTRAMAN XENON",
+    "year": 2005,
+    "era": "heisei",
+    "device": "無專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "無專屬變身器",
+    "deviceQuiz": false,
+    "fact": "在馬克斯遇到危險時現身，送給夥伴新的力量。",
+    "hint": "我是傑諾！在馬克斯遇到危險時現身，送給夥伴新的力量。",
+    "move": "傑諾尼姆加農",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-xenon"
+  },
+  {
+    "id": "hikari",
+    "short": "希卡利",
+    "name": "超人力霸王希卡利",
+    "en": "ULTRAMAN HIKARI",
+    "year": 2006,
+    "era": "heisei",
+    "device": "騎士氣息",
+    "deviceKind": "wrist",
+    "deviceKey": "騎士氣息",
+    "deviceQuiz": true,
+    "fact": "藍色的科學家英雄，也是梅比斯的重要夥伴。",
+    "hint": "我是希卡利！藍色的科學家英雄，也是梅比斯的重要夥伴。",
+    "move": "騎士射線",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-hikari"
+  },
+  {
+    "id": "ginga",
+    "short": "銀河",
+    "name": "超人力霸王銀河",
+    "en": "ULTRAMAN GINGA",
+    "year": 2013,
+    "era": "new",
+    "device": "銀河火花",
+    "deviceKind": "spark",
+    "deviceKey": "銀河火花",
+    "deviceQuiz": true,
+    "fact": "身上有發亮的水晶，與禮堂光一起展開冒險。",
+    "hint": "我是銀河！身上有發亮的水晶，與禮堂光一起展開冒險。",
+    "move": "銀河十字光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ginga"
+  },
+  {
+    "id": "victory",
+    "short": "勝利",
+    "name": "超人力霸王勝利",
+    "en": "ULTRAMAN VICTORY",
+    "year": 2014,
+    "era": "new",
+    "device": "勝利聖槍",
+    "deviceKind": "lance",
+    "deviceKey": "勝利聖槍",
+    "deviceQuiz": true,
+    "fact": "由地底青年翔變身，能把怪獸的力量化成右手武器。",
+    "hint": "我是勝利！由地底青年翔變身，能把怪獸的力量化成右手武器。",
+    "move": "勝利射線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-victory"
+  },
+  {
+    "id": "x",
+    "short": "X",
+    "name": "超人力霸王X",
+    "en": "ULTRAMAN X",
+    "year": 2015,
+    "era": "new",
+    "device": "X 終端",
+    "deviceKind": "terminal",
+    "deviceKey": "X 終端",
+    "deviceQuiz": true,
+    "fact": "與大空大地互相合作，讓兩顆心的力量連在一起。",
+    "hint": "我是X！與大空大地互相合作，讓兩顆心的力量連在一起。",
+    "move": "扎納帝姆光線",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-x"
+  },
+  {
+    "id": "orb",
+    "short": "歐布",
+    "name": "超人力霸王歐布",
+    "en": "ULTRAMAN ORB",
+    "year": 2016,
+    "era": "new",
+    "device": "歐布圓環",
+    "deviceKind": "orb",
+    "deviceKey": "歐布圓環",
+    "deviceQuiz": true,
+    "fact": "以紅凱的身分四處旅行，借用前輩的力量守護和平。",
+    "hint": "我是歐布！以紅凱的身分四處旅行，借用前輩的力量守護和平。",
+    "move": "斯派利敖光線",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-orb"
+  },
+  {
+    "id": "geed",
+    "short": "捷德",
+    "name": "超人力霸王捷德",
+    "en": "ULTRAMAN GEED",
+    "year": 2017,
+    "era": "new",
+    "device": "捷德昇華器",
+    "deviceKind": "terminal",
+    "deviceKey": "捷德昇華器",
+    "deviceQuiz": true,
+    "fact": "雖然出身充滿考驗，仍然珍惜朋友，努力成為正義的英雄。",
+    "hint": "我是捷德！雖然出身充滿考驗，仍然珍惜朋友，努力成為正義的英雄。",
+    "move": "毀滅爆裂",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-geed"
+  },
+  {
+    "id": "rosso",
+    "short": "羅索",
+    "name": "超人力霸王羅索",
+    "en": "ULTRAMAN ROSSO",
+    "year": 2018,
+    "era": "new",
+    "device": "羅布迴轉儀",
+    "deviceKind": "gyro",
+    "deviceKey": "羅布迴轉儀",
+    "deviceQuiz": true,
+    "fact": "湊家哥哥活海變身的英雄，基本型態擁有火的力量。",
+    "hint": "我是羅索！湊家哥哥活海變身的英雄，基本型態擁有火的力量。",
+    "move": "烈焰球",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-rosso"
+  },
+  {
+    "id": "blu",
+    "short": "布魯",
+    "name": "超人力霸王布魯",
+    "en": "ULTRAMAN BLU",
+    "year": 2018,
+    "era": "new",
+    "device": "羅布迴轉儀",
+    "deviceKind": "gyro",
+    "deviceKey": "羅布迴轉儀",
+    "deviceQuiz": true,
+    "fact": "湊家弟弟勇海變身的英雄，基本型態擁有水的力量。",
+    "hint": "我是布魯！湊家弟弟勇海變身的英雄，基本型態擁有水的力量。",
+    "move": "水流射線",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-blu"
+  },
+  {
+    "id": "grigio",
+    "short": "格麗喬",
+    "name": "女超人力霸王格麗喬",
+    "en": "ULTRAWOMAN GRIGIO",
+    "year": 2019,
+    "era": "new",
+    "device": "羅布迴轉儀（美劍版）",
+    "deviceKind": "gyro",
+    "deviceKey": "羅布迴轉儀（美劍版）",
+    "deviceQuiz": true,
+    "fact": "湊家妹妹朝陽變身的女英雄，能用治癒力量支持夥伴。",
+    "hint": "我是格麗喬！湊家妹妹朝陽變身的女英雄，能用治癒力量支持夥伴。",
+    "move": "格麗喬治癒",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultrawoman-grigio"
+  },
+  {
+    "id": "taiga",
+    "short": "大河",
+    "name": "超人力霸王大河",
+    "en": "ULTRAMAN TAIGA",
+    "year": 2019,
+    "era": "new",
+    "device": "大河火花",
+    "deviceKind": "wrist",
+    "deviceKey": "大河火花",
+    "deviceQuiz": true,
+    "fact": "太郎的兒子，和泰塔斯、風馬組成三人小隊。",
+    "hint": "我是大河！太郎的兒子，和泰塔斯、風馬組成三人小隊。",
+    "move": "斯特利姆爆裂",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taiga"
+  },
+  {
+    "id": "titas",
+    "short": "泰塔斯",
+    "name": "超人力霸王泰塔斯",
+    "en": "ULTRAMAN TITAS",
+    "year": 2019,
+    "era": "new",
+    "device": "大河火花",
+    "deviceKind": "wrist",
+    "deviceKey": "大河火花",
+    "deviceQuiz": true,
+    "fact": "來自 U40 星的力量型戰士，有強健的體魄與沉穩的心。",
+    "hint": "我是泰塔斯！來自 U40 星的力量型戰士，有強健的體魄與沉穩的心。",
+    "move": "普拉尼姆爆裂",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-titas"
+  },
+  {
+    "id": "fuma",
+    "short": "風馬",
+    "name": "超人力霸王風馬",
+    "en": "ULTRAMAN FUMA",
+    "year": 2019,
+    "era": "new",
+    "device": "大河火花",
+    "deviceKind": "wrist",
+    "deviceKey": "大河火花",
+    "deviceQuiz": true,
+    "fact": "來自 O-50 的迅速戰士，像忍者一樣靈活，是三人小隊的夥伴。",
+    "hint": "我是風馬！來自 O-50 的迅速戰士，像忍者一樣靈活，是三人小隊的夥伴。",
+    "move": "極星光波手裏劍",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-fuma"
+  },
+  {
+    "id": "ribut",
+    "short": "利布特",
+    "name": "超人力霸王利布特",
+    "en": "ULTRAMAN RIBUT",
+    "year": 2014,
+    "era": "new",
+    "device": "GUTS 閃光棒（地球訓練時）",
+    "deviceKind": "gun",
+    "deviceKey": "GUTS 閃光棒",
+    "deviceQuiz": true,
+    "fact": "銀河救援隊的成員，擅長武術和護盾，幫助需要救援的生命。",
+    "hint": "我是利布特！銀河救援隊的成員，擅長武術和護盾，幫助需要救援的生命。",
+    "move": "加拉克西姆爆裂",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ribut"
+  },
+  {
+    "id": "trigger",
+    "short": "特利卡",
+    "name": "超人力霸王特利卡",
+    "en": "ULTRAMAN TRIGGER",
+    "year": 2021,
+    "era": "new",
+    "device": "GUTS 閃光棒",
+    "deviceKind": "gun",
+    "deviceKey": "GUTS 閃光棒",
+    "deviceQuiz": true,
+    "fact": "從火星的石像甦醒，與真中劍吾一起守護笑容，也能切換三種型態。",
+    "hint": "我是特利卡！從火星的石像甦醒，與真中劍吾一起守護笑容，也能切換三種型態。",
+    "move": "哉佩利敖光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-trigger"
+  },
+  {
+    "id": "decker",
+    "short": "德卡",
+    "name": "超人力霸王德卡",
+    "en": "ULTRAMAN DECKER",
+    "year": 2022,
+    "era": "new",
+    "device": "超級 D 閃光劍",
+    "deviceKind": "terminal",
+    "deviceKey": "超級 D 閃光劍",
+    "deviceQuiz": true,
+    "fact": "由明日見奏大變身，擁有閃光型、強壯型與奇蹟型。",
+    "hint": "我是德卡！由明日見奏大變身，擁有閃光型、強壯型與奇蹟型。",
+    "move": "索爾捷特光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-decker"
+  },
+  {
+    "id": "regulos",
+    "short": "雷克洛斯",
+    "name": "超人力霸王雷克洛斯",
+    "en": "ULTRAMAN REGULOS",
+    "year": 2020,
+    "era": "new",
+    "device": "未公開專屬變身器",
+    "deviceKind": "none",
+    "deviceKey": "未公開專屬變身器",
+    "deviceQuiz": false,
+    "fact": "在 D60 行星學習宇宙幻獸拳，雙臂帶著白虎與赤龍的力量。",
+    "hint": "我是雷克洛斯！在 D60 行星學習宇宙幻獸拳，雙臂帶著白虎與赤龍的力量。",
+    "move": "宇宙幻獸拳",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-regulos"
+  },
+  {
+    "id": "blazar",
+    "short": "布雷薩",
+    "name": "超人力霸王布雷薩",
+    "en": "ULTRAMAN BLAZAR",
+    "year": 2023,
+    "era": "latest",
+    "device": "布雷薩手鐲",
+    "deviceKind": "wrist",
+    "deviceKey": "布雷薩手鐲",
+    "deviceQuiz": true,
+    "fact": "來自遙遠的 M421，與比留間弦人一起守護地球。",
+    "hint": "我是布雷薩！來自遙遠的 M421，與比留間弦人一起守護地球。",
+    "move": "螺旋光矛",
+    "color": "#eae5f2",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-blazar"
+  },
+  {
+    "id": "arc",
+    "short": "雅克",
+    "name": "超人力霸王雅克",
+    "en": "ULTRAMAN ARC",
+    "year": 2024,
+    "era": "latest",
+    "device": "ARC 昇華器",
+    "deviceKind": "cube",
+    "deviceKey": "ARC 昇華器",
+    "deviceQuiz": true,
+    "fact": "飛世優馬釋放想像力，與光之生命路提昂一起成為英雄。",
+    "hint": "我是雅克！飛世優馬釋放想像力，與光之生命路提昂一起成為英雄。",
+    "move": "雅克終結光線",
+    "color": "#edf0df",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-arc"
+  },
+  {
+    "id": "omega",
+    "short": "奧米加",
+    "name": "超人力霸王奧米加",
+    "en": "ULTRAMAN OMEGA",
+    "year": 2025,
+    "era": "latest",
+    "device": "奧米加飛鏢＋奧米加流星",
+    "deviceKind": "boomerang",
+    "deviceKey": "奧米加飛鏢＋奧米加流星",
+    "deviceQuiz": true,
+    "fact": "失去記憶後來到地球，使用紅色頭鏢，與大木田宙人一起探索世界。",
+    "hint": "我是奧米加！失去記憶後來到地球，使用紅色頭鏢，與大木田宙人一起探索世界。",
+    "move": "Reticulute 光線",
+    "color": "#e1eeee",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-omega"
+  },
+  {
+    "id": "teo",
+    "short": "Teo",
+    "name": "超人力霸王Teo",
+    "en": "ULTRAMAN TEO",
+    "year": 2026,
+    "era": "latest",
+    "device": "Teo Crystar",
+    "deviceKind": "pendant",
+    "deviceKey": "Teo Crystar",
+    "deviceQuiz": true,
+    "fact": "來自 H12 行星的藍色英雄，珍惜動物與生命，將守護的心化成光。",
+    "hint": "我是Teo！來自 H12 行星的藍色英雄，珍惜動物與生命，將守護的心化成光。",
+    "move": "Teocium 光線",
+    "color": "#f3e7d9",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-teo"
+  }
 ];
 const FORMS = [
   {id:'multi',name:'複合型',color:'#916eb2',second:'#d76c6e',hint:'紅色加紫色，力量和速度都很棒！',description:'平衡力量與速度的迪卡。'},
@@ -96,7 +985,27 @@ function devicePicture(hero,cls='device-picture'){
   else if(id==='seven'||id==='zero')drawing=`<path d="m22 69 58 17 58-17-9 41-49 13-49-13Z" fill="${id==='zero'?'#638caa':'#d2695a'}"/><path d="m28 72 51 15 53-15-10 28-42 13-42-13Z" fill="#d3ded8"/><path d="m38 79 34 10-7 15-25-8Zm84 0-34 10 7 15 25-8Z" fill="${id==='zero'?'#d0eaba':'#edc371'}"/><path d="M74 86h12v29H74Z" fill="#71988e"/>${id==='zero'?'<path d="M29 72 40 37l22 44m67-9-9-35-24 44" fill="#dce4df"/>':''}<path d="m81 117-9 12 18 41 15-6Z" fill="${id==='zero'?'#648fab':'#cf6c60'}"/>`;
   else if(id==='tiga')drawing='<path d="M69 94h22v93H69Z" fill="#d4ded7"/><path d="M74 103h12v64H74Z" fill="#9a7e99"/><path d="M80 22 48 55l-8 56 28-15 12-28 12 28 28 15-8-56Z" fill="#d9b25f"/><path d="m80 30-23 30-8 33 19-13 12-31 12 31 19 13-8-33Z" fill="#e9dfaa"/><path d="m80 47-8 33 8 23 8-23Z" fill="#b2e3d6"/><path d="M65 178h30v10q-15 10-30 0Z" fill="#d3aa57"/>';
   else if(id==='z')drawing='<path d="M38 38 123 62l-15 25-34-8-8 109-28-4 11-111-20-9Z" fill="#6f8f9c"/><path d="m46 42 73 23-10 11-51-9-6 16-14-6Z" fill="#d9e3dd"/><path d="m57 94 42 7-4 45-45-7Z" fill="#8bc9d1"/><circle cx="69" cy="121" r="14" fill="#d4e8da"/><path d="m62 112 15 2-18 17 16 2" stroke="#7097a9" stroke-width="4" fill="none"/><path d="m45 162 20 4-2 16-19-3Z" fill="#b3d7c5"/>';
-  else drawing='<path d="m42 77 76 8-10 66-73-10Z" fill="#be735e"/><path d="m41 90 76 4-6 42-73-3Z" fill="#d9bd74"/><path d="m40 99 71 3-3 23-69-1Z" fill="#8d6276"/><path d="M81 35 55 75l9 35 14 20 15-23 8-31Z" fill="#debd63"/><path d="m80 49-14 29 11 34 13-31Z" fill="#b6e6d7"/><path d="m80 56-5 26 4 19 6-20Z" fill="#e5f9d8"/>';
+  else if(id==='mebius')drawing='<path d="m42 77 76 8-10 66-73-10Z" fill="#be735e"/><path d="m41 90 76 4-6 42-73-3Z" fill="#d9bd74"/><path d="m40 99 71 3-3 23-69-1Z" fill="#8d6276"/><path d="M81 35 55 75l9 35 14 20 15-23 8-31Z" fill="#debd63"/><path d="m80 49-14 29 11 34 13-31Z" fill="#b6e6d7"/><path d="m80 56-5 26 4 19 6-20Z" fill="#e5f9d8"/>';
+  else {
+    const metal='#d1dedb',gold='#e5c47c',glow='#8edbd5',accent=hero.color;
+    const shapes={
+      none:`<path d="m80 30 15 48 45 20-45 20-15 50-15-50-45-20 45-20Z" fill="${gold}"/><circle cx="80" cy="98" r="16" fill="${glow}"/>`,
+      ring:`<circle cx="80" cy="126" r="42" fill="none" stroke="${gold}" stroke-width="15"/><path d="m80 35 26 32-26 25-26-25Z" fill="${glow}"/>`,
+      badge:`<path d="m80 30 14 43 45 1-36 28 12 47-35-27-35 27 12-47-36-28 45-1Z" fill="${gold}"/><circle cx="80" cy="89" r="16" fill="${glow}"/>`,
+      pendant:`<path d="M42 21q38 62 76 0" fill="none" stroke="${metal}" stroke-width="8"/><path d="m80 66 27 41-27 55-27-55Z" fill="${gold}"/><path d="m80 80 15 27-15 36-15-36Z" fill="${glow}"/>`,
+      wrist:`<rect x="26" y="68" width="108" height="76" rx="20" fill="${metal}"/><rect x="36" y="84" width="88" height="42" rx="12" fill="${gold}"/><path d="m80 45 22 53-22 39-22-39Z" fill="${glow}"/>`,
+      orb:`<circle cx="80" cy="78" r="44" fill="none" stroke="${gold}" stroke-width="13"/><path d="M67 119h26v67H67Z" fill="${metal}"/>`,
+      gyro:`<path d="m80 24 45 70-45 72-45-72Z" fill="${metal}"/><path d="M36 60h88v65H36Z" fill="${gold}"/><circle cx="80" cy="92" r="26" fill="${glow}"/>`,
+      cube:`<path d="m80 26 36 21v43L80 111 44 90V47Z" fill="${glow}"/><path d="m80 26 0 42 36-21M44 47l36 21v43" fill="none" stroke="${gold}" stroke-width="6"/><path d="M65 113h30v72H65Z" fill="${metal}"/>`,
+      boomerang:`<path d="m14 37 66 50 66-50-15 83-51 25-51-25Z" fill="#c4655f"/><path d="m80 82 21 24-21 33-21-33Z" fill="${glow}"/>`,
+      terminal:`<rect x="43" y="31" width="74" height="155" rx="20" fill="${metal}"/><rect x="52" y="54" width="56" height="74" rx="9" fill="${glow}"/><circle cx="80" cy="153" r="13" fill="${gold}"/>`,
+      gun:`<path d="M30 36h95v47H76l-10 99H36l10-99H30Z" fill="${metal}"/><path d="M44 48h70v23H44Z" fill="${glow}"/><path d="m52 102 18 3-6 53-18-3Z" fill="${gold}"/>`,
+      lance:`<path d="m80 18 37 66-25 24v80H68v-80L43 84Z" fill="${gold}"/><path d="m80 34 18 43-18 18-18-18Z" fill="${glow}"/>`,
+      crystal:`<path d="m80 26 34 70-34 72-34-72Z" fill="${glow}"/><path d="M61 158h38v28H61Z" fill="${metal}"/>`,
+      spark:`<rect x="66" y="72" width="28" height="112" rx="10" fill="${metal}"/><path d="m80 22 31 38-31 52-31-52Z" fill="${gold}"/><path d="m80 34 17 27-17 30-17-30Z" fill="${glow}"/>`
+    };
+    drawing=shapes[hero.deviceKind]||shapes.none;
+  }
   return `<svg class="${cls}" viewBox="0 0 160 210" role="img" aria-label="${hero.device}示意圖"><g stroke="#56776b33" stroke-width="1.5" stroke-linejoin="round">${drawing}</g><path d="m23 27 3 9 9 3-9 3-3 9-3-9-9-3 9-3Zm109 119 2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#f5d584"/></svg>`;
 }
 function monster(cls='monster-picture',variant=0){
@@ -122,7 +1031,17 @@ function renderHome(){
   <p class="welcome-note">${icon('heart')} 不用比快，也不怕答錯。勇敢試試看，就是最棒的小英雄！</p>`;
 }
 function screenHead(title,copy,tag=''){return `<div class="screen-head"><button class="back-button" data-action="home" aria-label="回冒險大廳">${icon('back')}</button><div><h1>${title}</h1><p>${copy}</p></div>${tag?`<span class="round-tag">${tag}</span>`:''}</div>`;}
-function renderHeroes(){main.innerHTML=screenHead('英雄圖鑑','認識英雄、變身器和他們的光之力量。','6 位光之夥伴')+`<div class="hero-library">${HEROES.map(h=>`<article class="library-card"><div class="library-image" style="--hero-bg:${h.color}">${heroImage(h)}</div><h2>${h.short}</h2><span class="english-name">${h.en}</span><p>${h.fact}<br><b>變身器：</b>${h.device}<br><b>必殺技：</b>${h.move}</p><button class="read-button" data-action="read-hero" data-id="${h.id}">${icon('sound')} 聽聽英雄的故事</button></article>`).join('')}</div>`;}
+const ERAS={all:'全部英雄',classic:'經典・昭和',heisei:'平成夥伴',new:'新生代',latest:'最新英雄'};
+let catalogueFilter='all',catalogueSearch='';
+function catalogueTools(){return `<section class="catalogue-tools" aria-label="尋找英雄"><div class="era-tabs">${Object.entries(ERAS).map(([id,label])=>`<button class="era-tab ${catalogueFilter===id?'selected':''}" data-action="hero-filter" data-filter="${id}" aria-pressed="${catalogueFilter===id}">${label}</button>`).join('')}</div><label class="hero-search-label">找找你的英雄 <input id="hero-search" type="search" placeholder="例如：傑洛、Teo、2025" autocomplete="off" maxlength="60"></label><p id="hero-count" role="status"></p></section>`;}
+function filterHeroCards(){
+ const query=catalogueSearch.trim().toLocaleLowerCase();let count=0;
+ $$('[data-hero-card]').forEach(el=>{const h=HEROES.find(h=>h.id===el.dataset.heroCard);const show=(catalogueFilter==='all'||h.era===catalogueFilter)&&`${h.name} ${h.short} ${h.en} ${h.year}`.toLocaleLowerCase().includes(query);el.hidden=!show;if(show)count++;});
+ $$('.era-tab').forEach(el=>{const active=el.dataset.filter===catalogueFilter;el.classList.toggle('selected',active);el.setAttribute('aria-pressed',String(active));});
+ if($('#hero-count'))$('#hero-count').textContent=count?`找到 ${count} 位光之夥伴`:'這裡還找不到，換個名字或選「全部英雄」看看！';
+}
+function restoreHeroTools(){if($('#hero-search'))$('#hero-search').value=catalogueSearch;filterHeroCards();}
+function renderHeroes(){main.innerHTML=screenHead('英雄大百科','從經典夥伴到 2026 年 Teo，一起認識光之英雄。',`${HEROES.length} 位光之夥伴`)+catalogueTools()+`<div class="hero-library">${[...HEROES].sort((a,b)=>b.year-a.year).map(h=>`<article class="library-card" data-hero-card="${h.id}"><div class="library-image" style="--hero-bg:${h.color}">${heroImage(h)}</div><h2>${h.short}</h2><span class="english-name">${h.en}</span><span class="hero-year">${h.year} 年登場 · ${ERAS[h.era]}</span><p>${h.fact}<br><b>變身方式：</b>${h.device}<br><b>代表招式：</b>${h.move}</p><button class="read-button" data-action="read-hero" data-id="${h.id}">${icon('sound')} 聽聽英雄的故事</button><a class="hero-source" href="${h.source}" target="_blank" rel="noopener noreferrer">家長閱讀：官方百科 ↗</a></article>`).join('')}</div><p class="catalogue-note">收錄圓谷官方英雄百科目前列出的 53 位角色（查核：2026/10/15）。年代為登場年份分組，型態與合體角色不另外計數。Teo 保留官方英文名稱；中文譯名因地區可能不同。</p>`;restoreHeroTools();}
 function renderBadges(){main.innerHTML=screenHead('我的小成就','每一份勇氣，都會變成一顆閃亮的星星。')+`<div class="star-summary"><span>★</span><div><strong>${state.stars} <small style="font-size:14px">顆冒險星星</small></strong><p>已收集 ${BADGES.filter(b=>hasBadge(b.id)).length} / ${BADGES.length} 枚徽章，一起慢慢收集吧！</p></div></div><div class="badge-grid">${BADGES.map(b=>`<article class="achievement ${hasBadge(b.id)?'earned':'locked'}"><div class="medal">${b.emoji}</div><h2>${b.name}</h2><p>${b.description}</p><span class="status-label">${hasBadge(b.id)?'✓ 已獲得・你好棒！':'等待你的冒險'}</span></article>`).join('')}</div><p class="badge-help">星星與徽章會保存在這個瀏覽器裡，不用登入。</p>`;}
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
@@ -130,7 +1049,7 @@ function startGame(mode){
   if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
-  const pool = mode==='forms'?FORMS:HEROES;
+  const pool = mode==='forms'?FORMS:mode==='device'?HEROES.filter(h=>h.deviceQuiz):HEROES;
   const deck = shuffle(pool);
   while(deck.length<5)deck.push(...shuffle(pool));
   state.game={type:'quiz',mode,deck:deck.slice(0,5),index:0,answered:false,options:[],stars:0};
@@ -141,9 +1060,9 @@ function nextQuiz(){
   if(g.index>=5){finish(g.mode,10,'五顆勇氣，五次小小進步！','你已經完成 5 道題目。每次觀察，都讓你更認識英雄。');return;}
   g.answered=false;
   const q=g.deck[g.index], easy=state.player!=='big',pool=g.mode==='forms'?FORMS:HEROES;
-  g.options=shuffle([q,...shuffle(pool.filter(x=>x.id!==q.id)).slice(0,(easy||g.mode==='forms')?2:3)]);
+  g.options=shuffle([q,...shuffle(pool.filter(x=>x.id!==q.id&&(g.mode!=='device'||x.deviceKey!==q.deviceKey))).slice(0,(easy||g.mode==='forms')?2:3)]);
   const title=g.mode==='quiz'?'這位光之英雄是誰呢？':g.mode==='forms'?'迪卡變成了哪一種型態？':'這個變身器，可以變成誰？';
-  const visual=g.mode==='quiz'?heroImage(q):g.mode==='forms'?formFigure(q):devicePicture(q);
+  const visual=g.mode==='quiz'?heroImage(q):g.mode==='forms'?formFigure(q):devicePicture(q)+`<span class="device-name-label">${q.device}</span>`;
   main.innerHTML=screenHead(GAMES.find(x=>x.id===g.mode).title,'慢慢看、慢慢想，答錯也可以再試一次。',`${easy?'暖身':'進階'}挑戰 · ${g.index+1} / 5`)+`<section class="panel center"><div class="quiz-progress" aria-label="第 ${g.index+1} 題，共 5 題">${Array.from({length:5},(_,i)=>`<span class="${i<g.index?'done':i===g.index?'current':''}"></span>`).join('')}</div><h2 class="question-title">${title}</h2><div class="question-visual">${visual}</div><p class="quiz-hint">✦ ${easy?(g.mode==='device'?`小提示：${q.hint}`:q.hint):'仔細看看顏色和形狀，你一定找得到！'}</p><div class="quiz-options ${g.options.length===4?'four':''}">${g.options.map((o,i)=>`<button class="answer" data-action="answer" data-index="${i}"><span class="key-hint">${i+1}</span>${easy&&g.mode!=='forms'?heroImage(o):''}<span>${g.mode==='forms'?o.name:o.short}</span></button>`).join('')}</div><div class="feedback" id="feedback" role="status" aria-live="polite"></div><div class="quiz-toolbar"><span>${iconInlineKeyboard()} 也可以按數字 1～${g.options.length} 選答案</span><button class="read-button" data-action="read-question">${icon('sound')} 聽聽題目</button></div></section>`;
   if(easy)speakQuestion();
 }
@@ -163,7 +1082,8 @@ function startSelection(coop){
 }
 function renderSelection(){
   const g=state.game;if(!g||g.type!=='selection')return;
-  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}<div class="hero-select">${HEROES.map((h,i)=>`<button class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div><div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button></section>`;
+  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div><div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button></section>`;
+  restoreHeroTools();
 }
 function prepareTransform(){
   const old=state.game;if(!old||old.type!=='selection')return;
@@ -244,7 +1164,7 @@ function pauseBattle(value){
   const button=$('.pause-button');button.textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';updateEnergy();
 }
 function startMemory(){
-  const count=state.player==='big'?6:4,selected=shuffle(HEROES).slice(0,count);
+  const count=state.player==='big'?6:4,unique=[...new Map(shuffle(HEROES.filter(h=>h.deviceQuiz)).map(h=>[h.deviceKey,h])).values()],selected=shuffle(unique).slice(0,count);
   state.game={type:'memory',mode:'memory',cards:shuffle(selected.flatMap(h=>[{id:h.id,kind:'hero',hero:h},{id:h.id,kind:'device',hero:h}])),flipped:[],matched:[],locked:false,pairs:count,tries:0};
   main.innerHTML=screenHead('英雄翻翻樂','找出「英雄」和「他的變身器」，配成一對！',`${count} 組好搭檔`)+`<section class="panel center"><h2 class="question-title">誰和誰，是變身好搭檔？</h2><p class="select-copy">先翻兩張看看，不一樣也沒關係。</p><div class="memory-board">${state.game.cards.map((c,i)=>`<button class="memory-card" data-action="flip" data-index="${i}" aria-label="第 ${i+1} 張卡片，尚未翻開"><img class="card-back-icon" src="assets/emblem.svg" alt=""></button>`).join('')}</div><p class="memory-caption" id="memory-status" role="status" aria-live="polite">已找到 0 / ${count} 組好搭檔</p><button class="read-button" data-action="memory-help">${icon('sound')} 聽聽怎麼玩</button></section>`;
   speak('找找看，哪位英雄和哪個變身器是一對？點兩張卡片，翻開看看吧！');
@@ -281,7 +1201,7 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。迪卡型態題固定三個選項。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。語音依裝置提供的中文聲音播放；未提供語音的裝置仍可閱讀畫面提示。</li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄圖鑑</a>；變身器、型態與怪獸為遊戲示意插畫。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。迪卡型態題固定三個選項。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。語音依裝置提供的中文聲音播放；未提供語音的裝置仍可閱讀畫面提示。</li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；變身器、型態與怪獸為遊戲示意插畫。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
@@ -292,6 +1212,7 @@ document.addEventListener('click',event=>{
   else if(action==='badges')navigate('badges');
   else if(action==='start')startGame(el.dataset.game);
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
+  else if(action==='hero-filter'){catalogueFilter=el.dataset.filter;filterHeroCards();}
   else if(action==='help')showHelp();
   else if(action==='close-help')$('#info-dialog').close();
   else if(action==='read-hero'){const h=HEROES.find(h=>h.id===el.dataset.id);speak(`${h.name}。${h.fact}。變身器是${h.device}。必殺技是${h.move}。`);}
@@ -309,6 +1230,7 @@ document.addEventListener('click',event=>{
   else if(action==='flip')flip(index);
   else if(action==='memory-help'){if(state.sound)speak('找出英雄和他的變身器，配成一對。點兩張卡片翻開看看，不一樣就記住位置，下次再試一次！');else toast('點兩張卡片，找出英雄和他的變身器！');}
 });
+document.addEventListener('input',event=>{if(event.target.id==='hero-search'){catalogueSearch=event.target.value;filterHeroCards();}});
 document.addEventListener('keydown',event=>{
   if($('#info-dialog').open||event.ctrlKey||event.altKey||event.metaKey||event.target.matches('input,textarea,select'))return;
   const g=state.game;if(!g)return;const key=event.key.toLowerCase();

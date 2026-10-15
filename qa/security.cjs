@@ -19,7 +19,7 @@ const app=read('app.js');
 assert.ok(!/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|importScripts)\b/.test(app),'No network/API/analytics runtime');
 assert.ok(!/\b(?:eval|Function)\s*\(/.test(app),'No dynamic code evaluation');
 const secrets=[/AIza[0-9A-Za-z_-]{30,}/,/\bgh[pousr]_[A-Za-z0-9]{20,}/,/\bgithub_pat_[A-Za-z0-9_]{20,}/,/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,/\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{24,}/,/"private_key"\s*:/,/"refresh_token"\s*:/];
-const allow=new Set(['index.html','style.css','app.js','404.html','version.json','assets/emblem.svg','assets/ultraman.png','assets/seven.png','assets/tiga.png','assets/zero.png','assets/z.png','assets/mebius.png']);
+const allow=new Set(['index.html','style.css','app.js','404.html','version.json',...JSON.parse(read('asset-manifest.json')).map(f=>'assets/'+f)]);
 function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(dir,e.name)):[path.join(dir,e.name)]);}
 const files=walk(path.join(root,'dist'));
 assert.equal(files.length,allow.size);
