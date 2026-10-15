@@ -11,7 +11,9 @@
 - `scripts/prepare_hosting.py` 用明確白名單建立 `dist`：只有 12 個靜態檔案。開發依賴、測試、CI、說明、離線單檔、`.env`、憑證、log 和 Firebase CLI 快取不部署。
 - GitHub Actions 只在一般 `ubuntu-latest` 公開儲存庫 runner 進行測試；不設 Firebase 部署憑證或任何第三方 secrets，權限只給 `contents: read`。官方 Actions 固定到 commit SHA。不使用付費 artifact 儲存或依賴快取，截圖以壓縮後的 Base64 留在免費執行紀錄中。
 
-Firebase 使用既有 `ultraman-kids-game` 專案的獨立 `ultraman-little-heroes` Hosting 站點。部署前必須查證該專案 `billingEnabled=false`、`billingAccountName` 為空；只部署 Hosting，不啟用其他 Google Cloud 服務，也不綁定帳單或升級 Blaze。
+Firebase 使用全新、隔離的 `ultraman-heroes-base` 專案與 Hosting 站點。部署前必須查證 `billingEnabled=false`、`billingAccountName` 為空；只部署 Hosting，不建立 Web App、資料庫、雲端函式或付費服務，也不綁定帳單或升級 Blaze。Firebase 建立專案時自動產生的閒置 Browser API key 已移除；上線後需確認有效 API key 清單仍為空。
+
+Firebase 的 `/__/firebase/init.json` 是平台提供的保留端點，並非上傳檔案，不能把「專案檔案未含 key」當成已檢查平台端點。因此新版改用隔離專案，檢查平台回應與有效金鑰清單；不沿用舊專案設定。平台保留端點可能仍回傳已撤銷金鑰的快取值，不能把它誤認為有效金鑰；本次已確認撤銷作業完成，且在重新讀取端點後，有效 key 數量仍為 0。發布工具可能重新產生 Browser key，所以每次部署完成後都必須重新檢查並移除這個純靜態遊戲用不到的金鑰。若未來在 Google 控制台新增服務、建立新 key 或綁定帳單，需重新稽核。
 
 免費 Hosting 仍有儲存與流量額度，而且同專案的多站點共享額度；額度不足會影響可用性。不要為了繼續提供服務而自動升級成付費方案。計費規則依 [Firebase 官方 Spark 方案](https://firebase.google.com/docs/projects/billing/firebase-pricing-plans) 與 [Hosting 配額說明](https://firebase.google.com/docs/hosting/usage-quotas-pricing) 為準。
 

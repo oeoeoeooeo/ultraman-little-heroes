@@ -4,7 +4,7 @@
 
 **版本：v1.1.0（2026-10-15）**。首頁頁尾與側欄顯示版號，`version.json` 提供部署版本。
 
-線上遊戲：[ultraman-little-heroes.web.app](https://ultraman-little-heroes.web.app)。公開原始碼：[oeoeoeooeo/ultraman-little-heroes](https://github.com/oeoeoeooeo/ultraman-little-heroes)。
+線上遊戲：[ultraman-heroes-base.web.app](https://ultraman-heroes-base.web.app)。公開原始碼：[oeoeoeooeo/ultraman-little-heroes](https://github.com/oeoeoeooeo/ultraman-little-heroes)。
 
 ## 立即玩
 
@@ -61,7 +61,7 @@ npm start
 
 **本次已完成：** JavaScript 語法檢查、資產完整性檢查、六種完整遊戲流程的 DOM 互動測試（實際 click／keydown 事件），含難度、答錯重試、雙人變身、獨立集氣、護盾、暫停中光線停止結算、配對、九枚徽章、存檔、離開畫面取消延遲，以及切換分頁暫停。
 
-**瀏覽器驗證：** 本機限制 macOS 瀏覽器程序權限；改由公開儲存庫的 GitHub Actions 執行 Chromium。`qa/check.cjs` 檢查九種尺寸（320×740、390×844、844×390、834×1194、1024×768、1280×720、1366×768、1440×1100、1920×1080）、直橫向與全遊戲流程。截圖以壓縮 Base64 放在免費 job log，不配置 artifact 儲存服務。結果以 Actions 的實際紀錄為準；語音聽感仍取決於孩子使用的裝置。手動執行工作流程時可填入 `game_url`，驗證實際線上站點且禁止第三方網路請求。
+**瀏覽器驗證：** 已由公開儲存庫的 GitHub Actions 執行 Chromium，正式網址的完整測試通過。`qa/check.cjs` 檢查九種尺寸（320×740、390×844、844×390、834×1194、1024×768、1280×720、1366×768、1440×1100、1920×1080）、直橫向與全遊戲流程。代表性截圖已人工檢視，詳見 [上線驗證紀錄](QA_REPORT.md)。截圖以壓縮 Base64 放在免費 job log，不配置 artifact 儲存服務；語音聽感仍取決於孩子使用的裝置。手動執行工作流程時可填入 `game_url`，驗證實際線上站點且禁止第三方網路請求。
 
 ## 素材與角色資料
 
@@ -81,4 +81,4 @@ npm start
 
 ## 安全與免費空間
 
-使用 Firebase 傳統靜態 Hosting 的 Spark 專案；不部署雲端函式、雲端資料庫、Cloud Run 或付費 App Hosting。只上傳 `dist` 的 12 個白名單靜態檔案。無前端 API 金鑰、付費 API、登入、分析追蹤或外部執行期依賴。部署前查證未綁定帳單；完整範圍與限制見 [SECURITY.md](SECURITY.md)。
+使用全新隔離的 Firebase 傳統靜態 Hosting Spark 專案；不部署雲端函式、雲端資料庫、Cloud Run 或付費 App Hosting。只上傳 `dist` 的 12 個白名單靜態檔案。無前端 API 金鑰、付費 API、登入、分析追蹤或外部執行期依賴，並移除 Firebase 自動產生的閒置 API key。部署前查證未綁定帳單；完整範圍與限制見 [SECURITY.md](SECURITY.md)。

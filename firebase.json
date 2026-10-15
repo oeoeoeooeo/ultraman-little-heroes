@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "ultraman-little-heroes",
+    "site": "ultraman-heroes-base",
     "public": "dist",
     "predeploy": "python3 scripts/prepare_hosting.py",
     "ignore": ["**/.*", "**/node_modules/**"],
