@@ -20,7 +20,7 @@ js = "const ASSET_URLS = " + json.dumps(assets) + ";\n" + js
 js = js.replace('src="assets/${h.id}.png"', 'src="${ASSET_URLS[h.id]}"')
 js = js.replace('src="assets/monster-${m.id}.png"', 'src="${ASSET_URLS["monster-"+m.id]}"')
 js = "const SOUND_URLS = " + json.dumps(sounds) + ";\n" + js
-js = js.replace('return `assets/voice-${id}.mp3`', 'return SOUND_URLS["voice-"+id]')
+js = re.sub(r'return `assets/voice-\$\{id\}\.mp3(?:\?v=[\d.]+)?`', 'return SOUND_URLS["voice-"+id]', js)
 js = js.replace("assets/emblem.svg", emblem)
 html = re.sub(r'<link rel="stylesheet" href="style\.css(?:\?v=[\d.]+)?">', lambda _: "<style>\n" + css + "\n</style>", html)
 html = re.sub(r'<script src="app\.js(?:\?v=[\d.]+)?" defer></script>', "", html)

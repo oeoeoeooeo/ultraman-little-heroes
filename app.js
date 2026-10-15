@@ -3812,7 +3812,7 @@ function stopVoice(){
   for(const node of activeTones){try{node.stop();}catch{}}activeTones.clear();
 }
 const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'好朋友需要幫忙！把溫暖的光送給牠吧！',kindness:'友善之光！謝謝你幫助我！',victory:'耶！任務成功！小英雄，你們超棒！',challenge:'小挑戰來囉！仔細看，一起試試！'};
-function cueUrl(id){return `assets/voice-${id}.mp3`;}
+function cueUrl(id){return `assets/voice-${id}.mp3?v=1.4.2`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
   // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
