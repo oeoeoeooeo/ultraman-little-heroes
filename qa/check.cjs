@@ -86,7 +86,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await page.waitForSelector('.result');assert.equal(await page.evaluate(()=>state.completed.memory),1);
  await page.locator('[data-action="home"]').first().click();
  // Single player transform and complete fight.
- await page.locator('[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('Space');await page.waitForSelector('.arena');
+ await page.locator('.game-card[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('Space');await page.waitForSelector('.arena');
  for(let round=0;round<2;round++){
    for(let i=0;i<4;i++){await page.keyboard.press('a');await page.waitForTimeout(190);}
    await page.keyboard.press('s');await page.keyboard.press('Space');await page.waitForTimeout(1000);
@@ -108,7 +108,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
    await page.screenshot({path:path.join(out,label+'-latest-heroes.png'),fullPage:true});
  }
  await page.locator('[data-filter="all"]').click();
- await page.locator('[data-nav="home"]').click();await page.locator('[data-action="start"][data-game="battle"]').click();
+ await page.locator('[data-nav="home"]').click();await page.locator('.game-card[data-action="start"][data-game="battle"]').click();
  await page.locator('#hero-search').fill('Teo');await page.locator('[data-action="pick-hero"][data-index="52"]').click();
  await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');
  assert.equal(await page.evaluate(()=>state.game.heroes[0].id),'teo');
@@ -143,7 +143,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  assert.match(await page.locator('[data-action="attack"]').textContent(),/送點心/);await page.screenshot({path:path.join(out,'phone-pucchi-rescue.png'),fullPage:true});
  for(let j=0;j<2;j++){for(let i=0;i<4;i++){await page.locator('[data-action="attack"]').click();await page.waitForTimeout(190);}await page.locator('#combo-button').click();await page.waitForTimeout(1000);}
  assert.match(await page.locator('.result h2').textContent(),/好朋友救援成功/);
- await page.locator('[data-action="home"]').first().click();await page.locator('[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="pick-monster"][data-id="baltan"]').click();
+ await page.locator('[data-action="home"]').first().click();await page.locator('.game-card[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="pick-monster"][data-id="baltan"]').click();
  await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');await page.waitForSelector('.challenge-targets');
  assert.equal(await page.locator('[data-action="challenge-target"]').count(),3);await page.screenshot({path:path.join(out,'phone-baltan-clones.png'),fullPage:true});
  const target=await page.evaluate(()=>state.game.targetIndex);await page.locator(`[data-action="challenge-target"][data-index="${target}"]`).click();assert.equal(await page.evaluate(()=>state.game.challengeSolved),true);
