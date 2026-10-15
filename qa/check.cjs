@@ -10,7 +10,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  const base=process.env.GAME_URL || 'file://'+path.resolve(__dirname,'../index.html');
  const foreignRequests=[];page.on('request',r=>{if(/^https?:/.test(base)&&new URL(r.url()).origin!==new URL(base).origin)foreignRequests.push(r.url());});
  await page.goto(base);
- assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.2.0');
+ assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.3.0');
  await page.evaluate(()=>{state.sound=false;save();updateChrome();});
  assert.equal(await page.locator('.game-card').count(),6);
  assert.equal(await page.locator('.player-button.selected').count(),1);
@@ -124,6 +124,39 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  }
  await page.locator('[data-action="help"]').click();assert.ok(await page.locator('dialog').evaluate(el=>el.open));await page.locator('[data-action="close-help"]').click();
  await page.locator('#sound-button').click();assert.equal(await page.locator('#sound-button').getAttribute('aria-pressed'),'true');await page.locator('#sound-button').click();
+ // Expanded catalogues are usable at desktop, tablet, phone and narrow phone widths.
+ for(const [width,height,label] of [[1440,1100,'desktop'],[834,1194,'tablet'],[390,844,'phone'],[320,740,'small-phone']]){
+  await page.setViewportSize({width,height});await page.locator('[data-nav="heroes"]').click();
+  for(const [tab,count] of [['forms',55],['devices',60],['moves',90],['monsters',30]]){
+   await page.locator(`[data-action="encyclopedia-tab"][data-tab="${tab}"]`).click();assert.equal(await page.locator('.extra-card').count(),count);
+   await page.waitForFunction(()=>[...document.querySelectorAll('main img')].every(i=>i.complete&&i.naturalWidth>0));
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' '+tab+' library overflow');
+   await page.screenshot({path:path.join(out,label+'-'+tab+'.png'),fullPage:false});
+  }
+ }
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('[data-action="try-monster"][data-id="pucchi"]').click();
+ assert.equal(await page.evaluate(()=>state.game.monsterId),'pucchi');await page.locator('#hero-search').fill('');await page.locator('[data-action="pick-hero"][data-index="28"]').click();
+ assert.equal(await page.evaluate(()=>HEROES[state.game.selected[0]].id),'cosmos');await page.locator('[data-action="pick-form"][data-id="cosmos-luna"]').click();
+ await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');
+ assert.match(await page.locator('[data-action="attack"]').textContent(),/送點心/);await page.screenshot({path:path.join(out,'phone-pucchi-rescue.png'),fullPage:true});
+ for(let j=0;j<2;j++){for(let i=0;i<4;i++){await page.locator('[data-action="attack"]').click();await page.waitForTimeout(190);}await page.locator('#combo-button').click();await page.waitForTimeout(1000);}
+ assert.match(await page.locator('.result h2').textContent(),/好朋友救援成功/);
+ await page.locator('[data-action="home"]').click();await page.locator('[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="pick-monster"][data-id="baltan"]').click();
+ await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');await page.waitForSelector('.challenge-targets');
+ assert.equal(await page.locator('[data-action="challenge-target"]').count(),3);await page.screenshot({path:path.join(out,'phone-baltan-clones.png'),fullPage:true});
+ const target=await page.evaluate(()=>state.game.targetIndex);await page.locator(`[data-action="challenge-target"][data-index="${target}"]`).click();assert.equal(await page.evaluate(()=>state.game.challengeSolved),true);
+ await page.locator('[data-action="cycle-form"]').click();assert.equal(await page.evaluate(()=>activeForm(state.game,0).role),'power');await page.locator('[data-action="pick-move"]').last().click();assert.equal(await page.locator('[data-action="pick-move"][aria-pressed="true"]').count(),1);
+ // Decode every MP3 to catch silent/invalid production assets, then verify actual playback and mute.
+ const encoded=Object.fromEntries(fs.readdirSync(path.resolve(__dirname,'../assets')).filter(f=>f.startsWith('voice-')&&f.endsWith('.mp3')).map(f=>[f.slice(6,-4),fs.readFileSync(path.resolve(__dirname,'../assets',f)).toString('base64')]));
+ const sounds=await page.evaluate(async(encoded)=>{const ctx=new AudioContext();const result=[];for(const [id,data] of Object.entries(encoded)){const bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));const buffer=await ctx.decodeAudioData(bytes.buffer);const samples=buffer.getChannelData(0);let peak=0;for(const v of samples)peak=Math.max(peak,Math.abs(v));result.push({id,duration:buffer.duration,peak});}await ctx.close();return result;},encoded);
+ assert.equal(sounds.length,9);assert.ok(sounds.every(s=>s.duration>1&&s.duration<8&&s.peak>.03&&s.peak<1),'all voice clips decode and contain unclipped sound');
+ await page.locator('[data-action="home"]').click();await page.locator('[data-action="help"]').click();await page.locator('[data-action="voice-preview"]').click();
+ await page.waitForFunction(()=>state.cue&&!state.cue.paused&&state.cue.currentTime>.1);assert.equal(await page.evaluate(()=>state.cue.error),null);await page.locator('[data-action="close-help"]').click();await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.cue),null);
+ await page.locator('#sound-button').click();await page.waitForFunction(()=>state.cue&&!state.cue.paused);await page.locator('[data-nav="heroes"]').click();assert.equal(await page.evaluate(()=>state.cue),null);
+ await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.sound),false);
+ console.log('PASS: all expanded galleries across four widths, Pucchi rescue, real clone target, form/move switching, all 9 local MP3 decodes/playback, and mute/navigation cancellation.');
+
  assert.deepEqual(errors,[]);
  assert.deepEqual(foreignRequests,[],'game must not request any external API or asset');
  console.log('PASS: 6 game modes, 9 viewport sizes (320px to 1920px), portrait/landscape, images, keyboard/touch controls, co-op energy, pause, retries, memory, 9 badges, persistence, and no browser errors.');

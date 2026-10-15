@@ -102,7 +102,7 @@ for(const pair of pairs)for(const i of pair)t.click(`[data-action="flip"][data-i
 t.advance(1000);assert.equal(t.run('state.completed.memory'),1);t.click('[data-action="home"]');
 // Single player fight, visible warning and actual defensive success.
 t.click('[data-action="start"][data-game="battle"]');t.click('[data-action="prepare-transform"]');t.key(' ');t.advance(1300);
-t.advance(6500);assert.equal(t.run('state.game.warning'),true);t.key('s');t.advance(6000);assert.equal(t.run('state.game.warning'),false);assert.match(t.el('#battle-message').textContent,/護盾成功/);
+t.advance(6500);assert.equal(t.run('state.game.warning'),true);t.key('s');t.advance(6000);assert.equal(t.run('state.game.warning'),false);assert.match(t.el('#battle-message').textContent,/挑戰成功/);
 for(let round=0;round<2;round++){
   for(let i=0;i<4;i++){t.key('ArrowLeft');t.advance(200);}
   t.key(' ');t.advance(1100);
@@ -121,3 +121,29 @@ t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-p
 const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,6);storage.set('ultra-base-v1',last);
 console.log(`PASS: 6 complete game modes; actual click/keyboard handlers; quiz retries; age difficulty; 2-player transform/energy; pause including beams; shields; memory mismatch; 9 badges; ${total} persistent stars; navigation cancellation; background pause; dialog; audio toggle; corrupt-storage recovery.`);
 console.log('Browser screenshots and responsive layout are not validated by this DOM test.');
+
+// Every new authored entry has a valid owner, asset and independently reviewable source.
+const adventure=JSON.parse(fs.readFileSync(path.join(root,'adventure-catalogue.json'),'utf8'));
+const more=boot();
+for(const [key,constant,count] of [['forms','FORMS',55],['devices','DEVICES',60],['moves','MOVES',90],['monsters','MONSTERS',30]]){
+ assert.equal(adventure[key].length,count);assert.deepEqual(more.json(constant),adventure[key]);assert.equal(new Set(adventure[key].map(x=>x.id)).size,count);
+ for(const x of adventure[key]){assert.match(x.source,/^https:\/\/(zh\.wikipedia\.org|tsuburaya-prod\.com)\//);for(const id of x.owners||[x.heroId].filter(Boolean))assert.ok(catalogue.some(h=>h.id===id));}
+ more.click('[data-nav="heroes"]');more.click(`[data-action="encyclopedia-tab"][data-tab="${key}"]`);assert.equal(more.document.querySelectorAll('.extra-card').length,count);
+}
+for(const m of adventure.monsters)assert.equal(fs.readFileSync(path.join(root,'assets','monster-'+m.id+'.png')).subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+// Each form question contains only forms of its own hero and remains retryable.
+for(const f of adventure.forms){more.run(`startQuiz('forms');state.game.deck[0]=FORMS.find(f=>f.id===${JSON.stringify(f.id)});nextQuiz()`);const opts=more.json('state.game.options');assert.equal(opts.length,3);assert.ok(opts.every(o=>o.heroId===f.heroId));assert.equal(opts.filter(o=>o.id===f.id).length,1);}
+// All added non-weapon devices participate; shared owners never appear as wrong choices.
+for(const d of adventure.devices.filter(d=>d.kind!=='武器')){more.run(`startQuiz('device');state.game.deck[0]=deviceQuestion(DEVICES.find(d=>d.id===${JSON.stringify(d.id)}));nextQuiz()`);const opts=more.json('state.game.options');assert.equal(opts.filter(o=>d.owners.includes(o.id)).length,1);assert.equal(more.run('state.game.deck[0].device'),d.name);}
+function setupMore(monsterId,heroId='tiga',formId='multi'){
+ more.run(`leave();beginBattle({coop:false,heroes:[HEROES.find(h=>h.id===${JSON.stringify(heroId)})],forms:[${JSON.stringify(formId)}],monsterId:${JSON.stringify(monsterId)}})`);
+}
+setupMore('red-king');more.advance(6500);more.key('d');assert.equal(more.run('activeForm(state.game,0).role'),'power');more.key('a');assert.equal(more.run('state.game.challengeSolved'),true);assert.equal(more.run('state.game.hp'),97);assert.equal(more.run('state.game.energy[0]'),2);
+const beforeForm=more.run('state.game.forms[0]');more.key('Escape');more.key('d');assert.equal(more.run('state.game.forms[0]'),beforeForm);more.key('Escape');
+setupMore('melba','decker','decker-flash');more.key('d');more.key('d');assert.equal(more.run('activeForm(state.game,0).role'),'speed');more.advance(6500);more.key('a');assert.equal(more.run('state.game.challengeSolved'),true);
+for(const monsterId of ['baltan','gubila','pucchi']){setupMore(monsterId);more.advance(6500);assert.equal(more.document.querySelectorAll('[data-action="challenge-target"]').length,3);const target=more.run('state.game.targetIndex');more.click(`[data-action="challenge-target"][data-index="${(target+1)%3}"]`);assert.equal(more.run('state.game.challengeSolved'),false);more.key('Escape');more.click(`[data-action="challenge-target"][data-index="${target}"]`);assert.equal(more.run('state.game.challengeSolved'),false);more.key('Escape');more.click(`[data-action="challenge-target"][data-index="${target}"]`);assert.equal(more.run('state.game.challengeSolved'),true);assert.equal(more.run('state.game.energy[0]'),1);}
+// Friendly monsters are a rescue, and calming forms have an actual rescue bonus.
+setupMore('pucchi','cosmos','cosmos-luna');assert.match(more.el('[data-action="attack"]').textContent,/送點心/);for(let j=0;j<2;j++){for(let i=0;i<4;i++){more.key('a');more.advance(200);}more.key(' ');more.advance(1000);}assert.match(more.el('.result h2').textContent,/好朋友救援成功/);
+setupMore('gomora');const originalMove=more.run('chosenMove(state.game).id');more.click('[data-action="pick-move"]:last-child');assert.notEqual(more.run('chosenMove(state.game).id'),originalMove);more.key('Escape');const pausedMove=more.run('state.game.moveId');more.click('[data-action="pick-move"]:first-child');assert.equal(more.run('state.game.moveId'),pausedMove);
+more.run('leave()');
+console.log('PASS: 55 forms, 60 items, 90 moves, 30 monsters; owner-safe quizzes, same-hero form choices, power/speed bonuses, pause-protected changes, clone/burrow targets, friendly rescue and calming bonus.');

@@ -82,7 +82,7 @@ const HEROES = [
     "device": "傑洛之眼",
     "hint": "我是七號的兒子，頭上有兩把帥氣的頭鏢！",
     "fact": "超人七號的兒子。跟雷歐學過宇宙拳法，擅長快速的戰鬥。",
-    "move": "廣域傑洛射線",
+    "move": "傑洛集束射線",
     "year": 2009,
     "era": "heisei",
     "deviceQuiz": true,
@@ -831,7 +831,7 @@ const HEROES = [
     "deviceQuiz": true,
     "fact": "由明日見奏大變身，擁有閃光型、強壯型與奇蹟型。",
     "hint": "我是德卡！由明日見奏大變身，擁有閃光型、強壯型與奇蹟型。",
-    "move": "索爾捷特光線",
+    "move": "賽魯傑德光線",
     "color": "#e1eeee",
     "source": "https://tsuburaya-prod.com/heroes/ultraman-decker"
   },
@@ -893,13 +893,13 @@ const HEROES = [
     "en": "ULTRAMAN OMEGA",
     "year": 2025,
     "era": "latest",
-    "device": "奧米加飛鏢＋奧米加流星",
+    "device": "奧米加頭鏢＋奧米加星石",
     "deviceKind": "boomerang",
-    "deviceKey": "奧米加飛鏢＋奧米加流星",
+    "deviceKey": "奧米加頭鏢＋奧米加星石",
     "deviceQuiz": true,
     "fact": "失去記憶後來到地球，使用紅色頭鏢，與大木田宙人一起探索世界。",
     "hint": "我是奧米加！失去記憶後來到地球，使用紅色頭鏢，與大木田宙人一起探索世界。",
-    "move": "Reticulute 光線",
+    "move": "雷特克魯特光線",
     "color": "#e1eeee",
     "source": "https://tsuburaya-prod.com/heroes/ultraman-omega"
   },
@@ -922,9 +922,2476 @@ const HEROES = [
   }
 ];
 const FORMS = [
-  {id:'multi',name:'複合型',color:'#916eb2',second:'#d76c6e',hint:'紅色加紫色，力量和速度都很棒！',description:'平衡力量與速度的迪卡。'},
-  {id:'power',name:'力量型',color:'#cf5e62',second:'#cf5e62',hint:'全身紅紅的，力氣變得更大了！',description:'擅長強大力量的紅色迪卡。'},
-  {id:'sky',name:'天空型',color:'#8a80c5',second:'#8a80c5',hint:'全身紫紫的，飛行和速度最拿手！',description:'擅長速度與空中戰的紫色迪卡。'}
+  {
+    "id": "multi",
+    "heroId": "tiga",
+    "name": "複合型",
+    "color": "#916eb2",
+    "second": "#d76c6e",
+    "role": "balance",
+    "move": "哉佩利敖光線",
+    "hint": "力量和速度都很棒！",
+    "description": "迪卡的複合型。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "power",
+    "heroId": "tiga",
+    "name": "力量型",
+    "color": "#cf5e62",
+    "second": "#cf5e62",
+    "role": "power",
+    "move": "迪拉修姆光流",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "迪卡的力量型。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "sky",
+    "heroId": "tiga",
+    "name": "天空型",
+    "color": "#8a80c5",
+    "second": "#8a80c5",
+    "role": "speed",
+    "move": "蘭帕爾特光彈",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "迪卡的天空型。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "tiga-glitter",
+    "heroId": "tiga",
+    "name": "閃耀迪卡",
+    "color": "#dfba4c",
+    "second": "#dfba4c",
+    "role": "guard",
+    "move": "閃耀哉佩利敖光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "迪卡的閃耀迪卡。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "dyna-flash",
+    "heroId": "dyna",
+    "name": "閃光型",
+    "color": "#bf5c68",
+    "second": "#557fb6",
+    "role": "balance",
+    "move": "索爾捷特光線",
+    "hint": "力量和速度都很棒！",
+    "description": "帝納的閃光型。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "dyna-strong",
+    "heroId": "dyna",
+    "name": "強壯型",
+    "color": "#df4e51",
+    "second": "#df4e51",
+    "role": "power",
+    "move": "加爾奈特轟炸",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "帝納的強壯型。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "dyna-miracle",
+    "heroId": "dyna",
+    "name": "奇蹟型",
+    "color": "#597dd0",
+    "second": "#597dd0",
+    "role": "speed",
+    "move": "立波留姆光波",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "帝納的奇蹟型。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "gaia-v1",
+    "heroId": "gaia",
+    "name": "V1 型",
+    "color": "#c34a46",
+    "second": "#c34a46",
+    "role": "balance",
+    "move": "光子冰刀",
+    "hint": "力量和速度都很棒！",
+    "description": "蓋亞的V1 型。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "gaia-v2",
+    "heroId": "gaia",
+    "name": "V2 型",
+    "color": "#9a424a",
+    "second": "#9a424a",
+    "role": "guard",
+    "move": "量子流線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "蓋亞的V2 型。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "gaia-sv",
+    "heroId": "gaia",
+    "name": "至高型 SV",
+    "color": "#a14665",
+    "second": "#5a8aac",
+    "role": "power",
+    "move": "光子流線",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "蓋亞的至高型 SV。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "cosmos-luna",
+    "heroId": "cosmos",
+    "name": "月神模式",
+    "color": "#6588ca",
+    "second": "#6588ca",
+    "role": "calm",
+    "move": "滿月光波",
+    "hint": "用溫柔的光，幫朋友安心！",
+    "description": "高斯的月神模式。用溫柔的光，幫朋友安心！",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "cosmos-corona",
+    "heroId": "cosmos",
+    "name": "日冕模式",
+    "color": "#cd6652",
+    "second": "#cd6652",
+    "role": "power",
+    "move": "Naybuster 光線",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "高斯的日冕模式。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "cosmos-eclipse",
+    "heroId": "cosmos",
+    "name": "日蝕模式",
+    "color": "#827bb4",
+    "second": "#c7665f",
+    "role": "guard",
+    "move": "高斯謬姆光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "高斯的日蝕模式。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "zero-base",
+    "heroId": "zero",
+    "name": "基本型態",
+    "color": "#668cbc",
+    "second": "#c86261",
+    "role": "balance",
+    "move": "傑洛集束射線",
+    "hint": "力量和速度都很棒！",
+    "description": "傑洛的基本型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "zero-strong",
+    "heroId": "zero",
+    "name": "強壯日冕",
+    "color": "#b75048",
+    "second": "#b75048",
+    "role": "power",
+    "move": "Strong Corona Zero Burning",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "傑洛的強壯日冕。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "zero-luna",
+    "heroId": "zero",
+    "name": "月神奇蹟",
+    "color": "#538bc2",
+    "second": "#538bc2",
+    "role": "speed",
+    "move": "奇蹟傑洛頭鏢",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "傑洛的月神奇蹟。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "zero-ultimate",
+    "heroId": "zero",
+    "name": "終極傑洛",
+    "color": "#88a5b9",
+    "second": "#88a5b9",
+    "role": "guard",
+    "move": "Final Ultimate Zero",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "傑洛的終極傑洛。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "zero-shining",
+    "heroId": "zero",
+    "name": "光輝傑洛",
+    "color": "#d1b76d",
+    "second": "#d1b76d",
+    "role": "guard",
+    "move": "Shining Emerium Slash",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "傑洛的光輝傑洛。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "zero-beyond",
+    "heroId": "zero",
+    "name": "極越型態",
+    "color": "#9382be",
+    "second": "#9382be",
+    "role": "speed",
+    "move": "Twin Giga Break",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "傑洛的極越型態。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "z-original",
+    "heroId": "z",
+    "name": "原始型態",
+    "color": "#4d91bb",
+    "second": "#444c64",
+    "role": "balance",
+    "move": "傑斯帝姆光線",
+    "hint": "力量和速度都很棒！",
+    "description": "傑特的原始型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "z-alpha",
+    "heroId": "z",
+    "name": "阿爾法鋒刃",
+    "color": "#678ba5",
+    "second": "#434c65",
+    "role": "speed",
+    "move": "傑斯帝姆邁射光",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "傑特的阿爾法鋒刃。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "z-beta",
+    "heroId": "z",
+    "name": "貝塔粉碎",
+    "color": "#d26654",
+    "second": "#d26654",
+    "role": "power",
+    "move": "傑斯帝姆升龍拳",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "傑特的貝塔粉碎。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "z-gamma",
+    "heroId": "z",
+    "name": "伽瑪未來",
+    "color": "#8c75c1",
+    "second": "#c46b70",
+    "role": "guard",
+    "move": "傑斯帝姆驅動",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "傑特的伽瑪未來。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "z-delta",
+    "heroId": "z",
+    "name": "德爾塔昇華鉤爪",
+    "color": "#ad745c",
+    "second": "#695fac",
+    "role": "power",
+    "move": "傑斯帝姆光輪",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "傑特的德爾塔昇華鉤爪。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "trigger-multi",
+    "heroId": "trigger",
+    "name": "複合型",
+    "color": "#ab7bad",
+    "second": "#d8736c",
+    "role": "balance",
+    "move": "哉佩利敖光線",
+    "hint": "力量和速度都很棒！",
+    "description": "特利卡的複合型。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "trigger-power",
+    "heroId": "trigger",
+    "name": "強壯型",
+    "color": "#d25a56",
+    "second": "#d25a56",
+    "role": "power",
+    "move": "迪拉修姆光流",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "特利卡的強壯型。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "trigger-sky",
+    "heroId": "trigger",
+    "name": "疾速型",
+    "color": "#658ac8",
+    "second": "#658ac8",
+    "role": "speed",
+    "move": "蘭帕爾特光彈",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "特利卡的疾速型。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "trigger-eternity",
+    "heroId": "trigger",
+    "name": "閃耀永恆",
+    "color": "#d9b649",
+    "second": "#d9b649",
+    "role": "guard",
+    "move": "閃耀哉佩利敖光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "特利卡的閃耀永恆。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "trigger-truth",
+    "heroId": "trigger",
+    "name": "真實特利卡",
+    "color": "#924957",
+    "second": "#49455a",
+    "role": "balance",
+    "move": "真實哉佩利敖光線",
+    "hint": "力量和速度都很棒！",
+    "description": "特利卡的真實特利卡。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "decker-flash",
+    "heroId": "decker",
+    "name": "閃光型",
+    "color": "#b66b9f",
+    "second": "#6b8cbf",
+    "role": "balance",
+    "move": "賽魯傑德光線",
+    "hint": "力量和速度都很棒！",
+    "description": "德卡的閃光型。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "decker-strong",
+    "heroId": "decker",
+    "name": "強壯型",
+    "color": "#c95d50",
+    "second": "#c95d50",
+    "role": "power",
+    "move": "德魯涅德烈破",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "德卡的強壯型。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "decker-miracle",
+    "heroId": "decker",
+    "name": "奇蹟型",
+    "color": "#5c89c6",
+    "second": "#5c89c6",
+    "role": "speed",
+    "move": "雷亞琉特波動",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "德卡的奇蹟型。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "decker-dynamic",
+    "heroId": "decker",
+    "name": "強勁型",
+    "color": "#d7a751",
+    "second": "#d7a751",
+    "role": "guard",
+    "move": "戴謬德光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "德卡的強勁型。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "arc-base",
+    "heroId": "arc",
+    "name": "基本型態",
+    "color": "#b96554",
+    "second": "#b96554",
+    "role": "balance",
+    "move": "雅克終結光線",
+    "hint": "力量和速度都很棒！",
+    "description": "雅克的基本型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+  },
+  {
+    "id": "arc-solis",
+    "heroId": "arc",
+    "name": "太陽裝甲",
+    "color": "#d87944",
+    "second": "#d87944",
+    "role": "power",
+    "move": "雅克終結光線",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "雅克的太陽裝甲。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+  },
+  {
+    "id": "arc-luna",
+    "heroId": "arc",
+    "name": "月亮裝甲",
+    "color": "#659ecb",
+    "second": "#659ecb",
+    "role": "speed",
+    "move": "雅克終結光線",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "雅克的月亮裝甲。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+  },
+  {
+    "id": "arc-galaxy",
+    "heroId": "arc",
+    "name": "銀河裝甲",
+    "color": "#9f80bd",
+    "second": "#9f80bd",
+    "role": "guard",
+    "move": "雅克終結光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "雅克的銀河裝甲。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+  },
+  {
+    "id": "omega-base",
+    "heroId": "omega",
+    "name": "基本型態",
+    "color": "#c9554a",
+    "second": "#c9554a",
+    "role": "balance",
+    "move": "雷特克魯特光線",
+    "hint": "力量和速度都很棒！",
+    "description": "奧米加的基本型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "omega-rekiness",
+    "heroId": "omega",
+    "name": "雷基尼斯裝甲",
+    "color": "#689fcd",
+    "second": "#689fcd",
+    "role": "guard",
+    "move": "雷特克魯特光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "奧米加的雷基尼斯裝甲。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "omega-trigaron",
+    "heroId": "omega",
+    "name": "特萊加隆裝甲",
+    "color": "#d7b249",
+    "second": "#d7b249",
+    "role": "speed",
+    "move": "雷特克魯特光線",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "奧米加的特萊加隆裝甲。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "omega-valgeness",
+    "heroId": "omega",
+    "name": "瓦爾基涅斯裝甲",
+    "color": "#cc704e",
+    "second": "#cc704e",
+    "role": "power",
+    "move": "雷特克魯特光線",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "奧米加的瓦爾基涅斯裝甲。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "omega-gamedon",
+    "heroId": "omega",
+    "name": "加美頓裝甲",
+    "color": "#719f79",
+    "second": "#719f79",
+    "role": "guard",
+    "move": "雷特克魯特光線",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "奧米加的加美頓裝甲。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "geed-primitive",
+    "heroId": "geed",
+    "name": "原始型態",
+    "color": "#a76676",
+    "second": "#a76676",
+    "role": "balance",
+    "move": "毀滅爆裂",
+    "hint": "力量和速度都很棒！",
+    "description": "捷德的原始型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-solid",
+    "heroId": "geed",
+    "name": "烈焰爆燃",
+    "color": "#c86343",
+    "second": "#c86343",
+    "role": "power",
+    "move": "Strike Boost",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "捷德的烈焰爆燃。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-acro",
+    "heroId": "geed",
+    "name": "頂尖極速",
+    "color": "#72aac5",
+    "second": "#72aac5",
+    "role": "speed",
+    "move": "Atmos Impact",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "捷德的頂尖極速。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-magnificent",
+    "heroId": "geed",
+    "name": "崇高型態",
+    "color": "#d09857",
+    "second": "#d09857",
+    "role": "guard",
+    "move": "Big Burst Away",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "捷德的崇高型態。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-royal",
+    "heroId": "geed",
+    "name": "皇家至尊",
+    "color": "#d0b15e",
+    "second": "#d0b15e",
+    "role": "guard",
+    "move": "Royal End",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "捷德的皇家至尊。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-ultimate",
+    "heroId": "geed",
+    "name": "究極終結",
+    "color": "#9d7bc2",
+    "second": "#9d7bc2",
+    "role": "power",
+    "move": "Crescent Final Geed",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "捷德的究極終結。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "geed-galaxy",
+    "heroId": "geed",
+    "name": "銀河躍昇",
+    "color": "#9c74b7",
+    "second": "#9c74b7",
+    "role": "speed",
+    "move": "Wrecking Phoenix",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "捷德的銀河躍昇。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "orb-origin",
+    "heroId": "orb",
+    "name": "起源型態",
+    "color": "#bb6856",
+    "second": "#bb6856",
+    "role": "balance",
+    "move": "Orb Supreme Calibur",
+    "hint": "力量和速度都很棒！",
+    "description": "歐布的起源型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "orb-spacium",
+    "heroId": "orb",
+    "name": "重光型態",
+    "color": "#9d788f",
+    "second": "#c16f75",
+    "role": "balance",
+    "move": "斯派利敖光線",
+    "hint": "力量和速度都很棒！",
+    "description": "歐布的重光型態。力量和速度都很棒！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "orb-burnmite",
+    "heroId": "orb",
+    "name": "暴炎型態",
+    "color": "#d57a47",
+    "second": "#d57a47",
+    "role": "power",
+    "move": "Stobium Dynamite",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "歐布的暴炎型態。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "orb-hurricane",
+    "heroId": "orb",
+    "name": "疾風型態",
+    "color": "#5e9cbb",
+    "second": "#5e9cbb",
+    "role": "speed",
+    "move": "Trident Slash",
+    "hint": "動作輕快，飛行和速度最拿手！",
+    "description": "歐布的疾風型態。動作輕快，飛行和速度最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "orb-thunder",
+    "heroId": "orb",
+    "name": "暗耀型態",
+    "color": "#b95d60",
+    "second": "#b95d60",
+    "role": "power",
+    "move": "Zedcium 光線",
+    "hint": "力量充滿，重裝挑戰最拿手！",
+    "description": "歐布的暗耀型態。力量充滿，重裝挑戰最拿手！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "orb-trinity",
+    "heroId": "orb",
+    "name": "三重型態",
+    "color": "#af9870",
+    "second": "#795dad",
+    "role": "guard",
+    "move": "Trinitium 光輪",
+    "hint": "保護夥伴，護盾持續更久！",
+    "description": "歐布的三重型態。保護夥伴，護盾持續更久！",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  }
+];
+const DEVICES = [
+  {
+    "id": "device-ultraman",
+    "name": "貝塔膠囊",
+    "device": "貝塔膠囊",
+    "deviceKey": "貝塔膠囊",
+    "deviceKind": "spark",
+    "owners": [
+      "ultraman"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman",
+    "fact": "和初代一起啟動光之力量。"
+  },
+  {
+    "id": "device-seven",
+    "name": "超人力霸王之眼",
+    "device": "超人力霸王之眼",
+    "deviceKey": "超人力霸王之眼",
+    "deviceKind": "spark",
+    "owners": [
+      "seven"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraseven",
+    "fact": "和七號一起啟動光之力量。"
+  },
+  {
+    "id": "device-tiga",
+    "name": "神光棒（亦稱閃光棒）",
+    "device": "神光棒（亦稱閃光棒）",
+    "deviceKey": "神光棒",
+    "deviceKind": "spark",
+    "owners": [
+      "tiga"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-tiga",
+    "fact": "和迪卡一起啟動光之力量。"
+  },
+  {
+    "id": "device-zero",
+    "name": "傑洛之眼",
+    "device": "傑洛之眼",
+    "deviceKey": "傑洛之眼",
+    "deviceKind": "spark",
+    "owners": [
+      "zero"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-zero",
+    "fact": "和傑洛一起啟動光之力量。"
+  },
+  {
+    "id": "device-z",
+    "name": "Z 昇華器",
+    "device": "Z 昇華器",
+    "deviceKey": "Z 昇華器",
+    "deviceKind": "spark",
+    "owners": [
+      "z"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-z",
+    "fact": "和傑特一起啟動光之力量。"
+  },
+  {
+    "id": "device-mebius",
+    "name": "梅比斯氣息",
+    "device": "梅比斯氣息",
+    "deviceKey": "梅比斯氣息",
+    "deviceKind": "spark",
+    "owners": [
+      "mebius"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-mebius",
+    "fact": "和梅比斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-ace",
+    "name": "超級戒指",
+    "device": "超級戒指",
+    "deviceKey": "超級戒指",
+    "deviceKind": "ring",
+    "owners": [
+      "ace"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ace",
+    "fact": "和衛司一起啟動光之力量。"
+  },
+  {
+    "id": "device-taro",
+    "name": "超級徽章",
+    "device": "超級徽章",
+    "deviceKey": "超級徽章",
+    "deviceKind": "badge",
+    "owners": [
+      "taro"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taro",
+    "fact": "和太郎一起啟動光之力量。"
+  },
+  {
+    "id": "device-leo",
+    "name": "獅子之瞳",
+    "device": "獅子之瞳",
+    "deviceKey": "獅子之瞳",
+    "deviceKind": "ring",
+    "owners": [
+      "leo"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-leo",
+    "fact": "和雷歐一起啟動光之力量。"
+  },
+  {
+    "id": "device-80",
+    "name": "電光棒",
+    "device": "電光棒",
+    "deviceKey": "電光棒",
+    "deviceKind": "spark",
+    "owners": [
+      "80"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-80",
+    "fact": "和80一起啟動光之力量。"
+  },
+  {
+    "id": "device-yullian",
+    "name": "閃光手鐲",
+    "device": "閃光手鐲",
+    "deviceKey": "閃光手鐲",
+    "deviceKind": "wrist",
+    "owners": [
+      "yullian"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/yullian",
+    "fact": "和尤莉安一起啟動光之力量。"
+  },
+  {
+    "id": "device-joneus",
+    "name": "閃光之星",
+    "device": "閃光之星",
+    "deviceKey": "閃光之星",
+    "deviceKind": "badge",
+    "owners": [
+      "joneus"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-joneus",
+    "fact": "和喬尼亞斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-great",
+    "name": "電漿三角",
+    "device": "電漿三角",
+    "deviceKey": "電漿三角",
+    "deviceKind": "pendant",
+    "owners": [
+      "great"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-great",
+    "fact": "和葛雷一起啟動光之力量。"
+  },
+  {
+    "id": "device-powered",
+    "name": "閃光稜鏡",
+    "device": "閃光稜鏡",
+    "deviceKey": "閃光稜鏡",
+    "deviceKind": "spark",
+    "owners": [
+      "powered"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-powered",
+    "fact": "和帕瓦德一起啟動光之力量。"
+  },
+  {
+    "id": "device-dyna",
+    "name": "閃光劍",
+    "device": "閃光劍",
+    "deviceKey": "閃光劍",
+    "deviceKind": "spark",
+    "owners": [
+      "dyna"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-dyna",
+    "fact": "和帝納一起啟動光之力量。"
+  },
+  {
+    "id": "device-gaia",
+    "name": "藍寶錐",
+    "device": "藍寶錐",
+    "deviceKey": "藍寶錐",
+    "deviceKind": "crystal",
+    "owners": [
+      "gaia"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-gaia",
+    "fact": "和蓋亞一起啟動光之力量。"
+  },
+  {
+    "id": "device-agul",
+    "name": "藍寶鐲",
+    "device": "藍寶鐲",
+    "deviceKey": "藍寶鐲",
+    "deviceKind": "wrist",
+    "owners": [
+      "agul"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-agul",
+    "fact": "和亞格一起啟動光之力量。"
+  },
+  {
+    "id": "device-neos",
+    "name": "星辰器",
+    "device": "星辰器",
+    "deviceKey": "星辰器",
+    "deviceKind": "spark",
+    "owners": [
+      "neos"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-neos",
+    "fact": "和雷歐斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-cosmos",
+    "name": "日月同輝",
+    "device": "日月同輝",
+    "deviceKey": "日月同輝",
+    "deviceKind": "spark",
+    "owners": [
+      "cosmos"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-cosmos",
+    "fact": "和高斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-justice",
+    "name": "正義之槍",
+    "device": "正義之槍",
+    "deviceKey": "正義之槍",
+    "deviceKind": "spark",
+    "owners": [
+      "justice"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-justice",
+    "fact": "和正義一起啟動光之力量。"
+  },
+  {
+    "id": "device-nexus",
+    "name": "進化信徒",
+    "device": "進化信徒",
+    "deviceKey": "進化信徒",
+    "deviceKind": "spark",
+    "owners": [
+      "nexus"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-nexus",
+    "fact": "和納克斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-max",
+    "name": "馬克斯火花",
+    "device": "馬克斯火花",
+    "deviceKey": "馬克斯火花",
+    "deviceKind": "wrist",
+    "owners": [
+      "max"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-max",
+    "fact": "和馬克斯一起啟動光之力量。"
+  },
+  {
+    "id": "device-hikari",
+    "name": "騎士氣息",
+    "device": "騎士氣息",
+    "deviceKey": "騎士氣息",
+    "deviceKind": "wrist",
+    "owners": [
+      "hikari"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-hikari",
+    "fact": "和希卡利一起啟動光之力量。"
+  },
+  {
+    "id": "device-ginga",
+    "name": "銀河火花",
+    "device": "銀河火花",
+    "deviceKey": "銀河火花",
+    "deviceKind": "spark",
+    "owners": [
+      "ginga"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ginga",
+    "fact": "和銀河一起啟動光之力量。"
+  },
+  {
+    "id": "device-victory",
+    "name": "勝利聖槍",
+    "device": "勝利聖槍",
+    "deviceKey": "勝利聖槍",
+    "deviceKind": "lance",
+    "owners": [
+      "victory"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-victory",
+    "fact": "和勝利一起啟動光之力量。"
+  },
+  {
+    "id": "device-x",
+    "name": "X 終端",
+    "device": "X 終端",
+    "deviceKey": "X 終端",
+    "deviceKind": "terminal",
+    "owners": [
+      "x"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-x",
+    "fact": "和X一起啟動光之力量。"
+  },
+  {
+    "id": "device-orb",
+    "name": "歐布圓環",
+    "device": "歐布圓環",
+    "deviceKey": "歐布圓環",
+    "deviceKind": "orb",
+    "owners": [
+      "orb"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-orb",
+    "fact": "和歐布一起啟動光之力量。"
+  },
+  {
+    "id": "device-geed",
+    "name": "捷德昇華器",
+    "device": "捷德昇華器",
+    "deviceKey": "捷德昇華器",
+    "deviceKind": "terminal",
+    "owners": [
+      "geed"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-geed",
+    "fact": "和捷德一起啟動光之力量。"
+  },
+  {
+    "id": "device-rosso",
+    "name": "羅布迴轉儀",
+    "device": "羅布迴轉儀",
+    "deviceKey": "羅布迴轉儀",
+    "deviceKind": "gyro",
+    "owners": [
+      "rosso",
+      "blu"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-rosso",
+    "fact": "和羅索一起啟動光之力量。"
+  },
+  {
+    "id": "device-grigio",
+    "name": "羅布迴轉儀（美劍版）",
+    "device": "羅布迴轉儀（美劍版）",
+    "deviceKey": "羅布迴轉儀（美劍版）",
+    "deviceKind": "gyro",
+    "owners": [
+      "grigio"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultrawoman-grigio",
+    "fact": "和格麗喬一起啟動光之力量。"
+  },
+  {
+    "id": "device-taiga",
+    "name": "大河火花",
+    "device": "大河火花",
+    "deviceKey": "大河火花",
+    "deviceKind": "wrist",
+    "owners": [
+      "taiga",
+      "titas",
+      "fuma"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taiga",
+    "fact": "和大河一起啟動光之力量。"
+  },
+  {
+    "id": "device-ribut",
+    "name": "GUTS 閃光棒（地球訓練時）",
+    "device": "GUTS 閃光棒（地球訓練時）",
+    "deviceKey": "GUTS 閃光棒",
+    "deviceKind": "gun",
+    "owners": [
+      "ribut",
+      "trigger"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ribut",
+    "fact": "和利布特一起啟動光之力量。"
+  },
+  {
+    "id": "device-decker",
+    "name": "超級 D 閃光劍",
+    "device": "超級 D 閃光劍",
+    "deviceKey": "超級 D 閃光劍",
+    "deviceKind": "terminal",
+    "owners": [
+      "decker"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-decker",
+    "fact": "和德卡一起啟動光之力量。"
+  },
+  {
+    "id": "device-blazar",
+    "name": "布雷薩手鐲",
+    "device": "布雷薩手鐲",
+    "deviceKey": "布雷薩手鐲",
+    "deviceKind": "wrist",
+    "owners": [
+      "blazar"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-blazar",
+    "fact": "和布雷薩一起啟動光之力量。"
+  },
+  {
+    "id": "device-arc",
+    "name": "ARC 昇華器",
+    "device": "ARC 昇華器",
+    "deviceKey": "ARC 昇華器",
+    "deviceKind": "cube",
+    "owners": [
+      "arc"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-arc",
+    "fact": "和雅克一起啟動光之力量。"
+  },
+  {
+    "id": "device-omega",
+    "name": "奧米加頭鏢＋奧米加星石",
+    "device": "奧米加頭鏢＋奧米加星石",
+    "deviceKey": "奧米加頭鏢＋奧米加星石",
+    "deviceKind": "boomerang",
+    "owners": [
+      "omega"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-omega",
+    "fact": "和奧米加一起啟動光之力量。"
+  },
+  {
+    "id": "device-teo",
+    "name": "Teo Crystar",
+    "device": "Teo Crystar",
+    "deviceKey": "Teo Crystar",
+    "deviceKind": "pendant",
+    "owners": [
+      "teo"
+    ],
+    "kind": "變身器",
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-teo",
+    "fact": "和Teo一起啟動光之力量。"
+  },
+  {
+    "id": "zero-neo",
+    "name": "Ultra Zero Eye NEO",
+    "device": "Ultra Zero Eye NEO",
+    "deviceKey": "Ultra Zero Eye NEO",
+    "deviceKind": "boomerang",
+    "owners": [
+      "zero"
+    ],
+    "kind": "變身器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛",
+    "fact": "Ultra Zero Eye NEO是傑洛的變身器。"
+  },
+  {
+    "id": "zero-bracelet",
+    "name": "究極手鐲",
+    "device": "究極手鐲",
+    "deviceKey": "究極手鐲",
+    "deviceKind": "wrist",
+    "owners": [
+      "zero"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛",
+    "fact": "究極手鐲是傑洛的力量道具。"
+  },
+  {
+    "id": "orb-calibur",
+    "name": "歐布聖劍",
+    "device": "歐布聖劍",
+    "deviceKey": "歐布聖劍",
+    "deviceKind": "lance",
+    "owners": [
+      "orb"
+    ],
+    "kind": "變身器兼武器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb",
+    "fact": "歐布聖劍是歐布的變身器兼武器。"
+  },
+  {
+    "id": "orb-cards",
+    "name": "超人融合卡片",
+    "device": "超人融合卡片",
+    "deviceKey": "超人融合卡片",
+    "deviceKind": "terminal",
+    "owners": [
+      "orb"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb",
+    "fact": "超人融合卡片是歐布的力量道具。"
+  },
+  {
+    "id": "geed-capsules",
+    "name": "超人膠囊",
+    "device": "超人膠囊",
+    "deviceKey": "超人膠囊",
+    "deviceKind": "crystal",
+    "owners": [
+      "geed"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed",
+    "fact": "超人膠囊是捷德的力量道具。"
+  },
+  {
+    "id": "geed-finalizer",
+    "name": "Giga Finalizer",
+    "device": "Giga Finalizer",
+    "deviceKey": "Giga Finalizer",
+    "deviceKind": "lance",
+    "owners": [
+      "geed"
+    ],
+    "kind": "變身器兼武器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed",
+    "fact": "Giga Finalizer是捷德的變身器兼武器。"
+  },
+  {
+    "id": "z-access",
+    "name": "超人存取卡",
+    "device": "超人存取卡",
+    "deviceKey": "超人存取卡",
+    "deviceKind": "terminal",
+    "owners": [
+      "z"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+    "fact": "超人存取卡是傑特的力量道具。"
+  },
+  {
+    "id": "z-medals",
+    "name": "超人勳章",
+    "device": "超人勳章",
+    "deviceKey": "超人勳章",
+    "deviceKind": "badge",
+    "owners": [
+      "z"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+    "fact": "超人勳章是傑特的力量道具。"
+  },
+  {
+    "id": "z-beliarok",
+    "name": "貝利亞黃昏",
+    "device": "貝利亞黃昏",
+    "deviceKey": "貝利亞黃昏",
+    "deviceKind": "lance",
+    "owners": [
+      "z"
+    ],
+    "kind": "武器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+    "fact": "貝利亞黃昏是傑特的武器。"
+  },
+  {
+    "id": "trigger-key",
+    "name": "GUTS 超人鑰匙",
+    "device": "GUTS 超人鑰匙",
+    "deviceKey": "GUTS 超人鑰匙",
+    "deviceKind": "spark",
+    "owners": [
+      "trigger"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger",
+    "fact": "GUTS 超人鑰匙是特利卡的力量道具。"
+  },
+  {
+    "id": "trigger-arms",
+    "name": "圓環之臂",
+    "device": "圓環之臂",
+    "deviceKey": "圓環之臂",
+    "deviceKind": "lance",
+    "owners": [
+      "trigger"
+    ],
+    "kind": "武器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger",
+    "fact": "圓環之臂是特利卡的武器。"
+  },
+  {
+    "id": "decker-card",
+    "name": "超人次元卡",
+    "device": "超人次元卡",
+    "deviceKey": "超人次元卡",
+    "deviceKind": "terminal",
+    "owners": [
+      "decker"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker",
+    "fact": "超人次元卡是德卡的力量道具。"
+  },
+  {
+    "id": "decker-sword",
+    "name": "德卡盾劍",
+    "device": "德卡盾劍",
+    "deviceKey": "德卡盾劍",
+    "deviceKind": "lance",
+    "owners": [
+      "decker"
+    ],
+    "kind": "武器",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker",
+    "fact": "德卡盾劍是德卡的武器。"
+  },
+  {
+    "id": "arc-cube",
+    "name": "雅克方塊",
+    "device": "雅克方塊",
+    "deviceKey": "雅克方塊",
+    "deviceKind": "cube",
+    "owners": [
+      "arc"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+    "fact": "雅克方塊是雅克的力量道具。"
+  },
+  {
+    "id": "arc-solis",
+    "name": "太陽裝甲方塊",
+    "device": "太陽裝甲方塊",
+    "deviceKey": "太陽裝甲方塊",
+    "deviceKind": "cube",
+    "owners": [
+      "arc"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+    "fact": "太陽裝甲方塊是雅克的力量道具。"
+  },
+  {
+    "id": "arc-luna",
+    "name": "月亮裝甲方塊",
+    "device": "月亮裝甲方塊",
+    "deviceKey": "月亮裝甲方塊",
+    "deviceKind": "cube",
+    "owners": [
+      "arc"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+    "fact": "月亮裝甲方塊是雅克的力量道具。"
+  },
+  {
+    "id": "arc-galaxy",
+    "name": "銀河裝甲方塊",
+    "device": "銀河裝甲方塊",
+    "deviceKey": "銀河裝甲方塊",
+    "deviceKind": "cube",
+    "owners": [
+      "arc"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+    "fact": "銀河裝甲方塊是雅克的力量道具。"
+  },
+  {
+    "id": "arc-sword",
+    "name": "弧眼劍",
+    "device": "弧眼劍",
+    "deviceKey": "弧眼劍",
+    "deviceKind": "lance",
+    "owners": [
+      "arc"
+    ],
+    "kind": "武器",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+    "fact": "弧眼劍是雅克的武器。"
+  },
+  {
+    "id": "omega-meteor",
+    "name": "奧米加星石",
+    "device": "奧米加星石",
+    "deviceKey": "奧米加星石",
+    "deviceKind": "crystal",
+    "owners": [
+      "omega"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+    "fact": "奧米加星石是奧米加的力量道具。"
+  },
+  {
+    "id": "omega-rekiness",
+    "name": "雷基尼斯星石",
+    "device": "雷基尼斯星石",
+    "deviceKey": "雷基尼斯星石",
+    "deviceKind": "crystal",
+    "owners": [
+      "omega"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+    "fact": "雷基尼斯星石是奧米加的力量道具。"
+  },
+  {
+    "id": "omega-trigaron",
+    "name": "特萊加隆星石",
+    "device": "特萊加隆星石",
+    "deviceKey": "特萊加隆星石",
+    "deviceKind": "crystal",
+    "owners": [
+      "omega"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+    "fact": "特萊加隆星石是奧米加的力量道具。"
+  },
+  {
+    "id": "omega-valgeness",
+    "name": "瓦爾基涅斯星石",
+    "device": "瓦爾基涅斯星石",
+    "deviceKey": "瓦爾基涅斯星石",
+    "deviceKind": "crystal",
+    "owners": [
+      "omega"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+    "fact": "瓦爾基涅斯星石是奧米加的力量道具。"
+  },
+  {
+    "id": "omega-gamedon",
+    "name": "加美頓星石",
+    "device": "加美頓星石",
+    "deviceKey": "加美頓星石",
+    "deviceKind": "crystal",
+    "owners": [
+      "omega"
+    ],
+    "kind": "力量道具",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+    "fact": "加美頓星石是奧米加的力量道具。"
+  }
+];
+const MOVES = [
+  {
+    "id": "move-1",
+    "heroId": "tiga",
+    "name": "哉佩利敖光線",
+    "kind": "beam",
+    "formId": "multi",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "move-2",
+    "heroId": "tiga",
+    "name": "迪拉修姆光流",
+    "kind": "burst",
+    "formId": "power",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "move-3",
+    "heroId": "tiga",
+    "name": "蘭帕爾特光彈",
+    "kind": "beam",
+    "formId": "sky",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "move-4",
+    "heroId": "tiga",
+    "name": "閃耀哉佩利敖光線",
+    "kind": "beam",
+    "formId": "tiga-glitter",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+  },
+  {
+    "id": "move-5",
+    "heroId": "dyna",
+    "name": "索爾捷特光線",
+    "kind": "beam",
+    "formId": "dyna-flash",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "move-6",
+    "heroId": "dyna",
+    "name": "加爾奈特轟炸",
+    "kind": "burst",
+    "formId": "dyna-strong",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "move-7",
+    "heroId": "dyna",
+    "name": "立波留姆光波",
+    "kind": "beam",
+    "formId": "dyna-miracle",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+  },
+  {
+    "id": "move-8",
+    "heroId": "gaia",
+    "name": "光子冰刀",
+    "kind": "ring",
+    "formId": "gaia-v1",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "move-9",
+    "heroId": "gaia",
+    "name": "量子流線",
+    "kind": "beam",
+    "formId": "gaia-v2",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "move-10",
+    "heroId": "gaia",
+    "name": "光子流線",
+    "kind": "beam",
+    "formId": "gaia-sv",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+  },
+  {
+    "id": "move-11",
+    "heroId": "cosmos",
+    "name": "滿月光波",
+    "kind": "calm",
+    "formId": "cosmos-luna",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "move-12",
+    "heroId": "cosmos",
+    "name": "Naybuster 光線",
+    "kind": "beam",
+    "formId": "cosmos-corona",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "move-13",
+    "heroId": "cosmos",
+    "name": "高斯謬姆光線",
+    "kind": "beam",
+    "formId": "cosmos-eclipse",
+    "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+  },
+  {
+    "id": "move-14",
+    "heroId": "zero",
+    "name": "傑洛集束射線",
+    "kind": "beam",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-15",
+    "heroId": "zero",
+    "name": "Strong Corona Zero Burning",
+    "kind": "burst",
+    "formId": "zero-strong",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-16",
+    "heroId": "zero",
+    "name": "奇蹟傑洛頭鏢",
+    "kind": "ring",
+    "formId": "zero-luna",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-17",
+    "heroId": "zero",
+    "name": "Final Ultimate Zero",
+    "kind": "beam",
+    "formId": "zero-ultimate",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-18",
+    "heroId": "zero",
+    "name": "Shining Emerium Slash",
+    "kind": "ring",
+    "formId": "zero-shining",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-19",
+    "heroId": "zero",
+    "name": "Twin Giga Break",
+    "kind": "burst",
+    "formId": "zero-beyond",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-20",
+    "heroId": "z",
+    "name": "傑斯帝姆光線",
+    "kind": "beam",
+    "formId": "z-original",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "move-21",
+    "heroId": "z",
+    "name": "傑斯帝姆邁射光",
+    "kind": "beam",
+    "formId": "z-alpha",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "move-22",
+    "heroId": "z",
+    "name": "傑斯帝姆升龍拳",
+    "kind": "burst",
+    "formId": "z-beta",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "move-23",
+    "heroId": "z",
+    "name": "傑斯帝姆驅動",
+    "kind": "beam",
+    "formId": "z-gamma",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "move-24",
+    "heroId": "z",
+    "name": "傑斯帝姆光輪",
+    "kind": "ring",
+    "formId": "z-delta",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+  },
+  {
+    "id": "move-25",
+    "heroId": "trigger",
+    "name": "哉佩利敖光線",
+    "kind": "beam",
+    "formId": "trigger-multi",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "move-26",
+    "heroId": "trigger",
+    "name": "迪拉修姆光流",
+    "kind": "burst",
+    "formId": "trigger-power",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "move-27",
+    "heroId": "trigger",
+    "name": "蘭帕爾特光彈",
+    "kind": "beam",
+    "formId": "trigger-sky",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "move-28",
+    "heroId": "trigger",
+    "name": "閃耀哉佩利敖光線",
+    "kind": "beam",
+    "formId": "trigger-eternity",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "move-29",
+    "heroId": "trigger",
+    "name": "真實哉佩利敖光線",
+    "kind": "beam",
+    "formId": "trigger-truth",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+  },
+  {
+    "id": "move-30",
+    "heroId": "decker",
+    "name": "賽魯傑德光線",
+    "kind": "beam",
+    "formId": "decker-flash",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "move-31",
+    "heroId": "decker",
+    "name": "德魯涅德烈破",
+    "kind": "beam",
+    "formId": "decker-strong",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "move-32",
+    "heroId": "decker",
+    "name": "雷亞琉特波動",
+    "kind": "beam",
+    "formId": "decker-miracle",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "move-33",
+    "heroId": "decker",
+    "name": "戴謬德光線",
+    "kind": "beam",
+    "formId": "decker-dynamic",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+  },
+  {
+    "id": "move-34",
+    "heroId": "arc",
+    "name": "雅克終結光線",
+    "kind": "beam",
+    "formId": "arc-base",
+    "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+  },
+  {
+    "id": "move-35",
+    "heroId": "omega",
+    "name": "雷特克魯特光線",
+    "kind": "beam",
+    "formId": "omega-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+  },
+  {
+    "id": "move-36",
+    "heroId": "geed",
+    "name": "毀滅爆裂",
+    "kind": "beam",
+    "formId": "geed-primitive",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-37",
+    "heroId": "geed",
+    "name": "Strike Boost",
+    "kind": "burst",
+    "formId": "geed-solid",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-38",
+    "heroId": "geed",
+    "name": "Atmos Impact",
+    "kind": "beam",
+    "formId": "geed-acro",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-39",
+    "heroId": "geed",
+    "name": "Big Burst Away",
+    "kind": "burst",
+    "formId": "geed-magnificent",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-40",
+    "heroId": "geed",
+    "name": "Royal End",
+    "kind": "beam",
+    "formId": "geed-royal",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-41",
+    "heroId": "geed",
+    "name": "Crescent Final Geed",
+    "kind": "beam",
+    "formId": "geed-ultimate",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-42",
+    "heroId": "geed",
+    "name": "Wrecking Phoenix",
+    "kind": "beam",
+    "formId": "geed-galaxy",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+  },
+  {
+    "id": "move-43",
+    "heroId": "orb",
+    "name": "Orb Supreme Calibur",
+    "kind": "beam",
+    "formId": "orb-origin",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "move-45",
+    "heroId": "orb",
+    "name": "Stobium Dynamite",
+    "kind": "burst",
+    "formId": "orb-burnmite",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "move-46",
+    "heroId": "orb",
+    "name": "Trident Slash",
+    "kind": "ring",
+    "formId": "orb-hurricane",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "move-47",
+    "heroId": "orb",
+    "name": "Zedcium 光線",
+    "kind": "beam",
+    "formId": "orb-thunder",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "move-48",
+    "heroId": "orb",
+    "name": "Trinitium 光輪",
+    "kind": "ring",
+    "formId": "orb-trinity",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+  },
+  {
+    "id": "move-49",
+    "heroId": "ultraman",
+    "name": "斯派修姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman"
+  },
+  {
+    "id": "move-50",
+    "heroId": "seven",
+    "name": "艾梅利姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraseven"
+  },
+  {
+    "id": "move-52",
+    "heroId": "mebius",
+    "name": "梅比姆射線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-mebius"
+  },
+  {
+    "id": "move-53",
+    "heroId": "zoffy",
+    "name": "M87 光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/zoffy"
+  },
+  {
+    "id": "move-54",
+    "heroId": "jack",
+    "name": "斯派修姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-jack"
+  },
+  {
+    "id": "move-55",
+    "heroId": "ace",
+    "name": "梅塔利姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ace"
+  },
+  {
+    "id": "move-56",
+    "heroId": "taro",
+    "name": "斯特利姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taro"
+  },
+  {
+    "id": "move-57",
+    "heroId": "leo",
+    "name": "雷歐飛踢",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-leo"
+  },
+  {
+    "id": "move-58",
+    "heroId": "astra",
+    "name": "兄弟合體光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/astra"
+  },
+  {
+    "id": "move-59",
+    "heroId": "king",
+    "name": "尊王閃光",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-king"
+  },
+  {
+    "id": "move-61",
+    "heroId": "mother-of-ultra",
+    "name": "治癒之光",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/mother-of-ultra"
+  },
+  {
+    "id": "move-62",
+    "heroId": "80",
+    "name": "沙庫修姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-80"
+  },
+  {
+    "id": "move-63",
+    "heroId": "yullian",
+    "name": "雙重力量",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/yullian"
+  },
+  {
+    "id": "move-64",
+    "heroId": "joneus",
+    "name": "普拉尼姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-joneus"
+  },
+  {
+    "id": "move-68",
+    "heroId": "great",
+    "name": "燃燒電漿",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-great"
+  },
+  {
+    "id": "move-69",
+    "heroId": "powered",
+    "name": "超級斯派修姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-powered"
+  },
+  {
+    "id": "move-70",
+    "heroId": "agul",
+    "name": "光子粉碎機",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-agul"
+  },
+  {
+    "id": "move-71",
+    "heroId": "neos",
+    "name": "新馬格紐姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-neos"
+  },
+  {
+    "id": "move-72",
+    "heroId": "ultraseven-21",
+    "name": "雷吉亞射線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraseven-21"
+  },
+  {
+    "id": "move-73",
+    "heroId": "justice",
+    "name": "維克托利姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-justice"
+  },
+  {
+    "id": "move-74",
+    "heroId": "nexus",
+    "name": "十字光線風暴",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-nexus"
+  },
+  {
+    "id": "move-75",
+    "heroId": "max",
+    "name": "馬克修姆加農",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-max"
+  },
+  {
+    "id": "move-76",
+    "heroId": "xenon",
+    "name": "傑諾尼姆加農",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-xenon"
+  },
+  {
+    "id": "move-77",
+    "heroId": "hikari",
+    "name": "騎士射線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-hikari"
+  },
+  {
+    "id": "move-78",
+    "heroId": "ginga",
+    "name": "銀河十字光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ginga"
+  },
+  {
+    "id": "move-79",
+    "heroId": "victory",
+    "name": "勝利射線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-victory"
+  },
+  {
+    "id": "move-80",
+    "heroId": "x",
+    "name": "扎納帝姆光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-x"
+  },
+  {
+    "id": "move-81",
+    "heroId": "orb",
+    "name": "斯派利敖光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-orb"
+  },
+  {
+    "id": "move-82",
+    "heroId": "rosso",
+    "name": "烈焰球",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-rosso"
+  },
+  {
+    "id": "move-83",
+    "heroId": "blu",
+    "name": "水流射線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-blu"
+  },
+  {
+    "id": "move-84",
+    "heroId": "grigio",
+    "name": "格麗喬治癒",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultrawoman-grigio"
+  },
+  {
+    "id": "move-85",
+    "heroId": "taiga",
+    "name": "斯特利姆爆裂",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-taiga"
+  },
+  {
+    "id": "move-86",
+    "heroId": "titas",
+    "name": "普拉尼姆爆裂",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-titas"
+  },
+  {
+    "id": "move-87",
+    "heroId": "fuma",
+    "name": "極星光波手裏劍",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-fuma"
+  },
+  {
+    "id": "move-88",
+    "heroId": "ribut",
+    "name": "加拉克西姆爆裂",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-ribut"
+  },
+  {
+    "id": "move-90",
+    "heroId": "regulos",
+    "name": "宇宙幻獸拳",
+    "kind": "burst",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-regulos"
+  },
+  {
+    "id": "move-91",
+    "heroId": "blazar",
+    "name": "螺旋光矛",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-blazar"
+  },
+  {
+    "id": "move-92",
+    "heroId": "teo",
+    "name": "Teocium 光線",
+    "kind": "beam",
+    "formId": null,
+    "source": "https://tsuburaya-prod.com/heroes/ultraman-teo"
+  },
+  {
+    "id": "move-zero-extra-0",
+    "heroId": "zero",
+    "name": "艾梅利姆切割",
+    "kind": "beam",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-zero-extra-1",
+    "heroId": "zero",
+    "name": "傑洛頭鏢突擊",
+    "kind": "ring",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-zero-extra-2",
+    "heroId": "zero",
+    "name": "傑洛飛踢",
+    "kind": "burst",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-zero-extra-3",
+    "heroId": "zero",
+    "name": "傑洛雙擊",
+    "kind": "beam",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  },
+  {
+    "id": "move-zero-extra-4",
+    "heroId": "zero",
+    "name": "電漿火花斬",
+    "kind": "ring",
+    "formId": "zero-base",
+    "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+  }
+];
+const MONSTERS = [
+  {
+    "id": "gomora",
+    "name": "哥摩拉",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "頭上的彎角和長尾巴，是牠醒目的特徵。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gomora",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "baltan",
+    "name": "巴爾坦星人",
+    "tag": "分身",
+    "pattern": "clone",
+    "friendly": false,
+    "fact": "大鉗子、蟬一樣的臉，還會分身。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/baltan",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "zetton",
+    "name": "傑頓",
+    "tag": "屏障",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "黑色身體配橘色發光部位，是經典強敵。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/zetton",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "red-king",
+    "name": "雷德王",
+    "tag": "重裝",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "粗壯的身體，擅長用強大的力氣。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/red-king",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "eleking",
+    "name": "艾雷王",
+    "tag": "電流",
+    "pattern": "electric",
+    "friendly": false,
+    "fact": "頭上有兩支角，長尾巴能釋放電流。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/eleking",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "king-joe",
+    "name": "金古橋",
+    "tag": "重裝",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "由宇宙機器組合而成的巨大機器人。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/king-joe",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "neronga",
+    "name": "內隆嘎",
+    "tag": "隱形",
+    "pattern": "clone",
+    "friendly": false,
+    "fact": "能隱藏身影，也喜歡吸收電力。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/neronga",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "bemular",
+    "name": "貝姆拉",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "早期就登場的宇宙怪獸，嘴巴可以發出能量。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/bemular",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "dada",
+    "name": "達達",
+    "tag": "分身",
+    "pattern": "clone",
+    "friendly": false,
+    "fact": "黑白花紋的宇宙人，臉孔會變化。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/dada",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "gubila",
+    "name": "古維拉",
+    "tag": "鑽地",
+    "pattern": "burrow",
+    "friendly": false,
+    "fact": "鼻尖像鑽頭，既能游泳也能鑽地。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gubila",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "telesdon",
+    "name": "泰萊斯通",
+    "tag": "鑽地",
+    "pattern": "burrow",
+    "friendly": false,
+    "fact": "在地底生活的怪獸，有長長的尖嘴。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/telesdon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "antlar",
+    "name": "安東拉",
+    "tag": "磁力",
+    "pattern": "electric",
+    "friendly": false,
+    "fact": "像大甲蟲，頭上有巨大的鉗子。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/antlar",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "bemstar",
+    "name": "貝姆斯塔",
+    "tag": "飛行",
+    "pattern": "flight",
+    "friendly": false,
+    "fact": "身體像大鳥，腹部還有吸收能量的器官。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/bemstar",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "twin-tail",
+    "name": "雙尾怪",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "有兩條長尾巴，身體造型像倒過來的蝦。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/twin-tail",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "gudon",
+    "name": "古敦",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "雙手像長鞭，是雙尾怪的天敵。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gudon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "black-king",
+    "name": "布萊克王",
+    "tag": "重裝",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "黑色的怪獸，額頭長著金色大角。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/black-king",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "birdon",
+    "name": "巴頓",
+    "tag": "飛行",
+    "pattern": "flight",
+    "friendly": false,
+    "fact": "像巨大鳥類，翅膀和尖嘴很醒目。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/birdon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "tyrant",
+    "name": "泰蘭特",
+    "tag": "重裝",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "集合多種怪獸特徵的暴君怪獸。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/tyrant",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "pigmon",
+    "name": "皮古蒙",
+    "tag": "救援",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "會幫助人類的友善小怪獸。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/pigmon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "kanegon",
+    "name": "卡內貢",
+    "tag": "救援",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "嘴巴像拉鍊，最喜歡吃硬幣。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/kanegon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "golza",
+    "name": "哥爾贊",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "迪卡故事裡登場，額頭能釋放光線。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/golza",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "melba",
+    "name": "美爾巴",
+    "tag": "飛行",
+    "pattern": "flight",
+    "friendly": false,
+    "fact": "展開翅膀在空中飛行的古代怪獸。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/melba",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "gan-q",
+    "name": "加恩Q",
+    "tag": "分身",
+    "pattern": "clone",
+    "friendly": false,
+    "fact": "最醒目的特徵，是身體中央的大眼睛。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gan-q",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "bazanga",
+    "name": "巴贊加",
+    "tag": "突進",
+    "pattern": "rush",
+    "friendly": false,
+    "fact": "布雷薩故事中的強敵，雙臂有發射器官。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/bazanga",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "gedos",
+    "name": "蓋多斯",
+    "tag": "游泳",
+    "pattern": "burrow",
+    "friendly": false,
+    "fact": "住在水裡，頭頂像有小燈，喜歡吃魚。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gedos",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "gamedon",
+    "name": "加美頓",
+    "tag": "重裝",
+    "pattern": "armor",
+    "friendly": false,
+    "fact": "有堅硬甲殼，會旋轉背上的鰭。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/gamedon",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "rekiness",
+    "name": "雷基尼斯",
+    "tag": "合作",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "奧米加的流星怪獸夥伴，擅長念動能力。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/rekiness",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "trigaron",
+    "name": "特萊加隆",
+    "tag": "合作",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "奧米加的流星怪獸夥伴，力量與速度都很強。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/trigaron",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "valgeness",
+    "name": "瓦爾基涅斯",
+    "tag": "合作",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "奧米加的流星怪獸夥伴，能操控元素力量。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/valgeness",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  },
+  {
+    "id": "pucchi",
+    "name": "Pucchi",
+    "tag": "救援",
+    "pattern": "friendly",
+    "friendly": true,
+    "fact": "Teo 故事中的溫柔小怪獸，喜歡甜甜圈。",
+    "source": "https://tsuburaya-prod.com/encyclopedia/pucchi",
+    "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+  }
 ];
 const BADGES = [
   {id:'first',name:'勇氣的第一步',emoji:'🌱',description:'完成任何一個小任務',goal:1},
@@ -965,7 +3432,7 @@ function updateChrome(){
   $$('.nav-item').forEach(el=>{el.classList.toggle('active',el.dataset.nav===state.page);el.setAttribute('aria-current',el.dataset.nav===state.page?'page':'false');});
 }
 function later(fn,ms){const token=state.token;const timer=setTimeout(()=>{state.timers.delete(timer);if(token===state.token)fn();},ms);state.timers.add(timer);return timer;}
-function leave(){state.token++;state.timers.forEach(clearTimeout);state.timers.clear();if('speechSynthesis'in window)speechSynthesis.cancel();state.game=null;}
+function leave(){state.token++;state.timers.forEach(clearTimeout);state.timers.clear();stopVoice();state.game=null;}
 function navigate(page,focus=true){
   leave();state.page=page;updateChrome();
   $('#breadcrumb-text').textContent = page==='home'?'今天，也一起閃閃發光！':page==='heroes'?'認識一起守護地球的朋友':'每一份勇氣，都值得收藏';
@@ -976,10 +3443,12 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function heroImage(h, cls='', alt=true){return `<img class="${cls}" src="assets/${h.id}.png" alt="${alt?h.name:''}" draggable="false">`;}
 function city(){return `<div class="city" aria-hidden="true"><svg viewBox="0 0 900 140" preserveAspectRatio="none"><g fill="currentColor"><path d="M0 100h32V64h44v76H0Zm64 40V88h24V51h26v89Zm44 0V70h41v70Zm35 0V30h19V15h4v15h20v110Zm35 0V86h45v54Zm38 0V60h33v80Zm28 0V88h38v52Zm33 0V44h44v96Zm35 0V75h28v65Zm22 0V53h48v87Zm40 0V12h10V0h3v12h16v128Zm22 0V69h44v71Zm38 0V50h31v90Zm24 0V82h48v58Zm40 0V37h38v103Zm32 0V60h30v80Zm23 0V18h13V5h5v13h17v122Zm28 0V66h34v74Zm27 0V42h48v98Zm40 0V76h37v64Zm30 0V30h31v110Zm23 0V94h41v46Zm35 0V57h31v83Zm26 0V81h39v59Zm31 0V65h32v75Zm25 0V91h34v49Z"/></g><path d="M20 86h8m12-9h8m29 27h9m12-37h8m56-21h8m-8 16h8m112 7h10m-10 14h10m73 0h10m65-11h9m93-16h8m-8 14h8m80-26h8m54 17h9m-9 13h9m73-27h9m-9 15h9" stroke="#f5f8df" stroke-width="5"/></svg></div>`;}
 function formFigure(form,cls='form-picture'){
-  return `<svg class="${cls}" viewBox="0 0 150 240" aria-label="迪卡${form.name}示意圖" role="img"><defs><linearGradient id="silver-${form.id}" x1="0" x2="1"><stop stop-color="#b8c7c5"/><stop offset=".5" stop-color="#f9fcf6"/><stop offset="1" stop-color="#b1c1be"/></linearGradient></defs><g stroke="#627d7844" stroke-width="1.1"><path d="m52 125-11 89 20 3 14-76 14 76 20-3-11-89" fill="${form.color}"/><path d="m45 185-4 29-8 14q-1 7 23 3l6-16 6-28m17 0 5 28 6 16q24 4 23-3l-9-14-5-29" fill="url(#silver-${form.id})"/><path d="M47 63Q75 49 103 63l8 38-13 39H52l-13-39Z" fill="${form.color}"/><path d="m75 73 28-10-8 24-20 13-20-13-8-24Z" fill="#ded3a1"/><path d="m75 81 26-17-6 13-20 14-20-14-6-13Z" fill="#f4f4df"/><path d="m75 100 20-13-9 42 12 11H52l12-11-9-42Z" fill="url(#silver-${form.id})"/><path d="M47 63Q34 58 28 81l-9 47 13 4 15-33m56-36q13-5 19 18l9 47-13 4-15-33" fill="${form.second}"/><path d="m22 110-5 22q-4 15 8 14l9-14 6-20m70 0 7 20 9 14q12 1 8-14l-5-22" fill="url(#silver-${form.id})"/><path d="M52 28Q53 7 75 9q22-2 23 19l-4 22-19 17-19-17Z" fill="url(#silver-${form.id})"/><path d="m67 16 8-15 8 15-8 24Z" fill="#e9ddad"/><path d="m56 30 15 7-5 10-11-5Zm38 0-15 7 5 10 11-5Z" fill="#fff1b0"/><path d="m70 54 5 2 5-2-2 5h-6Z" fill="#809a94"/><circle cx="75" cy="81" r="6" fill="#77cbd4" stroke="#faf6d0" stroke-width="3"/></g></svg>`;
+  const armored=/armor|ultimate|beyond|solis|luna|galaxy|gamedon|rekiness|trigaron|valgeness/.test(form.id)&&form.heroId!=='cosmos';
+  const marks=(armored?`<path d="m40 65 17-4 8 19-18 12-12-9Zm70 0-17-4-8 19 18 12 12-9Z" fill="${form.second}" stroke="#f2e6b2" stroke-width="3"/>`:'')+(form.heroId==='gaia'&&form.id!=='gaia-v1'?'<path d="m48 66 27 21 27-21-6 25-21 13-21-13Z" fill="#393e48"/>':'')+(form.heroId==='zero'?'<path d="m62 17-5-16-8 23m39-7 5-16 8 23" fill="#dfe9e3" stroke="#779996" stroke-width="2"/>':'');
+  return `<svg class="${cls}" viewBox="0 0 150 240" aria-label="${HEROES.find(h=>h.id===form.heroId)?.short||'英雄'}${form.name}配色示意圖" role="img"><defs><linearGradient id="silver-${form.id}" x1="0" x2="1"><stop stop-color="#b8c7c5"/><stop offset=".5" stop-color="#f9fcf6"/><stop offset="1" stop-color="#b1c1be"/></linearGradient></defs><g stroke="#627d7844" stroke-width="1.1"><path d="m52 125-11 89 20 3 14-76 14 76 20-3-11-89" fill="${form.color}"/><path d="m45 185-4 29-8 14q-1 7 23 3l6-16 6-28m17 0 5 28 6 16q24 4 23-3l-9-14-5-29" fill="url(#silver-${form.id})"/><path d="M47 63Q75 49 103 63l8 38-13 39H52l-13-39Z" fill="${form.color}"/><path d="m75 73 28-10-8 24-20 13-20-13-8-24Z" fill="#ded3a1"/><path d="m75 81 26-17-6 13-20 14-20-14-6-13Z" fill="#f4f4df"/><path d="m75 100 20-13-9 42 12 11H52l12-11-9-42Z" fill="url(#silver-${form.id})"/><path d="M47 63Q34 58 28 81l-9 47 13 4 15-33m56-36q13-5 19 18l9 47-13 4-15-33" fill="${form.second}"/><path d="m22 110-5 22q-4 15 8 14l9-14 6-20m70 0 7 20 9 14q12 1 8-14l-5-22" fill="url(#silver-${form.id})"/><path d="M52 28Q53 7 75 9q22-2 23 19l-4 22-19 17-19-17Z" fill="url(#silver-${form.id})"/><path d="m67 16 8-15 8 15-8 24Z" fill="#e9ddad"/><path d="m56 30 15 7-5 10-11-5Zm38 0-15 7 5 10 11-5Z" fill="#fff1b0"/><path d="m70 54 5 2 5-2-2 5h-6Z" fill="#809a94"/><circle cx="75" cy="81" r="6" fill="#77cbd4" stroke="#faf6d0" stroke-width="3"/>${marks}</g></svg>`;
 }
 function devicePicture(hero,cls='device-picture'){
-  const id=hero.id;
+  const id=hero.drawingId||hero.id;
   let drawing='';
   if(id==='ultraman')drawing='<rect x="64" y="35" width="32" height="151" rx="14" fill="#c4d1ce"/><rect x="61" y="25" width="38" height="45" rx="15" fill="#f48365"/><path d="M70 83h20v65H70Z" fill="#e8eee5"/><path d="M75 84h10v65H75Z" fill="#ecbb65"/><path d="M65 164h30v8H65" fill="#6e8e83"/><circle cx="80" cy="49" r="9" fill="#fff3ba"/>';
   else if(id==='seven'||id==='zero')drawing=`<path d="m22 69 58 17 58-17-9 41-49 13-49-13Z" fill="${id==='zero'?'#638caa':'#d2695a'}"/><path d="m28 72 51 15 53-15-10 28-42 13-42-13Z" fill="#d3ded8"/><path d="m38 79 34 10-7 15-25-8Zm84 0-34 10 7 15 25-8Z" fill="${id==='zero'?'#d0eaba':'#edc371'}"/><path d="M74 86h12v29H74Z" fill="#71988e"/>${id==='zero'?'<path d="M29 72 40 37l22 44m67-9-9-35-24 44" fill="#dce4df"/>':''}<path d="m81 117-9 12 18 41 15-6Z" fill="${id==='zero'?'#648fab':'#cf6c60'}"/>`;
@@ -1009,12 +3478,13 @@ function devicePicture(hero,cls='device-picture'){
   return `<svg class="${cls}" viewBox="0 0 160 210" role="img" aria-label="${hero.device}示意圖"><g stroke="#56776b33" stroke-width="1.5" stroke-linejoin="round">${drawing}</g><path d="m23 27 3 9 9 3-9 3-3 9-3-9-9-3 9-3Zm109 119 2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#f5d584"/></svg>`;
 }
 function monster(cls='monster-picture',variant=0){
-  const brown=variant===0?'#a88d6a':variant===1?'#9394ad':'#6b8580';
-  return `<svg class="${cls}" viewBox="0 0 220 245" role="img" aria-label="${['哥摩拉','訓練怪獸小紫','訓練怪獸小綠'][variant]}插畫"><g stroke="#566c5755" stroke-width="2" stroke-linejoin="round"><path d="M139 171q68-9 64-56 27 65-39 93l-29-4" fill="${brown}"/><path d="M68 140Q42 156 24 148l-5 17q33 23 63-1m64-26q26 17 45 9l5 16q-31 22-59 4" fill="${brown}"/><path d="m72 183-13 39-13 6q-7 10 24 8l18-33m46-20 12 39 17 6q7 10-25 8l-20-33" fill="${brown}"/><path d="M67 105Q45 133 60 180q14 42 57 34 49 1 51-46 6-41-27-66Z" fill="${brown}"/><ellipse cx="113" cy="164" rx="35" ry="47" fill="#d5bd94"/><path d="m67 77-14-49 34 22q25-12 49 0l34-22-14 49q15 34-13 48-31 17-61 0-31-13-15-48Z" fill="${brown}"/><path d="m58 40 10 30 13-14m81-16-11 30-13-14" fill="#eee4c8"/><path d="m105 78 8-30 10 32" fill="#e8d9ad"/><path d="m77 80 22 9m47-9-22 9" stroke="#6e715a" stroke-width="5"/><ellipse cx="91" cy="91" rx="5" ry="7" fill="#fff5b6"/><ellipse cx="133" cy="91" rx="5" ry="7" fill="#fff5b6"/><circle cx="92" cy="93" r="2.4" fill="#3c5850"/><circle cx="132" cy="93" r="2.4" fill="#3c5850"/><path d="M97 110q16 11 31 0" fill="none" stroke="#685f4e" stroke-width="3"/><path d="m85 143 26 8 27-8m-29 8v57m-26-50 26 8 30-8m-55 17 26 8 28-8m-50 17 22 6 25-6" fill="none" stroke="#b49972"/><path d="m163 166 7 7-8 7m-4 5 6 7-9 5" fill="#eee0b9"/></g></svg>`;
+ const m=typeof variant==='object'?variant:MONSTERS[variant]||MONSTERS[0];
+ return `<img class="${cls}" src="assets/monster-${m.id}.png" alt="${m.name}" draggable="false">`;
 }
+
 function cardArt(game){
   if(game.id==='quiz')return heroImage(HEROES[0],'card-hero',false)+'<span class="question-bubble">?</span>';
-  if(game.id==='forms')return FORMS.map(f=>formFigure(f,'form-figure')).join('');
+  if(game.id==='forms')return FORMS.slice(0,3).map(f=>formFigure(f,'form-figure')).join('');
   if(game.id==='device')return devicePicture(HEROES[2],'art-device');
   if(game.id==='battle')return heroImage(HEROES[2],'card-hero',false)+monster('art-monster')+'<span class="vs">VS</span>';
   if(game.id==='coop')return heroImage(HEROES[3],'card-hero',false)+heroImage(HEROES[4],'card-hero second',false);
@@ -1032,7 +3502,14 @@ function renderHome(){
 }
 function screenHead(title,copy,tag=''){return `<div class="screen-head"><button class="back-button" data-action="home" aria-label="回冒險大廳">${icon('back')}</button><div><h1>${title}</h1><p>${copy}</p></div>${tag?`<span class="round-tag">${tag}</span>`:''}</div>`;}
 const ERAS={all:'全部英雄',classic:'經典・昭和',heisei:'平成夥伴',new:'新生代',latest:'最新英雄'};
-let catalogueFilter='all',catalogueSearch='';
+let catalogueFilter='all',catalogueSearch='',encyclopediaTab='heroes';
+const ROLES={balance:'✦ 平衡',power:'💪 力量',speed:'💨 速度',guard:'🛡 守護',calm:'💙 慈愛'};
+function heroForms(h){return FORMS.filter(f=>f.heroId===h.id);}
+function activeForm(g,i){return FORMS.find(f=>f.id===g.forms?.[i])||null;}
+function deviceQuestion(d){const h=HEROES.find(h=>h.id===d.owners[0]);return {...h,device:d.name,deviceKey:d.deviceKey,deviceKind:d.deviceKind,deviceId:d.id,drawingId:d.id.startsWith('device-')?h.id:d.id,owners:d.owners};}
+function libraryTabs(){return `<div class="encyclopedia-tabs" role="group" aria-label="選擇百科">${[['heroes','英雄',HEROES],['forms','型態',FORMS],['devices','道具',DEVICES],['moves','必殺技',MOVES],['monsters','怪獸',MONSTERS]].map(([id,label,items])=>`<button class="secondary ${encyclopediaTab===id?'selected':''}" data-action="encyclopedia-tab" data-tab="${id}" aria-pressed="${encyclopediaTab===id}">${label} ${items.length}</button>`).join('')}</div>`;}
+function sourceLink(url){return `<a class="hero-source" href="${url}" target="_blank" rel="noopener noreferrer">家長閱讀：資料來源 ↗</a>`;}
+function moveSymbol(m){return {beam:'⚡',ring:'◎',burst:'💥',calm:'💙'}[m.kind]||'✦';}
 function catalogueTools(){return `<section class="catalogue-tools" aria-label="尋找英雄"><div class="era-tabs">${Object.entries(ERAS).map(([id,label])=>`<button class="era-tab ${catalogueFilter===id?'selected':''}" data-action="hero-filter" data-filter="${id}" aria-pressed="${catalogueFilter===id}">${label}</button>`).join('')}</div><label class="hero-search-label">找找你的英雄 <input id="hero-search" type="search" placeholder="例如：傑洛、Teo、2025" autocomplete="off" maxlength="60"></label><p id="hero-count" role="status"></p></section>`;}
 function filterHeroCards(){
  const query=catalogueSearch.trim().toLocaleLowerCase();let count=0;
@@ -1041,7 +3518,20 @@ function filterHeroCards(){
  if($('#hero-count'))$('#hero-count').textContent=count?`找到 ${count} 位光之夥伴`:'這裡還找不到，換個名字或選「全部英雄」看看！';
 }
 function restoreHeroTools(){if($('#hero-search'))$('#hero-search').value=catalogueSearch;filterHeroCards();}
-function renderHeroes(){main.innerHTML=screenHead('英雄大百科','從經典夥伴到 2026 年 Teo，一起認識光之英雄。',`${HEROES.length} 位光之夥伴`)+catalogueTools()+`<div class="hero-library">${[...HEROES].sort((a,b)=>b.year-a.year).map(h=>`<article class="library-card" data-hero-card="${h.id}"><div class="library-image" style="--hero-bg:${h.color}">${heroImage(h)}</div><h2>${h.short}</h2><span class="english-name">${h.en}</span><span class="hero-year">${h.year} 年登場 · ${ERAS[h.era]}</span><p>${h.fact}<br><b>變身方式：</b>${h.device}<br><b>代表招式：</b>${h.move}</p><button class="read-button" data-action="read-hero" data-id="${h.id}">${icon('sound')} 聽聽英雄的故事</button><a class="hero-source" href="${h.source}" target="_blank" rel="noopener noreferrer">家長閱讀：官方百科 ↗</a></article>`).join('')}</div><p class="catalogue-note">收錄圓谷官方英雄百科目前列出的 53 位角色（查核：2026/10/15）。年代為登場年份分組，型態與合體角色不另外計數。Teo 保留官方英文名稱；中文譯名因地區可能不同。</p>`;restoreHeroTools();}
+function renderHeroes(){if(encyclopediaTab!=='heroes'){renderExtraLibrary();return;}main.innerHTML=libraryTabs()+screenHead('英雄大百科','從經典夥伴到 2026 年 Teo，一起認識光之英雄。',`${HEROES.length} 位光之夥伴`)+catalogueTools()+`<div class="hero-library">${[...HEROES].sort((a,b)=>b.year-a.year).map(h=>`<article class="library-card" data-hero-card="${h.id}"><div class="library-image" style="--hero-bg:${h.color}">${heroImage(h)}</div><h2>${h.short}</h2><span class="english-name">${h.en}</span><span class="hero-year">${h.year} 年登場 · ${ERAS[h.era]}</span><p>${h.fact}<br><b>變身方式：</b>${h.device}<br><b>代表招式：</b>${h.move}</p><button class="read-button" data-action="read-hero" data-id="${h.id}">${icon('sound')} 聽聽英雄的故事</button><a class="hero-source" href="${h.source}" target="_blank" rel="noopener noreferrer">家長閱讀：官方百科 ↗</a></article>`).join('')}</div><p class="catalogue-note">收錄圓谷官方英雄百科目前列出的 53 位角色（查核：2026/10/15）。年代為登場年份分組，型態與合體角色不另外計數。Teo 保留官方英文名稱；中文譯名因地區可能不同。</p>`;restoreHeroTools();}
+function renderExtraLibrary(){
+ const rows={forms:FORMS,devices:DEVICES,moves:MOVES,monsters:MONSTERS}[encyclopediaTab];
+ const titles={forms:'七彩型態研究室',devices:'變身道具寶庫',moves:'必殺技實驗室',monsters:'怪獸好朋友圖鑑'};
+ main.innerHTML=libraryTabs()+screenHead(titles[encyclopediaTab],'看圖片、聽故事，再把喜歡的夥伴帶進冒險！',`${rows.length} 個發現`)+`<div class="extra-library">${rows.map(x=>{
+  const h=HEROES.find(h=>h.id===(x.heroId||x.owners?.[0]));
+  let visual,copy,action;
+  if(encyclopediaTab==='forms'){visual=formFigure(x);copy=`${h.short} · ${ROLES[x.role]}<br>${x.hint}<br>招式：${x.move}`;action=`<button class="read-button" data-action="try-form" data-id="${x.id}">變成這個型態！</button>`;}
+  else if(encyclopediaTab==='devices'){visual=devicePicture({...h,id:x.id,device:x.name,deviceKind:x.deviceKind});copy=`${x.kind} · ${x.owners.map(id=>HEROES.find(h=>h.id===id).short).join('、')}<br>${x.fact}`;action='';}
+  else if(encyclopediaTab==='moves'){visual=`<div class="move-symbol ${x.kind}">${moveSymbol(x)}</div>${heroImage(h,'move-owner')}`;copy=`${h.short}的招式<br>${{beam:'集中光線',ring:'旋轉光輪',burst:'爆發力量',calm:'溫柔的光'}[x.kind]} · 遊戲演出分類`;action=`<button class="read-button" data-action="try-move" data-id="${x.id}">帶著這招出發！</button>`;}
+  else{visual=monster('monster-library-image',x);copy=`${x.friendly?'💚 友善夥伴':'✦ '+x.tag+'挑戰'}<br>${x.fact}`;action=`<button class="read-button" data-action="try-monster" data-id="${x.id}">${x.friendly?'一起幫助牠！':'和牠玩挑戰！'}</button>`;}
+  return `<article class="extra-card"><div class="extra-visual">${visual}</div><h2>${x.name}</h2><p>${copy}</p>${action}<button class="read-button" data-action="read-entry" data-id="${x.id}" data-tab="${encyclopediaTab}">♫ 聽聽小故事</button>${sourceLink(x.source)}</article>`;
+ }).join('')}</div><p class="catalogue-note">型態與道具圖為簡化配色示意，辨識時請一起看名稱；不是官方造型複製圖。招式動畫與力量加成是本遊戲的趣味設計。中文譯名可能因地區不同，沒有確定譯名時保留原名。資料查核：2026/10/15。</p>`;
+}
 function renderBadges(){main.innerHTML=screenHead('我的小成就','每一份勇氣，都會變成一顆閃亮的星星。')+`<div class="star-summary"><span>★</span><div><strong>${state.stars} <small style="font-size:14px">顆冒險星星</small></strong><p>已收集 ${BADGES.filter(b=>hasBadge(b.id)).length} / ${BADGES.length} 枚徽章，一起慢慢收集吧！</p></div></div><div class="badge-grid">${BADGES.map(b=>`<article class="achievement ${hasBadge(b.id)?'earned':'locked'}"><div class="medal">${b.emoji}</div><h2>${b.name}</h2><p>${b.description}</p><span class="status-label">${hasBadge(b.id)?'✓ 已獲得・你好棒！':'等待你的冒險'}</span></article>`).join('')}</div><p class="badge-help">星星與徽章會保存在這個瀏覽器裡，不用登入。</p>`;}
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
@@ -1049,45 +3539,87 @@ function startGame(mode){
   if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
-  const pool = mode==='forms'?FORMS:mode==='device'?HEROES.filter(h=>h.deviceQuiz):HEROES;
+  const pool = mode==='forms'?FORMS:mode==='device'?DEVICES.filter(d=>d.kind!=='武器').map(deviceQuestion):HEROES;
   const deck = shuffle(pool);
   while(deck.length<5)deck.push(...shuffle(pool));
   state.game={type:'quiz',mode,deck:deck.slice(0,5),index:0,answered:false,options:[],stars:0};
   nextQuiz();
 }
 function nextQuiz(){
-  const g=state.game;if(!g||g.type!=='quiz')return;
+  const g=state.game;if(!g||g.type!=='quiz')return;stopVoice();
   if(g.index>=5){finish(g.mode,10,'五顆勇氣，五次小小進步！','你已經完成 5 道題目。每次觀察，都讓你更認識英雄。');return;}
   g.answered=false;
-  const q=g.deck[g.index], easy=state.player!=='big',pool=g.mode==='forms'?FORMS:HEROES;
-  g.options=shuffle([q,...shuffle(pool.filter(x=>x.id!==q.id&&(g.mode!=='device'||x.deviceKey!==q.deviceKey))).slice(0,(easy||g.mode==='forms')?2:3)]);
-  const title=g.mode==='quiz'?'這位光之英雄是誰呢？':g.mode==='forms'?'迪卡變成了哪一種型態？':'這個變身器，可以變成誰？';
-  const visual=g.mode==='quiz'?heroImage(q):g.mode==='forms'?formFigure(q):devicePicture(q)+`<span class="device-name-label">${q.device}</span>`;
+  const q=g.deck[g.index], easy=state.player!=='big',pool=g.mode==='forms'?FORMS.filter(f=>f.heroId===q.heroId):HEROES;
+  g.options=shuffle([q,...shuffle(pool.filter(x=>x.id!==q.id&&(g.mode!=='device'||x.deviceKey!==q.deviceKey&&!(q.owners||[q.id]).includes(x.id)))).slice(0,(easy||g.mode==='forms')?2:3)]);
+  const title=g.mode==='quiz'?'這位光之英雄是誰呢？':g.mode==='forms'?`${HEROES.find(h=>h.id===q.heroId).short}變成了哪一種型態？`:'這個力量道具，是誰的好搭檔？';
+  const visual=g.mode==='quiz'?heroImage(q):g.mode==='forms'?`<div class="form-question-owner">${heroImage(HEROES.find(h=>h.id===q.heroId),'form-owner')}<span>${HEROES.find(h=>h.id===q.heroId).short}<small>型態配色示意</small></span></div>${formFigure(q)}`:devicePicture(q)+`<span class="device-name-label">${q.device}</span>`;
   main.innerHTML=screenHead(GAMES.find(x=>x.id===g.mode).title,'慢慢看、慢慢想，答錯也可以再試一次。',`${easy?'暖身':'進階'}挑戰 · ${g.index+1} / 5`)+`<section class="panel center"><div class="quiz-progress" aria-label="第 ${g.index+1} 題，共 5 題">${Array.from({length:5},(_,i)=>`<span class="${i<g.index?'done':i===g.index?'current':''}"></span>`).join('')}</div><h2 class="question-title">${title}</h2><div class="question-visual">${visual}</div><p class="quiz-hint">✦ ${easy?(g.mode==='device'?`小提示：${q.hint}`:q.hint):'仔細看看顏色和形狀，你一定找得到！'}</p><div class="quiz-options ${g.options.length===4?'four':''}">${g.options.map((o,i)=>`<button class="answer" data-action="answer" data-index="${i}"><span class="key-hint">${i+1}</span>${easy&&g.mode!=='forms'?heroImage(o):''}<span>${g.mode==='forms'?o.name:o.short}</span></button>`).join('')}</div><div class="feedback" id="feedback" role="status" aria-live="polite"></div><div class="quiz-toolbar"><span>${iconInlineKeyboard()} 也可以按數字 1～${g.options.length} 選答案</span><button class="read-button" data-action="read-question">${icon('sound')} 聽聽題目</button></div></section>`;
   if(easy)speakQuestion();
 }
 function iconInlineKeyboard(){return '⌨';}
-function speakQuestion(){const g=state.game;if(!g||g.type!=='quiz')return;const q=g.deck[g.index];speak(`${g.mode==='quiz'?'這位英雄是誰呢？':g.mode==='forms'?'迪卡變成了哪一種型態？':`這是${q.device}，可以變成誰呢？`}${state.player!=='big'?q.hint:''}。${g.options.map((o,i)=>`第${i+1}個，${g.mode==='forms'?o.name:o.short}`).join('。')}`);}
+function speakQuestion(){const g=state.game;if(!g||g.type!=='quiz')return;const q=g.deck[g.index];speak(`${g.mode==='quiz'?'這位英雄是誰呢？':g.mode==='forms'?`${HEROES.find(h=>h.id===q.heroId).short}變成了哪一種型態？`:`這是${q.device}，可以變成誰呢？`}${state.player!=='big'?q.hint:''}。${g.options.map((o,i)=>`第${i+1}個，${g.mode==='forms'?o.name:o.short}`).join('。')}`);}
 function answer(index){
   const g=state.game;if(!g||g.type!=='quiz'||g.answered)return;const q=g.deck[g.index],o=g.options[index];if(!o)return;
   const btn=$$('[data-action="answer"]')[index];
   if(o.id!==q.id){btn.classList.add('wrong');$('#feedback').textContent='很接近了，再仔細看看！你可以的。';tone('try');speak('再仔細看看，你可以的！');return;}
   g.answered=true;btn.classList.remove('wrong');btn.classList.add('correct');$$('[data-action="answer"]').forEach(b=>b.disabled=true);g.stars++;
   $('#feedback').innerHTML=`<span>✦ 答對了！${g.mode==='forms'?q.description:`這是${q.name}！`}</span><button class="primary" data-action="next-question">${g.index===4?'領取星星':'下一題'} ${icon('arrow')}</button>`;
-  tone('success');speak(`答對了！${g.mode==='forms'?q.description:`這是${q.name}！`}`);
+  tone('success');playCue('correct');speak(`${g.mode==='forms'?q.description:`這是${q.name}！`}`);
 }
+function selectionExtras(g){
+ const h=HEROES[g.selected[g.pilot]],forms=heroForms(h),m=MONSTERS.find(m=>m.id===g.monsterId)||MONSTERS[0];
+ return `<section class="loadout"><h3>🌈 ${h.short}的型態</h3><p>先選力量！對戰中也能按 D${g.coop?'／J':''} 切換。</p><div class="loadout-options">${forms.length?forms.map(f=>`<button class="form-choice ${g.forms[g.pilot]===f.id?'selected':''}" data-action="pick-form" data-id="${f.id}" aria-pressed="${g.forms[g.pilot]===f.id}"><span style="background:${f.color}" class="form-dot"></span><b>${f.name}</b><small>${ROLES[f.role]}</small></button>`).join(''):'<span class="pill">✦ 基本型態，光之力量準備好了！</span>'}</div><h3>🦖 今天和誰出任務？</h3><p>${m.name} · ${m.friendly?'幫助好朋友，一起送暖！':m.tag+'小挑戰'}<br>${m.fact}</p><div class="monster-select">${MONSTERS.map(x=>`<button class="monster-choice ${g.monsterId===x.id?'selected':''}" data-action="pick-monster" data-id="${x.id}" aria-pressed="${g.monsterId===x.id}">${monster('monster-thumb',x)}<b>${x.name}</b><small>${x.friendly?'💚 友善夥伴':x.tag+'挑戰'}</small></button>`).join('')}</div></section>`;
+}
+function chosenMove(g){
+ const form=activeForm(g,0);
+ return MOVES.find(m=>m.id===g.moveId&&m.heroId===g.heroes[0].id)||MOVES.find(m=>m.heroId===g.heroes[0].id&&m.name===form?.move)||MOVES.find(m=>m.heroId===g.heroes[0].id)||{id:'practice',name:'守護之光（遊戲練習招式）',kind:'calm'};
+}
+function battleMoves(g){
+ const rows=MOVES.filter(m=>m.heroId===g.heroes[0].id);
+ return `<div class="battle-moves" id="battle-moves"><p>⚡ 選一招喜歡的必殺技${g.coop?'，和弟弟一起發射！':'！'}</p><div class="loadout-options">${rows.length?rows.map(m=>`<button class="move-choice ${chosenMove(g).id===m.id?'selected':''}" data-action="pick-move" data-id="${m.id}" aria-pressed="${chosenMove(g).id===m.id}">${moveSymbol(m)} ${m.name}</button>`).join(''):'<span class="pill">♥ 守護之光 · 遊戲練習招式</span>'}</div></div>`;
+}
+function updateMoveButtons(g){
+ $$('[data-action="pick-move"]').forEach(el=>{const active=el.dataset.id===chosenMove(g).id;el.classList.toggle('selected',active);el.setAttribute('aria-pressed',String(active));});
+}
+function applyBattleForms(){
+ const g=state.game;if(g?.type!=='battle')return;
+ $$('.arena-hero').forEach((el,i)=>{const f=activeForm(g,i);el.style.filter=f?`drop-shadow(0 0 14px ${f.color})`:'';el.style.setProperty('--form-color',f?.color||'#7cc7d0');el.setAttribute('aria-label',`${g.heroes[i].short}・${f?.name||'基本型態'}`);const tag=$(`#form-label-${i}`);if(tag){tag.style.borderColor=f?.color||'#7cc7d0';tag.textContent=`${f?.name||'基本型態'} ${f?ROLES[f.role]:''}`;}});
+}
+function cycleForm(i){
+ const g=state.game;if(g?.type!=='battle'||g.paused||g.firing||g.finished||i>=(g.coop?2:1))return;
+ const rows=heroForms(g.heroes[i]);if(rows.length<2){toast('這位英雄的基本型態，已經充滿光之力量！');return;}
+ const next=rows[(rows.findIndex(f=>f.id===g.forms[i])+1)%rows.length];g.forms[i]=next.id;if(i===0)g.moveId=null;
+ $(`#form-label-${i}`).textContent=next.name;applyBattleForms();updateMoveButtons(g);tone('transform');
+ $('#battle-message').textContent=`${g.heroes[i].short}・${next.name}！${next.hint}`;
+}
+function beginChallenge(g){
+ g.challengeSolved=false;const p=g.monster.pattern;
+ const message={rush:'怪獸突進！按護盾，一起保護城市！',electric:'電流來囉！按護盾，變成守護型更安心！',armor:'重裝挑戰！換力量型再攻擊，可多得能量！',flight:'怪獸飛高了！換速度型再攻擊，可多得能量！',clone:'分身出現了！找出亮著星星的本尊！',burrow:'怪獸躲起來了！找到亮著星星的位置！',friendly:`${g.monster.name}想要你的幫忙！點亮星星，送出溫暖！`}[p];
+ $('#battle-message').textContent=message;$('.arena-status').textContent=g.monster.friendly?'♥ 一起幫助好朋友':'✦ 小挑戰開始！';playCue('challenge');
+ if(['clone','burrow','friendly'].includes(p)){
+  g.targetIndex=Math.floor(Math.random()*3);const el=document.createElement('div');el.className='challenge-targets';
+  el.innerHTML=Array.from({length:3},(_,i)=>`<button data-action="challenge-target" data-index="${i}" aria-label="${i===g.targetIndex?'亮著星星的正確位置':'再觀察一下這個位置'}">${i===g.targetIndex?(g.monster.id==='pucchi'?'🍩 ★':g.monster.id==='kanegon'?'🪙 ★':'🌟'):(p==='burrow'?'🪨':p==='friendly'?'☁':'?')}</button>`).join('');$('#arena').append(el);
+ }
+}
+function challengeTarget(i){
+ const g=state.game;if(g?.type!=='battle'||g.paused||g.firing||!g.warning||g.challengeSolved)return;
+ if(i!==g.targetIndex){$('#battle-message').textContent='再看看亮著星星的那一個！不怕答錯喔！';return;}
+ g.challengeSolved=true;$('.challenge-targets')?.remove();g.energy[0]=Math.min(4,g.energy[0]+1);if(g.coop)g.energy[1]=Math.min(4,g.energy[1]+1);
+ updateEnergy();$('#battle-message').textContent=g.monster.friendly?'好朋友開心了！送你們一格愛心能量！':'找到本尊了！送你們一格光之能量！';tone('success');playCue('correct');
+}
+
 function startSelection(coop){
-  state.game={type:'selection',coop,selected:[2,3],pilot:0};
+  state.game={type:'selection',coop,selected:[2,3],forms:['multi','zero-base'],monsterId:MONSTERS[(state.completed[coop?'coop':'battle']||0)%MONSTERS.length].id,pilot:0};
   renderSelection();
 }
 function renderSelection(){
   const g=state.game;if(!g||g.type!=='selection')return;
-  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div><div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button></section>`;
+  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div>${selectionExtras(g)}<div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button></section>`;
   restoreHeroTools();
 }
 function prepareTransform(){
   const old=state.game;if(!old||old.type!=='selection')return;
-  state.game={type:'transform',coop:old.coop,heroes:old.selected.map(i=>HEROES[i]),ready:[false,false],busy:false};renderTransform();
+  state.game={type:'transform',coop:old.coop,heroes:old.selected.map(i=>HEROES[i]),forms:old.forms,monsterId:old.monsterId,moveId:old.moveId,ready:[false,false],busy:false};renderTransform();
 }
 function renderTransform(){
   const g=state.game;if(!g||g.type!=='transform')return;
@@ -1100,17 +3632,17 @@ function transform(index){
   if(!g.ready[0]||(g.coop&&!g.ready[1])){renderTransform();return;}
   g.busy=true;
   $('.transform-panel').innerHTML=`<span class="pill">✦ 變身成功</span><div style="display:flex;gap:15px">${g.heroes.slice(0,g.coop?2:1).map(h=>heroImage(h)).join('')}</div><h2>${g.coop?'兄弟的光，一起出發！':`${g.heroes[0].short}，登場！`}</h2><p>勇氣已充滿，準備守護地球！</p>`;
-  speak(g.coop?'變身成功！一起守護地球！':`${g.heroes[0].short}！變身成功！`);
+  playCue('transform');
   later(()=>beginBattle(g),1250);
 }
 function beginBattle(setup){
-  state.game={type:'battle',coop:setup.coop,heroes:setup.heroes,hp:100,round:(state.completed[setup.coop?'coop':'battle']||0)%3,energy:[0,0],last:[-Infinity,-Infinity],shieldUntil:[0,0],paused:false,warning:false,warnElapsed:0,nextWarning:6500,warningLimit:state.player==='big'?3500:6000,lastTick:performance.now(),elapsed:0,finished:false,firing:false,beamRemaining:0};
+  state.game={type:'battle',coop:setup.coop,heroes:setup.heroes,forms:setup.forms||[],monster:MONSTERS.find(m=>m.id===setup.monsterId)||MONSTERS[0],moveId:setup.moveId||null,hp:100,round:(state.completed[setup.coop?'coop':'battle']||0)%3,energy:[0,0],last:[-Infinity,-Infinity],shieldUntil:[0,0],paused:false,warning:false,warnElapsed:0,nextWarning:6500,warningLimit:state.player==='big'?3500:6000,lastTick:performance.now(),elapsed:0,finished:false,firing:false,beamRemaining:0};
   renderBattle();if(document.hidden)pauseBattle(true);battleTick();
 }
 function renderBattle(){
   const g=state.game;if(!g||g.type!=='battle')return;
-  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'地球守護大作戰',g.coop?'哥哥和弟弟各自集滿能量，再按空白鍵發射合體光線！':'攻擊集氣、護盾守護，能量滿了就能發射必殺光線！')+`<section class="panel"><div style="display:flex;align-items:center;gap:10px"><span class="pill">✦ ${g.round+1} 號訓練場 · ${g.coop?'最佳拍檔':'勇氣練習'}</span><button class="pause-button" data-action="pause">Ⅱ 暫停</button></div><div class="arena" id="arena"><span class="arena-status">☀ 城市安全・英雄就位</span><div class="monster-label">${['古代怪獸・哥摩拉','訓練怪獸・小紫','訓練怪獸・小綠'][g.round%3]}<div class="hp-bar" role="progressbar" aria-label="怪獸能量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${g.hp}"><i id="enemy-hp" style="width:${g.hp}%"></i></div></div>${city()}${heroImage(g.heroes[0],'arena-hero',false)}${g.coop?heroImage(g.heroes[1],'arena-hero hero-two',false):''}<span class="arena-vs">VS</span>${monster('arena-monster',g.round%3)}</div><div class="battle-message" id="battle-message" role="status" aria-live="polite">${g.coop?'一人一份能量，準備一起發光！':'勇敢出擊！每次攻擊都會累積能量。'}</div><div class="battle-controls">${Array.from({length:g.coop?2:1},(_,i)=>`<div class="pilot-controls"><strong>${g.coop?['哥哥','弟弟'][i]+'・':''}${g.heroes[i].short}</strong><div class="energy-cells" id="energy-${i}" aria-label="能量 0 / 4">${'<span></span>'.repeat(4)}</div><button class="attack-button" data-action="attack" data-index="${i}">✦ 攻擊 <kbd>${i?'L':'A'}</kbd></button><button class="shield-button" data-action="shield" data-index="${i}">◇ 護盾 <kbd>${i?'K':'S'}</kbd></button></div>`).join('')}</div><button class="primary combo-button" id="combo-button" data-action="beam" disabled>⚡ ${g.coop?'兄弟合體光線':'必殺光線'} <kbd>空白鍵</kbd></button><p class="memory-caption">${g.coop?'兩位英雄的能量都滿 4 格，合體光線就準備好了。':'集滿 4 格能量，發射光線！護盾可以擋住怪獸的能量波。'}</p></section>`;
-  updateEnergy();
+  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'地球守護大作戰',g.coop?'哥哥和弟弟各自集滿能量，再按空白鍵發射合體光線！':'攻擊集氣、護盾守護，能量滿了就能發射必殺光線！')+`<section class="panel"><div style="display:flex;align-items:center;gap:10px"><span class="pill">✦ ${g.round+1} 號訓練場 · ${g.coop?'最佳拍檔':'勇氣練習'}</span><button class="pause-button" data-action="pause">Ⅱ 暫停</button></div><div class="arena" id="arena"><span class="arena-status">☀ 城市安全・英雄就位</span><div class="monster-label">${g.monster.name} · ${g.monster.friendly?'友善救援':g.monster.tag+'挑戰'}<div class="hp-bar" role="progressbar" aria-label="${g.monster.friendly?'還需要的幫助':'怪獸能量'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${g.hp}"><i id="enemy-hp" style="width:${g.hp}%"></i></div></div>${city()}${heroImage(g.heroes[0],'arena-hero',false)}${g.coop?heroImage(g.heroes[1],'arena-hero hero-two',false):''}<span class="arena-vs">${g.monster.friendly?'♥':'VS'}</span>${monster('arena-monster',g.monster)}</div><div class="battle-message" id="battle-message" role="status" aria-live="polite">${g.coop?'一人一份能量，準備一起發光！':g.monster.friendly?'把愛心送給好朋友！每次幫忙都能集氣。':'勇敢出擊！每次攻擊都會累積能量。'}</div><div class="battle-controls">${Array.from({length:g.coop?2:1},(_,i)=>`<div class="pilot-controls"><strong>${g.coop?['哥哥','弟弟'][i]+'・':''}${g.heroes[i].short}<small class="current-form" id="form-label-${i}">${activeForm(g,i)?.name||'基本型態'}</small></strong><div class="energy-cells" id="energy-${i}" aria-label="能量 0 / 4">${'<span></span>'.repeat(4)}</div><button class="attack-button" data-action="attack" data-index="${i}">${g.monster.id==='pucchi'?'🍩 送點心':g.monster.id==='kanegon'?'🪙 送硬幣':g.monster.friendly?'♥ 幫助牠':'✦ 攻擊'} <kbd>${i?'L':'A'}</kbd></button><button class="shield-button" data-action="shield" data-index="${i}">◇ 護盾 <kbd>${i?'K':'S'}</kbd></button><button class="form-button" data-action="cycle-form" data-index="${i}">🌈 換型態 <kbd>${i?'J':'D'}</kbd></button></div>`).join('')}</div>${battleMoves(g)}<button class="primary combo-button" id="combo-button" data-action="beam" disabled>⚡ ${g.monster.friendly?'友善之光':g.coop?'兄弟合體光線':'必殺光線'} <kbd>空白鍵</kbd></button><p class="memory-caption">${g.coop?'兩位英雄的能量都滿 4 格，合體光線就準備好了。':'集滿 4 格能量，發射光線！護盾可以擋住怪獸的能量波。'}</p></section>`;
+  updateEnergy();applyBattleForms();playCue(g.monster.friendly?'rescue':'ready');
 }
 function battleTick(){
   const g=state.game;if(!g||g.type!=='battle'||g.finished)return;
@@ -1118,8 +3650,8 @@ function battleTick(){
   if(!g.paused&&g.firing){g.beamRemaining-=dt;if(g.beamRemaining<=0){resolveBeam();if(state.game!==g)return;}}
   if(!g.paused&&!g.firing){
     g.elapsed+=dt;
-    if(!g.warning&&g.elapsed>=g.nextWarning){g.warning=true;g.warnElapsed=0;$('#battle-message').textContent='怪獸準備發出能量波！按一下護盾保護大家。';$('.arena-status').textContent='◇ 一起開啟護盾！';tone('warning');speak('怪獸要發出能量波了，按一下護盾！');}
-    if(g.warning){g.warnElapsed+=dt;if(g.warnElapsed>=g.warningLimit){const protectedAll=g.shieldUntil[0]>now&&(!g.coop||g.shieldUntil[1]>now);$('#battle-message').textContent=protectedAll?'護盾成功！你們把城市保護得很好！':'光之國送來防護罩！沒關係，下次試試護盾。';$('.arena-status').textContent='☀ 城市安全・繼續加油';g.warning=false;g.nextWarning=g.elapsed+8500;if(protectedAll){g.energy[0]=Math.min(4,g.energy[0]+1);if(g.coop)g.energy[1]=Math.min(4,g.energy[1]+1);updateEnergy();tone('success');}}}
+    if(!g.warning&&g.elapsed>=g.nextWarning){g.warning=true;g.warnElapsed=0;beginChallenge(g);}
+    if(g.warning){g.warnElapsed+=dt;if(g.warnElapsed>=g.warningLimit){const protectedAll=g.challengeSolved||(g.shieldUntil[0]>now&&(!g.coop||g.shieldUntil[1]>now));$('.challenge-targets')?.remove();$('#battle-message').textContent=protectedAll?'挑戰成功！你們合作得很好！':'光之國一起來幫忙！下次再試試，大家都平安。';$('.arena-status').textContent='☀ 城市安全・繼續加油';g.warning=false;g.nextWarning=g.elapsed+8500;if(protectedAll&&!g.challengeSolved){g.energy[0]=Math.min(4,g.energy[0]+1);if(g.coop)g.energy[1]=Math.min(4,g.energy[1]+1);updateEnergy();tone('success');}}}
   }
   later(battleTick,100);
 }
@@ -1132,39 +3664,40 @@ function updateEnergy(){
 function updateHp(){const g=state.game;$('#enemy-hp').style.width=`${g.hp}%`;$('.hp-bar').setAttribute('aria-valuenow',g.hp);}
 function attack(i){
   const g=state.game;if(!g||g.type!=='battle'||g.paused||g.finished||g.firing||i>=(g.coop?2:1))return;
-  const now=performance.now();if(now-g.last[i]<180)return;g.last[i]=now;
-  g.energy[i]=Math.min(4,g.energy[i]+1);g.hp=Math.max(1,g.hp-2);updateEnergy();updateHp();tone('attack');
+  const now=performance.now();if(now-g.last[i]<(activeForm(g,i)?.role==='speed'?140:180))return;g.last[i]=now;
+  if(g.warning&&!g.challengeSolved&&['armor','flight'].includes(g.monster.pattern)&&activeForm(g,i)?.role===(g.monster.pattern==='armor'?'power':'speed')){g.challengeSolved=true;g.energy[i]=Math.min(4,g.energy[i]+1);$('#battle-message').textContent='型態用對了！多送一格能量！';}
+  g.energy[i]=Math.min(4,g.energy[i]+1);g.hp=Math.max(1,g.hp-(activeForm(g,i)?.role==='power'?3:2));updateEnergy();updateHp();tone('attack');
   const actor=$$('.arena-hero')[i];actor.classList.remove('punch');void actor.offsetWidth;actor.classList.add('punch');$('.arena-monster').classList.remove('hit');void $('.arena-monster').offsetWidth;$('.arena-monster').classList.add('hit');
   if(g.energy[i]===4&&!g.warning&&!(g.energy[0]>=4&&(!g.coop||g.energy[1]>=4)))$('#battle-message').textContent=`${i?'弟弟':'哥哥'}的能量滿了！幫另一位英雄加油吧！`;
 }
 function shield(i){
   const g=state.game;if(!g||g.type!=='battle'||g.paused||g.finished||g.firing||i>=(g.coop?2:1))return;
   const now=performance.now();if(g.shieldUntil[i]>now+g.warningLimit-300)return;
-  g.shieldUntil[i]=now+g.warningLimit+2000;
+  g.shieldUntil[i]=now+g.warningLimit+(activeForm(g,i)?.role==='guard'?5000:2000);
   const el=document.createElement('div');el.className=`shield-bubble ${i?'second':''}`;$('#arena').append(el);later(()=>el.remove(),1000);tone('shield');
   $('#battle-message').textContent=g.coop?`${i?'弟弟':'哥哥'}的護盾開啟！我們互相保護。`:'光之護盾開啟！你正在保護城市。';
 }
 function fireBeam(){
   const g=state.game;if(!g||g.type!=='battle'||g.paused||g.finished||g.firing||g.energy[0]<4||(g.coop&&g.energy[1]<4))return;
-  g.firing=true;g.beamRemaining=900;g.energy=[0,0];g.hp=Math.max(0,g.hp-52);updateEnergy();updateHp();
-  const el=document.createElement('div');el.className='beam';$('#arena').append(el);tone('beam');
-  $('#battle-message').textContent=g.coop?'兄弟合體光線！這就是合作的力量！':`${g.heroes[0].move}！光之力量，發射！`;speak(g.coop?'兄弟合體光線！':`${g.heroes[0].move}！`);
+  g.firing=true;g.beamRemaining=900;g.energy=[0,0];g.hp=Math.max(0,g.hp-(g.monster.friendly&&activeForm(g,0)?.role==='calm'?64:52));updateEnergy();updateHp();
+  const move=chosenMove(g);const el=document.createElement('div');el.className='beam '+(g.monster.friendly?'calm':move.kind);$('#arena').append(el);tone('beam');
+  $('#battle-message').textContent=g.monster.friendly?'送出友善的光！夥伴越來越安心了！':`${g.coop?'兄弟合體！':''}${move.name}！`;playCue(g.monster.friendly?'kindness':'beam');
 }
 function resolveBeam(){
   const g=state.game;if(!g||g.type!=='battle')return;
   $('.beam')?.remove();g.firing=false;
-  if(g.hp<=0){g.finished=true;finish(g.coop?'coop':'battle',g.coop?15:10,g.coop?'兄弟齊心，地球平安！':'勇敢的小英雄，任務成功！',g.coop?'哥哥和弟弟互相幫忙，用合作的光守護了城市。':'你的勇氣充滿光之力量，城市裡的大家都在為你歡呼！');}
-  else{updateEnergy();$('#battle-message').textContent='怪獸的能量變少了！再一起集氣一次吧！';}
+  if(g.hp<=0){g.finished=true;if(g.monster.friendly){finish(g.coop?'coop':'battle',g.coop?15:10,'好朋友救援成功！',`你們幫助了${g.monster.name}，大家一起成為好朋友！`);return;}finish(g.coop?'coop':'battle',g.coop?15:10,g.coop?'兄弟齊心，地球平安！':'勇敢的小英雄，任務成功！',g.coop?'哥哥和弟弟互相幫忙，用合作的光守護了城市。':'你的勇氣充滿光之力量，城市裡的大家都在為你歡呼！');}
+  else{updateEnergy();$('#battle-message').textContent=g.monster.friendly?'好朋友收到你的心意了！再一起幫忙一次吧！':'怪獸的能量變少了！再一起集氣一次吧！';}
 }
 function pauseBattle(value){
   const g=state.game;if(!g||g.type!=='battle'||g.finished)return;
   const shouldPause=value===undefined?!g.paused:value;if(g.paused===shouldPause)return;g.paused=shouldPause;
-  if(g.paused){g.pauseAt=performance.now();if('speechSynthesis'in window)speechSynthesis.cancel();const el=document.createElement('div');el.className='battle-paused';el.innerHTML='<strong>小英雄休息一下</strong><span>準備好了，我們再繼續。</span><button class="primary" data-action="pause">▶ 繼續冒險</button>';$('#arena').append(el);}
+  if(g.paused){g.pauseAt=performance.now();stopVoice();const el=document.createElement('div');el.className='battle-paused';el.innerHTML='<strong>小英雄休息一下</strong><span>準備好了，我們再繼續。</span><button class="primary" data-action="pause">▶ 繼續冒險</button>';$('#arena').append(el);}
   else{const delta=performance.now()-g.pauseAt;g.shieldUntil=g.shieldUntil.map(t=>t? t+delta:0);$('.battle-paused')?.remove();g.lastTick=performance.now();}
   const button=$('.pause-button');button.textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';updateEnergy();
 }
 function startMemory(){
-  const count=state.player==='big'?6:4,unique=[...new Map(shuffle(HEROES.filter(h=>h.deviceQuiz)).map(h=>[h.deviceKey,h])).values()],selected=shuffle(unique).slice(0,count);
+  const count=state.player==='big'?6:4,seen=new Set(),unique=shuffle(DEVICES.filter(d=>d.kind!=='武器')).map(deviceQuestion).filter(h=>{if(seen.has(h.id))return false;seen.add(h.id);return true;}),selected=shuffle(unique).slice(0,count);
   state.game={type:'memory',mode:'memory',cards:shuffle(selected.flatMap(h=>[{id:h.id,kind:'hero',hero:h},{id:h.id,kind:'device',hero:h}])),flipped:[],matched:[],locked:false,pairs:count,tries:0};
   main.innerHTML=screenHead('英雄翻翻樂','找出「英雄」和「他的變身器」，配成一對！',`${count} 組好搭檔`)+`<section class="panel center"><h2 class="question-title">誰和誰，是變身好搭檔？</h2><p class="select-copy">先翻兩張看看，不一樣也沒關係。</p><div class="memory-board">${state.game.cards.map((c,i)=>`<button class="memory-card" data-action="flip" data-index="${i}" aria-label="第 ${i+1} 張卡片，尚未翻開"><img class="card-back-icon" src="assets/emblem.svg" alt=""></button>`).join('')}</div><p class="memory-caption" id="memory-status" role="status" aria-live="polite">已找到 0 / ${count} 組好搭檔</p><button class="read-button" data-action="memory-help">${icon('sound')} 聽聽怎麼玩</button></section>`;
   speak('找找看，哪位英雄和哪個變身器是一對？點兩張卡片，翻開看看吧！');
@@ -1182,14 +3715,19 @@ function finish(mode,stars,title,copy){
   state.stars+=stars;state.completed[mode]=(state.completed[mode]||0)+1;save();updateChrome();
   const earned=BADGES.filter(b=>hasBadge(b.id)).length-before;
   main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p><div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="start" data-game="${mode}">再玩一次 ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
-  confetti();tone('victory');speak(`${title}！獲得${stars}顆星星，你們好棒！`);main.focus({preventScroll:true});
+  confetti();tone('victory');playCue('victory');main.focus({preventScroll:true});
 }
 function speak(text){
   if(!state.sound||!('speechSynthesis'in window))return;
-  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='zh-TW';utterance.rate=.88;utterance.pitch=1.08;
-  const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/zh[-_]TW/i.test(v.lang))||voices.find(v=>/^zh/i.test(v.lang));if(voice)utterance.voice=voice;
+  if(state.cue&&!state.cue.paused)return;
+  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='zh-TW';utterance.rate=1.03;utterance.pitch=1.23;
+  const voices=speechSynthesis.getVoices();const voice=voices.find(v=>/zh[-_]TW/i.test(v.lang)&&/Flo|Sandy|Meijia|美佳/i.test(v.name))||voices.find(v=>/zh[-_]TW/i.test(v.lang))||voices.find(v=>/^zh/i.test(v.lang));if(voice)utterance.voice=voice;
   speechSynthesis.speak(utterance);
 }
+function stopVoice(){if(state.cue){state.cue.pause();state.cue.currentTime=0;state.cue=null;}if('speechSynthesis'in window)speechSynthesis.cancel();}
+const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'哇！答對了！你太棒了！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'好朋友需要幫忙！把溫暖的光送給牠吧！',kindness:'友善之光！謝謝你幫助我！',victory:'耶！任務成功！小英雄，你們超棒！',challenge:'小挑戰來囉！仔細看，一起試試！'};
+function cueUrl(id){return `assets/voice-${id}.mp3`;}
+function playCue(id){if(!state.sound||document.hidden)return;stopVoice();if(!window.Audio){speak(CUES[id]);return;}const clip=new window.Audio(cueUrl(id));state.cue=clip;clip.volume=.85;clip.addEventListener('ended',()=>{if(state.cue===clip)state.cue=null;});clip.play().catch(()=>{if(state.cue===clip){state.cue=null;speak(CUES[id]);}});}
 function tone(type){
   if(!state.sound)return;
   try{
@@ -1201,7 +3739,7 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。迪卡型態題固定三個選項。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。語音依裝置提供的中文聲音播放；未提供語音的裝置仍可閱讀畫面提示。</li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；變身器、型態與怪獸為遊戲示意插畫。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
@@ -1212,15 +3750,25 @@ document.addEventListener('click',event=>{
   else if(action==='badges')navigate('badges');
   else if(action==='start')startGame(el.dataset.game);
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
+  else if(action==='encyclopedia-tab'){encyclopediaTab=el.dataset.tab;renderHeroes();}
+  else if(action==='read-entry'){stopVoice();const rows={forms:FORMS,devices:DEVICES,moves:MOVES,monsters:MONSTERS}[el.dataset.tab];const x=rows.find(x=>x.id===el.dataset.id);speak(`${x.name}。${x.description||x.fact||'光之力量，準備發射！'}`);}
+  else if(action==='try-monster'){const id=el.dataset.id;startGame('battle');state.game.monsterId=id;renderSelection();}
+  else if(action==='try-form'||action==='try-move'){const x=(action==='try-form'?FORMS:MOVES).find(x=>x.id===el.dataset.id);startGame('battle');state.game.selected[0]=HEROES.findIndex(h=>h.id===x.heroId);state.game.forms[0]=action==='try-form'?x.id:x.formId;state.game.moveId=action==='try-move'?x.id:null;renderSelection();}
+  else if(action==='pick-form'){if(state.game?.type==='selection'){state.game.forms[state.game.pilot]=el.dataset.id;renderSelection();}}
+  else if(action==='pick-monster'){if(state.game?.type==='selection'){state.game.monsterId=el.dataset.id;renderSelection();}}
+  else if(action==='cycle-form')cycleForm(index);
+  else if(action==='pick-move'){const g=state.game;if(g?.type==='battle'&&!g.paused&&!g.firing){g.moveId=el.dataset.id;updateMoveButtons(g);}}
+  else if(action==='challenge-target')challengeTarget(index);
+  else if(action==='voice-preview'){state.sound=true;save();updateChrome();playCue('welcome');}
   else if(action==='hero-filter'){catalogueFilter=el.dataset.filter;filterHeroCards();}
   else if(action==='help')showHelp();
   else if(action==='close-help')$('#info-dialog').close();
   else if(action==='read-hero'){const h=HEROES.find(h=>h.id===el.dataset.id);speak(`${h.name}。${h.fact}。變身器是${h.device}。必殺技是${h.move}。`);}
-  else if(action==='read-question'){if(!state.sound)toast('先按右上角喇叭，開啟聲音喔！');else speakQuestion();}
+  else if(action==='read-question'){if(!state.sound)toast('先按右上角喇叭，開啟聲音喔！');else{stopVoice();speakQuestion();}}
   else if(action==='answer')answer(index);
   else if(action==='next-question'){if(state.game?.type==='quiz'&&state.game.answered){state.game.index++;nextQuiz();}}
   else if(action==='pilot'){if(state.game?.type==='selection'){state.game.pilot=index;renderSelection();}}
-  else if(action==='pick-hero'){if(state.game?.type==='selection'){state.game.selected[state.game.pilot]=index;tone('flip');renderSelection();}}
+  else if(action==='pick-hero'){if(state.game?.type==='selection'){state.game.selected[state.game.pilot]=index;state.game.forms[state.game.pilot]=heroForms(HEROES[index])[0]?.id||null;state.game.moveId=null;tone('flip');renderSelection();}}
   else if(action==='prepare-transform')prepareTransform();
   else if(action==='transform')transform(index);
   else if(action==='attack')attack(index);
@@ -1240,14 +3788,14 @@ document.addEventListener('keydown',event=>{
   }
   if(g.type==='transform'&&['a','l',' '].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='l'&&g.coop)transform(1);else if(key!=='l')transform(0);}
   if(g.type==='battle'){
-    if(['a','l','s','k',' ','arrowleft','arrowdown','escape'].includes(key))event.preventDefault();
+    if(['a','l','s','k',' ','arrowleft','arrowdown','escape','d','j'].includes(key))event.preventDefault();
     if(event.repeat)return;
-    if(key==='escape')pauseBattle();
+    if(key==='escape')pauseBattle();else if(key==='d')cycleForm(0);else if(key==='j'&&g.coop)cycleForm(1);
     else if(key==='a'||key==='arrowleft')attack(0);else if(key==='l'&&g.coop)attack(1);else if(key==='s'||key==='arrowdown')shield(0);else if(key==='k'&&g.coop)shield(1);else if(key===' ')fireBeam();
   }
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);if('speechSynthesis'in window)speechSynthesis.cancel();}});
-$('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){if('speechSynthesis'in window)speechSynthesis.cancel();toast('聲音關閉，安靜玩也很開心。');}else{tone('success');speak('聲音開啟，小英雄，準備出發！');toast('聲音開啟！準備一起冒險。');}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);stopVoice();}});
+$('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{tone('success');playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});
 $('#help-button').addEventListener('click',showHelp);
 $('.dialog-close').addEventListener('click',()=>$('#info-dialog').close());

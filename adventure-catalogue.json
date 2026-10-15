@@ -1,0 +1,2474 @@
+{
+  "forms": [
+    {
+      "id": "multi",
+      "heroId": "tiga",
+      "name": "複合型",
+      "color": "#916eb2",
+      "second": "#d76c6e",
+      "role": "balance",
+      "move": "哉佩利敖光線",
+      "hint": "力量和速度都很棒！",
+      "description": "迪卡的複合型。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "power",
+      "heroId": "tiga",
+      "name": "力量型",
+      "color": "#cf5e62",
+      "second": "#cf5e62",
+      "role": "power",
+      "move": "迪拉修姆光流",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "迪卡的力量型。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "sky",
+      "heroId": "tiga",
+      "name": "天空型",
+      "color": "#8a80c5",
+      "second": "#8a80c5",
+      "role": "speed",
+      "move": "蘭帕爾特光彈",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "迪卡的天空型。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "tiga-glitter",
+      "heroId": "tiga",
+      "name": "閃耀迪卡",
+      "color": "#dfba4c",
+      "second": "#dfba4c",
+      "role": "guard",
+      "move": "閃耀哉佩利敖光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "迪卡的閃耀迪卡。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "dyna-flash",
+      "heroId": "dyna",
+      "name": "閃光型",
+      "color": "#bf5c68",
+      "second": "#557fb6",
+      "role": "balance",
+      "move": "索爾捷特光線",
+      "hint": "力量和速度都很棒！",
+      "description": "帝納的閃光型。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "dyna-strong",
+      "heroId": "dyna",
+      "name": "強壯型",
+      "color": "#df4e51",
+      "second": "#df4e51",
+      "role": "power",
+      "move": "加爾奈特轟炸",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "帝納的強壯型。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "dyna-miracle",
+      "heroId": "dyna",
+      "name": "奇蹟型",
+      "color": "#597dd0",
+      "second": "#597dd0",
+      "role": "speed",
+      "move": "立波留姆光波",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "帝納的奇蹟型。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "gaia-v1",
+      "heroId": "gaia",
+      "name": "V1 型",
+      "color": "#c34a46",
+      "second": "#c34a46",
+      "role": "balance",
+      "move": "光子冰刀",
+      "hint": "力量和速度都很棒！",
+      "description": "蓋亞的V1 型。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "gaia-v2",
+      "heroId": "gaia",
+      "name": "V2 型",
+      "color": "#9a424a",
+      "second": "#9a424a",
+      "role": "guard",
+      "move": "量子流線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "蓋亞的V2 型。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "gaia-sv",
+      "heroId": "gaia",
+      "name": "至高型 SV",
+      "color": "#a14665",
+      "second": "#5a8aac",
+      "role": "power",
+      "move": "光子流線",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "蓋亞的至高型 SV。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "cosmos-luna",
+      "heroId": "cosmos",
+      "name": "月神模式",
+      "color": "#6588ca",
+      "second": "#6588ca",
+      "role": "calm",
+      "move": "滿月光波",
+      "hint": "用溫柔的光，幫朋友安心！",
+      "description": "高斯的月神模式。用溫柔的光，幫朋友安心！",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "cosmos-corona",
+      "heroId": "cosmos",
+      "name": "日冕模式",
+      "color": "#cd6652",
+      "second": "#cd6652",
+      "role": "power",
+      "move": "Naybuster 光線",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "高斯的日冕模式。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "cosmos-eclipse",
+      "heroId": "cosmos",
+      "name": "日蝕模式",
+      "color": "#827bb4",
+      "second": "#c7665f",
+      "role": "guard",
+      "move": "高斯謬姆光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "高斯的日蝕模式。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "zero-base",
+      "heroId": "zero",
+      "name": "基本型態",
+      "color": "#668cbc",
+      "second": "#c86261",
+      "role": "balance",
+      "move": "傑洛集束射線",
+      "hint": "力量和速度都很棒！",
+      "description": "傑洛的基本型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "zero-strong",
+      "heroId": "zero",
+      "name": "強壯日冕",
+      "color": "#b75048",
+      "second": "#b75048",
+      "role": "power",
+      "move": "Strong Corona Zero Burning",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "傑洛的強壯日冕。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "zero-luna",
+      "heroId": "zero",
+      "name": "月神奇蹟",
+      "color": "#538bc2",
+      "second": "#538bc2",
+      "role": "speed",
+      "move": "奇蹟傑洛頭鏢",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "傑洛的月神奇蹟。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "zero-ultimate",
+      "heroId": "zero",
+      "name": "終極傑洛",
+      "color": "#88a5b9",
+      "second": "#88a5b9",
+      "role": "guard",
+      "move": "Final Ultimate Zero",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "傑洛的終極傑洛。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "zero-shining",
+      "heroId": "zero",
+      "name": "光輝傑洛",
+      "color": "#d1b76d",
+      "second": "#d1b76d",
+      "role": "guard",
+      "move": "Shining Emerium Slash",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "傑洛的光輝傑洛。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "zero-beyond",
+      "heroId": "zero",
+      "name": "極越型態",
+      "color": "#9382be",
+      "second": "#9382be",
+      "role": "speed",
+      "move": "Twin Giga Break",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "傑洛的極越型態。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "z-original",
+      "heroId": "z",
+      "name": "原始型態",
+      "color": "#4d91bb",
+      "second": "#444c64",
+      "role": "balance",
+      "move": "傑斯帝姆光線",
+      "hint": "力量和速度都很棒！",
+      "description": "傑特的原始型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "z-alpha",
+      "heroId": "z",
+      "name": "阿爾法鋒刃",
+      "color": "#678ba5",
+      "second": "#434c65",
+      "role": "speed",
+      "move": "傑斯帝姆邁射光",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "傑特的阿爾法鋒刃。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "z-beta",
+      "heroId": "z",
+      "name": "貝塔粉碎",
+      "color": "#d26654",
+      "second": "#d26654",
+      "role": "power",
+      "move": "傑斯帝姆升龍拳",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "傑特的貝塔粉碎。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "z-gamma",
+      "heroId": "z",
+      "name": "伽瑪未來",
+      "color": "#8c75c1",
+      "second": "#c46b70",
+      "role": "guard",
+      "move": "傑斯帝姆驅動",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "傑特的伽瑪未來。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "z-delta",
+      "heroId": "z",
+      "name": "德爾塔昇華鉤爪",
+      "color": "#ad745c",
+      "second": "#695fac",
+      "role": "power",
+      "move": "傑斯帝姆光輪",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "傑特的德爾塔昇華鉤爪。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "trigger-multi",
+      "heroId": "trigger",
+      "name": "複合型",
+      "color": "#ab7bad",
+      "second": "#d8736c",
+      "role": "balance",
+      "move": "哉佩利敖光線",
+      "hint": "力量和速度都很棒！",
+      "description": "特利卡的複合型。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "trigger-power",
+      "heroId": "trigger",
+      "name": "強壯型",
+      "color": "#d25a56",
+      "second": "#d25a56",
+      "role": "power",
+      "move": "迪拉修姆光流",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "特利卡的強壯型。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "trigger-sky",
+      "heroId": "trigger",
+      "name": "疾速型",
+      "color": "#658ac8",
+      "second": "#658ac8",
+      "role": "speed",
+      "move": "蘭帕爾特光彈",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "特利卡的疾速型。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "trigger-eternity",
+      "heroId": "trigger",
+      "name": "閃耀永恆",
+      "color": "#d9b649",
+      "second": "#d9b649",
+      "role": "guard",
+      "move": "閃耀哉佩利敖光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "特利卡的閃耀永恆。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "trigger-truth",
+      "heroId": "trigger",
+      "name": "真實特利卡",
+      "color": "#924957",
+      "second": "#49455a",
+      "role": "balance",
+      "move": "真實哉佩利敖光線",
+      "hint": "力量和速度都很棒！",
+      "description": "特利卡的真實特利卡。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "decker-flash",
+      "heroId": "decker",
+      "name": "閃光型",
+      "color": "#b66b9f",
+      "second": "#6b8cbf",
+      "role": "balance",
+      "move": "賽魯傑德光線",
+      "hint": "力量和速度都很棒！",
+      "description": "德卡的閃光型。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "decker-strong",
+      "heroId": "decker",
+      "name": "強壯型",
+      "color": "#c95d50",
+      "second": "#c95d50",
+      "role": "power",
+      "move": "德魯涅德烈破",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "德卡的強壯型。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "decker-miracle",
+      "heroId": "decker",
+      "name": "奇蹟型",
+      "color": "#5c89c6",
+      "second": "#5c89c6",
+      "role": "speed",
+      "move": "雷亞琉特波動",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "德卡的奇蹟型。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "decker-dynamic",
+      "heroId": "decker",
+      "name": "強勁型",
+      "color": "#d7a751",
+      "second": "#d7a751",
+      "role": "guard",
+      "move": "戴謬德光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "德卡的強勁型。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "arc-base",
+      "heroId": "arc",
+      "name": "基本型態",
+      "color": "#b96554",
+      "second": "#b96554",
+      "role": "balance",
+      "move": "雅克終結光線",
+      "hint": "力量和速度都很棒！",
+      "description": "雅克的基本型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+    },
+    {
+      "id": "arc-solis",
+      "heroId": "arc",
+      "name": "太陽裝甲",
+      "color": "#d87944",
+      "second": "#d87944",
+      "role": "power",
+      "move": "雅克終結光線",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "雅克的太陽裝甲。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+    },
+    {
+      "id": "arc-luna",
+      "heroId": "arc",
+      "name": "月亮裝甲",
+      "color": "#659ecb",
+      "second": "#659ecb",
+      "role": "speed",
+      "move": "雅克終結光線",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "雅克的月亮裝甲。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+    },
+    {
+      "id": "arc-galaxy",
+      "heroId": "arc",
+      "name": "銀河裝甲",
+      "color": "#9f80bd",
+      "second": "#9f80bd",
+      "role": "guard",
+      "move": "雅克終結光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "雅克的銀河裝甲。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+    },
+    {
+      "id": "omega-base",
+      "heroId": "omega",
+      "name": "基本型態",
+      "color": "#c9554a",
+      "second": "#c9554a",
+      "role": "balance",
+      "move": "雷特克魯特光線",
+      "hint": "力量和速度都很棒！",
+      "description": "奧米加的基本型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "omega-rekiness",
+      "heroId": "omega",
+      "name": "雷基尼斯裝甲",
+      "color": "#689fcd",
+      "second": "#689fcd",
+      "role": "guard",
+      "move": "雷特克魯特光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "奧米加的雷基尼斯裝甲。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "omega-trigaron",
+      "heroId": "omega",
+      "name": "特萊加隆裝甲",
+      "color": "#d7b249",
+      "second": "#d7b249",
+      "role": "speed",
+      "move": "雷特克魯特光線",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "奧米加的特萊加隆裝甲。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "omega-valgeness",
+      "heroId": "omega",
+      "name": "瓦爾基涅斯裝甲",
+      "color": "#cc704e",
+      "second": "#cc704e",
+      "role": "power",
+      "move": "雷特克魯特光線",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "奧米加的瓦爾基涅斯裝甲。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "omega-gamedon",
+      "heroId": "omega",
+      "name": "加美頓裝甲",
+      "color": "#719f79",
+      "second": "#719f79",
+      "role": "guard",
+      "move": "雷特克魯特光線",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "奧米加的加美頓裝甲。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "geed-primitive",
+      "heroId": "geed",
+      "name": "原始型態",
+      "color": "#a76676",
+      "second": "#a76676",
+      "role": "balance",
+      "move": "毀滅爆裂",
+      "hint": "力量和速度都很棒！",
+      "description": "捷德的原始型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-solid",
+      "heroId": "geed",
+      "name": "烈焰爆燃",
+      "color": "#c86343",
+      "second": "#c86343",
+      "role": "power",
+      "move": "Strike Boost",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "捷德的烈焰爆燃。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-acro",
+      "heroId": "geed",
+      "name": "頂尖極速",
+      "color": "#72aac5",
+      "second": "#72aac5",
+      "role": "speed",
+      "move": "Atmos Impact",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "捷德的頂尖極速。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-magnificent",
+      "heroId": "geed",
+      "name": "崇高型態",
+      "color": "#d09857",
+      "second": "#d09857",
+      "role": "guard",
+      "move": "Big Burst Away",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "捷德的崇高型態。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-royal",
+      "heroId": "geed",
+      "name": "皇家至尊",
+      "color": "#d0b15e",
+      "second": "#d0b15e",
+      "role": "guard",
+      "move": "Royal End",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "捷德的皇家至尊。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-ultimate",
+      "heroId": "geed",
+      "name": "究極終結",
+      "color": "#9d7bc2",
+      "second": "#9d7bc2",
+      "role": "power",
+      "move": "Crescent Final Geed",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "捷德的究極終結。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "geed-galaxy",
+      "heroId": "geed",
+      "name": "銀河躍昇",
+      "color": "#9c74b7",
+      "second": "#9c74b7",
+      "role": "speed",
+      "move": "Wrecking Phoenix",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "捷德的銀河躍昇。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "orb-origin",
+      "heroId": "orb",
+      "name": "起源型態",
+      "color": "#bb6856",
+      "second": "#bb6856",
+      "role": "balance",
+      "move": "Orb Supreme Calibur",
+      "hint": "力量和速度都很棒！",
+      "description": "歐布的起源型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "orb-spacium",
+      "heroId": "orb",
+      "name": "重光型態",
+      "color": "#9d788f",
+      "second": "#c16f75",
+      "role": "balance",
+      "move": "斯派利敖光線",
+      "hint": "力量和速度都很棒！",
+      "description": "歐布的重光型態。力量和速度都很棒！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "orb-burnmite",
+      "heroId": "orb",
+      "name": "暴炎型態",
+      "color": "#d57a47",
+      "second": "#d57a47",
+      "role": "power",
+      "move": "Stobium Dynamite",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "歐布的暴炎型態。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "orb-hurricane",
+      "heroId": "orb",
+      "name": "疾風型態",
+      "color": "#5e9cbb",
+      "second": "#5e9cbb",
+      "role": "speed",
+      "move": "Trident Slash",
+      "hint": "動作輕快，飛行和速度最拿手！",
+      "description": "歐布的疾風型態。動作輕快，飛行和速度最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "orb-thunder",
+      "heroId": "orb",
+      "name": "暗耀型態",
+      "color": "#b95d60",
+      "second": "#b95d60",
+      "role": "power",
+      "move": "Zedcium 光線",
+      "hint": "力量充滿，重裝挑戰最拿手！",
+      "description": "歐布的暗耀型態。力量充滿，重裝挑戰最拿手！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "orb-trinity",
+      "heroId": "orb",
+      "name": "三重型態",
+      "color": "#af9870",
+      "second": "#795dad",
+      "role": "guard",
+      "move": "Trinitium 光輪",
+      "hint": "保護夥伴，護盾持續更久！",
+      "description": "歐布的三重型態。保護夥伴，護盾持續更久！",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    }
+  ],
+  "devices": [
+    {
+      "id": "device-ultraman",
+      "name": "貝塔膠囊",
+      "device": "貝塔膠囊",
+      "deviceKey": "貝塔膠囊",
+      "deviceKind": "spark",
+      "owners": [
+        "ultraman"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman",
+      "fact": "和初代一起啟動光之力量。"
+    },
+    {
+      "id": "device-seven",
+      "name": "超人力霸王之眼",
+      "device": "超人力霸王之眼",
+      "deviceKey": "超人力霸王之眼",
+      "deviceKind": "spark",
+      "owners": [
+        "seven"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraseven",
+      "fact": "和七號一起啟動光之力量。"
+    },
+    {
+      "id": "device-tiga",
+      "name": "神光棒（亦稱閃光棒）",
+      "device": "神光棒（亦稱閃光棒）",
+      "deviceKey": "神光棒",
+      "deviceKind": "spark",
+      "owners": [
+        "tiga"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-tiga",
+      "fact": "和迪卡一起啟動光之力量。"
+    },
+    {
+      "id": "device-zero",
+      "name": "傑洛之眼",
+      "device": "傑洛之眼",
+      "deviceKey": "傑洛之眼",
+      "deviceKind": "spark",
+      "owners": [
+        "zero"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-zero",
+      "fact": "和傑洛一起啟動光之力量。"
+    },
+    {
+      "id": "device-z",
+      "name": "Z 昇華器",
+      "device": "Z 昇華器",
+      "deviceKey": "Z 昇華器",
+      "deviceKind": "spark",
+      "owners": [
+        "z"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-z",
+      "fact": "和傑特一起啟動光之力量。"
+    },
+    {
+      "id": "device-mebius",
+      "name": "梅比斯氣息",
+      "device": "梅比斯氣息",
+      "deviceKey": "梅比斯氣息",
+      "deviceKind": "spark",
+      "owners": [
+        "mebius"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-mebius",
+      "fact": "和梅比斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-ace",
+      "name": "超級戒指",
+      "device": "超級戒指",
+      "deviceKey": "超級戒指",
+      "deviceKind": "ring",
+      "owners": [
+        "ace"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ace",
+      "fact": "和衛司一起啟動光之力量。"
+    },
+    {
+      "id": "device-taro",
+      "name": "超級徽章",
+      "device": "超級徽章",
+      "deviceKey": "超級徽章",
+      "deviceKind": "badge",
+      "owners": [
+        "taro"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-taro",
+      "fact": "和太郎一起啟動光之力量。"
+    },
+    {
+      "id": "device-leo",
+      "name": "獅子之瞳",
+      "device": "獅子之瞳",
+      "deviceKey": "獅子之瞳",
+      "deviceKind": "ring",
+      "owners": [
+        "leo"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-leo",
+      "fact": "和雷歐一起啟動光之力量。"
+    },
+    {
+      "id": "device-80",
+      "name": "電光棒",
+      "device": "電光棒",
+      "deviceKey": "電光棒",
+      "deviceKind": "spark",
+      "owners": [
+        "80"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-80",
+      "fact": "和80一起啟動光之力量。"
+    },
+    {
+      "id": "device-yullian",
+      "name": "閃光手鐲",
+      "device": "閃光手鐲",
+      "deviceKey": "閃光手鐲",
+      "deviceKind": "wrist",
+      "owners": [
+        "yullian"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/yullian",
+      "fact": "和尤莉安一起啟動光之力量。"
+    },
+    {
+      "id": "device-joneus",
+      "name": "閃光之星",
+      "device": "閃光之星",
+      "deviceKey": "閃光之星",
+      "deviceKind": "badge",
+      "owners": [
+        "joneus"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-joneus",
+      "fact": "和喬尼亞斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-great",
+      "name": "電漿三角",
+      "device": "電漿三角",
+      "deviceKey": "電漿三角",
+      "deviceKind": "pendant",
+      "owners": [
+        "great"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-great",
+      "fact": "和葛雷一起啟動光之力量。"
+    },
+    {
+      "id": "device-powered",
+      "name": "閃光稜鏡",
+      "device": "閃光稜鏡",
+      "deviceKey": "閃光稜鏡",
+      "deviceKind": "spark",
+      "owners": [
+        "powered"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-powered",
+      "fact": "和帕瓦德一起啟動光之力量。"
+    },
+    {
+      "id": "device-dyna",
+      "name": "閃光劍",
+      "device": "閃光劍",
+      "deviceKey": "閃光劍",
+      "deviceKind": "spark",
+      "owners": [
+        "dyna"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-dyna",
+      "fact": "和帝納一起啟動光之力量。"
+    },
+    {
+      "id": "device-gaia",
+      "name": "藍寶錐",
+      "device": "藍寶錐",
+      "deviceKey": "藍寶錐",
+      "deviceKind": "crystal",
+      "owners": [
+        "gaia"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-gaia",
+      "fact": "和蓋亞一起啟動光之力量。"
+    },
+    {
+      "id": "device-agul",
+      "name": "藍寶鐲",
+      "device": "藍寶鐲",
+      "deviceKey": "藍寶鐲",
+      "deviceKind": "wrist",
+      "owners": [
+        "agul"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-agul",
+      "fact": "和亞格一起啟動光之力量。"
+    },
+    {
+      "id": "device-neos",
+      "name": "星辰器",
+      "device": "星辰器",
+      "deviceKey": "星辰器",
+      "deviceKind": "spark",
+      "owners": [
+        "neos"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-neos",
+      "fact": "和雷歐斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-cosmos",
+      "name": "日月同輝",
+      "device": "日月同輝",
+      "deviceKey": "日月同輝",
+      "deviceKind": "spark",
+      "owners": [
+        "cosmos"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-cosmos",
+      "fact": "和高斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-justice",
+      "name": "正義之槍",
+      "device": "正義之槍",
+      "deviceKey": "正義之槍",
+      "deviceKind": "spark",
+      "owners": [
+        "justice"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-justice",
+      "fact": "和正義一起啟動光之力量。"
+    },
+    {
+      "id": "device-nexus",
+      "name": "進化信徒",
+      "device": "進化信徒",
+      "deviceKey": "進化信徒",
+      "deviceKind": "spark",
+      "owners": [
+        "nexus"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-nexus",
+      "fact": "和納克斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-max",
+      "name": "馬克斯火花",
+      "device": "馬克斯火花",
+      "deviceKey": "馬克斯火花",
+      "deviceKind": "wrist",
+      "owners": [
+        "max"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-max",
+      "fact": "和馬克斯一起啟動光之力量。"
+    },
+    {
+      "id": "device-hikari",
+      "name": "騎士氣息",
+      "device": "騎士氣息",
+      "deviceKey": "騎士氣息",
+      "deviceKind": "wrist",
+      "owners": [
+        "hikari"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-hikari",
+      "fact": "和希卡利一起啟動光之力量。"
+    },
+    {
+      "id": "device-ginga",
+      "name": "銀河火花",
+      "device": "銀河火花",
+      "deviceKey": "銀河火花",
+      "deviceKind": "spark",
+      "owners": [
+        "ginga"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ginga",
+      "fact": "和銀河一起啟動光之力量。"
+    },
+    {
+      "id": "device-victory",
+      "name": "勝利聖槍",
+      "device": "勝利聖槍",
+      "deviceKey": "勝利聖槍",
+      "deviceKind": "lance",
+      "owners": [
+        "victory"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-victory",
+      "fact": "和勝利一起啟動光之力量。"
+    },
+    {
+      "id": "device-x",
+      "name": "X 終端",
+      "device": "X 終端",
+      "deviceKey": "X 終端",
+      "deviceKind": "terminal",
+      "owners": [
+        "x"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-x",
+      "fact": "和X一起啟動光之力量。"
+    },
+    {
+      "id": "device-orb",
+      "name": "歐布圓環",
+      "device": "歐布圓環",
+      "deviceKey": "歐布圓環",
+      "deviceKind": "orb",
+      "owners": [
+        "orb"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-orb",
+      "fact": "和歐布一起啟動光之力量。"
+    },
+    {
+      "id": "device-geed",
+      "name": "捷德昇華器",
+      "device": "捷德昇華器",
+      "deviceKey": "捷德昇華器",
+      "deviceKind": "terminal",
+      "owners": [
+        "geed"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-geed",
+      "fact": "和捷德一起啟動光之力量。"
+    },
+    {
+      "id": "device-rosso",
+      "name": "羅布迴轉儀",
+      "device": "羅布迴轉儀",
+      "deviceKey": "羅布迴轉儀",
+      "deviceKind": "gyro",
+      "owners": [
+        "rosso",
+        "blu"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-rosso",
+      "fact": "和羅索一起啟動光之力量。"
+    },
+    {
+      "id": "device-grigio",
+      "name": "羅布迴轉儀（美劍版）",
+      "device": "羅布迴轉儀（美劍版）",
+      "deviceKey": "羅布迴轉儀（美劍版）",
+      "deviceKind": "gyro",
+      "owners": [
+        "grigio"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultrawoman-grigio",
+      "fact": "和格麗喬一起啟動光之力量。"
+    },
+    {
+      "id": "device-taiga",
+      "name": "大河火花",
+      "device": "大河火花",
+      "deviceKey": "大河火花",
+      "deviceKind": "wrist",
+      "owners": [
+        "taiga",
+        "titas",
+        "fuma"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-taiga",
+      "fact": "和大河一起啟動光之力量。"
+    },
+    {
+      "id": "device-ribut",
+      "name": "GUTS 閃光棒（地球訓練時）",
+      "device": "GUTS 閃光棒（地球訓練時）",
+      "deviceKey": "GUTS 閃光棒",
+      "deviceKind": "gun",
+      "owners": [
+        "ribut",
+        "trigger"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ribut",
+      "fact": "和利布特一起啟動光之力量。"
+    },
+    {
+      "id": "device-decker",
+      "name": "超級 D 閃光劍",
+      "device": "超級 D 閃光劍",
+      "deviceKey": "超級 D 閃光劍",
+      "deviceKind": "terminal",
+      "owners": [
+        "decker"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-decker",
+      "fact": "和德卡一起啟動光之力量。"
+    },
+    {
+      "id": "device-blazar",
+      "name": "布雷薩手鐲",
+      "device": "布雷薩手鐲",
+      "deviceKey": "布雷薩手鐲",
+      "deviceKind": "wrist",
+      "owners": [
+        "blazar"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-blazar",
+      "fact": "和布雷薩一起啟動光之力量。"
+    },
+    {
+      "id": "device-arc",
+      "name": "ARC 昇華器",
+      "device": "ARC 昇華器",
+      "deviceKey": "ARC 昇華器",
+      "deviceKind": "cube",
+      "owners": [
+        "arc"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-arc",
+      "fact": "和雅克一起啟動光之力量。"
+    },
+    {
+      "id": "device-omega",
+      "name": "奧米加頭鏢＋奧米加星石",
+      "device": "奧米加頭鏢＋奧米加星石",
+      "deviceKey": "奧米加頭鏢＋奧米加星石",
+      "deviceKind": "boomerang",
+      "owners": [
+        "omega"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-omega",
+      "fact": "和奧米加一起啟動光之力量。"
+    },
+    {
+      "id": "device-teo",
+      "name": "Teo Crystar",
+      "device": "Teo Crystar",
+      "deviceKey": "Teo Crystar",
+      "deviceKind": "pendant",
+      "owners": [
+        "teo"
+      ],
+      "kind": "變身器",
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-teo",
+      "fact": "和Teo一起啟動光之力量。"
+    },
+    {
+      "id": "zero-neo",
+      "name": "Ultra Zero Eye NEO",
+      "device": "Ultra Zero Eye NEO",
+      "deviceKey": "Ultra Zero Eye NEO",
+      "deviceKind": "boomerang",
+      "owners": [
+        "zero"
+      ],
+      "kind": "變身器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛",
+      "fact": "Ultra Zero Eye NEO是傑洛的變身器。"
+    },
+    {
+      "id": "zero-bracelet",
+      "name": "究極手鐲",
+      "device": "究極手鐲",
+      "deviceKey": "究極手鐲",
+      "deviceKind": "wrist",
+      "owners": [
+        "zero"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛",
+      "fact": "究極手鐲是傑洛的力量道具。"
+    },
+    {
+      "id": "orb-calibur",
+      "name": "歐布聖劍",
+      "device": "歐布聖劍",
+      "deviceKey": "歐布聖劍",
+      "deviceKind": "lance",
+      "owners": [
+        "orb"
+      ],
+      "kind": "變身器兼武器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb",
+      "fact": "歐布聖劍是歐布的變身器兼武器。"
+    },
+    {
+      "id": "orb-cards",
+      "name": "超人融合卡片",
+      "device": "超人融合卡片",
+      "deviceKey": "超人融合卡片",
+      "deviceKind": "terminal",
+      "owners": [
+        "orb"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb",
+      "fact": "超人融合卡片是歐布的力量道具。"
+    },
+    {
+      "id": "geed-capsules",
+      "name": "超人膠囊",
+      "device": "超人膠囊",
+      "deviceKey": "超人膠囊",
+      "deviceKind": "crystal",
+      "owners": [
+        "geed"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed",
+      "fact": "超人膠囊是捷德的力量道具。"
+    },
+    {
+      "id": "geed-finalizer",
+      "name": "Giga Finalizer",
+      "device": "Giga Finalizer",
+      "deviceKey": "Giga Finalizer",
+      "deviceKind": "lance",
+      "owners": [
+        "geed"
+      ],
+      "kind": "變身器兼武器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed",
+      "fact": "Giga Finalizer是捷德的變身器兼武器。"
+    },
+    {
+      "id": "z-access",
+      "name": "超人存取卡",
+      "device": "超人存取卡",
+      "deviceKey": "超人存取卡",
+      "deviceKind": "terminal",
+      "owners": [
+        "z"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+      "fact": "超人存取卡是傑特的力量道具。"
+    },
+    {
+      "id": "z-medals",
+      "name": "超人勳章",
+      "device": "超人勳章",
+      "deviceKey": "超人勳章",
+      "deviceKind": "badge",
+      "owners": [
+        "z"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+      "fact": "超人勳章是傑特的力量道具。"
+    },
+    {
+      "id": "z-beliarok",
+      "name": "貝利亞黃昏",
+      "device": "貝利亞黃昏",
+      "deviceKey": "貝利亞黃昏",
+      "deviceKind": "lance",
+      "owners": [
+        "z"
+      ],
+      "kind": "武器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z",
+      "fact": "貝利亞黃昏是傑特的武器。"
+    },
+    {
+      "id": "trigger-key",
+      "name": "GUTS 超人鑰匙",
+      "device": "GUTS 超人鑰匙",
+      "deviceKey": "GUTS 超人鑰匙",
+      "deviceKind": "spark",
+      "owners": [
+        "trigger"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger",
+      "fact": "GUTS 超人鑰匙是特利卡的力量道具。"
+    },
+    {
+      "id": "trigger-arms",
+      "name": "圓環之臂",
+      "device": "圓環之臂",
+      "deviceKey": "圓環之臂",
+      "deviceKind": "lance",
+      "owners": [
+        "trigger"
+      ],
+      "kind": "武器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger",
+      "fact": "圓環之臂是特利卡的武器。"
+    },
+    {
+      "id": "decker-card",
+      "name": "超人次元卡",
+      "device": "超人次元卡",
+      "deviceKey": "超人次元卡",
+      "deviceKind": "terminal",
+      "owners": [
+        "decker"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker",
+      "fact": "超人次元卡是德卡的力量道具。"
+    },
+    {
+      "id": "decker-sword",
+      "name": "德卡盾劍",
+      "device": "德卡盾劍",
+      "deviceKey": "德卡盾劍",
+      "deviceKind": "lance",
+      "owners": [
+        "decker"
+      ],
+      "kind": "武器",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker",
+      "fact": "德卡盾劍是德卡的武器。"
+    },
+    {
+      "id": "arc-cube",
+      "name": "雅克方塊",
+      "device": "雅克方塊",
+      "deviceKey": "雅克方塊",
+      "deviceKind": "cube",
+      "owners": [
+        "arc"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+      "fact": "雅克方塊是雅克的力量道具。"
+    },
+    {
+      "id": "arc-solis",
+      "name": "太陽裝甲方塊",
+      "device": "太陽裝甲方塊",
+      "deviceKey": "太陽裝甲方塊",
+      "deviceKind": "cube",
+      "owners": [
+        "arc"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+      "fact": "太陽裝甲方塊是雅克的力量道具。"
+    },
+    {
+      "id": "arc-luna",
+      "name": "月亮裝甲方塊",
+      "device": "月亮裝甲方塊",
+      "deviceKey": "月亮裝甲方塊",
+      "deviceKind": "cube",
+      "owners": [
+        "arc"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+      "fact": "月亮裝甲方塊是雅克的力量道具。"
+    },
+    {
+      "id": "arc-galaxy",
+      "name": "銀河裝甲方塊",
+      "device": "銀河裝甲方塊",
+      "deviceKey": "銀河裝甲方塊",
+      "deviceKind": "cube",
+      "owners": [
+        "arc"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+      "fact": "銀河裝甲方塊是雅克的力量道具。"
+    },
+    {
+      "id": "arc-sword",
+      "name": "弧眼劍",
+      "device": "弧眼劍",
+      "deviceKey": "弧眼劍",
+      "deviceKind": "lance",
+      "owners": [
+        "arc"
+      ],
+      "kind": "武器",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼",
+      "fact": "弧眼劍是雅克的武器。"
+    },
+    {
+      "id": "omega-meteor",
+      "name": "奧米加星石",
+      "device": "奧米加星石",
+      "deviceKey": "奧米加星石",
+      "deviceKind": "crystal",
+      "owners": [
+        "omega"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+      "fact": "奧米加星石是奧米加的力量道具。"
+    },
+    {
+      "id": "omega-rekiness",
+      "name": "雷基尼斯星石",
+      "device": "雷基尼斯星石",
+      "deviceKey": "雷基尼斯星石",
+      "deviceKind": "crystal",
+      "owners": [
+        "omega"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+      "fact": "雷基尼斯星石是奧米加的力量道具。"
+    },
+    {
+      "id": "omega-trigaron",
+      "name": "特萊加隆星石",
+      "device": "特萊加隆星石",
+      "deviceKey": "特萊加隆星石",
+      "deviceKind": "crystal",
+      "owners": [
+        "omega"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+      "fact": "特萊加隆星石是奧米加的力量道具。"
+    },
+    {
+      "id": "omega-valgeness",
+      "name": "瓦爾基涅斯星石",
+      "device": "瓦爾基涅斯星石",
+      "deviceKey": "瓦爾基涅斯星石",
+      "deviceKind": "crystal",
+      "owners": [
+        "omega"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+      "fact": "瓦爾基涅斯星石是奧米加的力量道具。"
+    },
+    {
+      "id": "omega-gamedon",
+      "name": "加美頓星石",
+      "device": "加美頓星石",
+      "deviceKey": "加美頓星石",
+      "deviceKind": "crystal",
+      "owners": [
+        "omega"
+      ],
+      "kind": "力量道具",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA",
+      "fact": "加美頓星石是奧米加的力量道具。"
+    }
+  ],
+  "moves": [
+    {
+      "id": "move-1",
+      "heroId": "tiga",
+      "name": "哉佩利敖光線",
+      "kind": "beam",
+      "formId": "multi",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "move-2",
+      "heroId": "tiga",
+      "name": "迪拉修姆光流",
+      "kind": "burst",
+      "formId": "power",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "move-3",
+      "heroId": "tiga",
+      "name": "蘭帕爾特光彈",
+      "kind": "beam",
+      "formId": "sky",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "move-4",
+      "heroId": "tiga",
+      "name": "閃耀哉佩利敖光線",
+      "kind": "beam",
+      "formId": "tiga-glitter",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王迪卡"
+    },
+    {
+      "id": "move-5",
+      "heroId": "dyna",
+      "name": "索爾捷特光線",
+      "kind": "beam",
+      "formId": "dyna-flash",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "move-6",
+      "heroId": "dyna",
+      "name": "加爾奈特轟炸",
+      "kind": "burst",
+      "formId": "dyna-strong",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "move-7",
+      "heroId": "dyna",
+      "name": "立波留姆光波",
+      "kind": "beam",
+      "formId": "dyna-miracle",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王帝納"
+    },
+    {
+      "id": "move-8",
+      "heroId": "gaia",
+      "name": "光子冰刀",
+      "kind": "ring",
+      "formId": "gaia-v1",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "move-9",
+      "heroId": "gaia",
+      "name": "量子流線",
+      "kind": "beam",
+      "formId": "gaia-v2",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "move-10",
+      "heroId": "gaia",
+      "name": "光子流線",
+      "kind": "beam",
+      "formId": "gaia-sv",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王蓋亞"
+    },
+    {
+      "id": "move-11",
+      "heroId": "cosmos",
+      "name": "滿月光波",
+      "kind": "calm",
+      "formId": "cosmos-luna",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "move-12",
+      "heroId": "cosmos",
+      "name": "Naybuster 光線",
+      "kind": "beam",
+      "formId": "cosmos-corona",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "move-13",
+      "heroId": "cosmos",
+      "name": "高斯謬姆光線",
+      "kind": "beam",
+      "formId": "cosmos-eclipse",
+      "source": "https://zh.wikipedia.org/zh-tw/高斯·奥特曼"
+    },
+    {
+      "id": "move-14",
+      "heroId": "zero",
+      "name": "傑洛集束射線",
+      "kind": "beam",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-15",
+      "heroId": "zero",
+      "name": "Strong Corona Zero Burning",
+      "kind": "burst",
+      "formId": "zero-strong",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-16",
+      "heroId": "zero",
+      "name": "奇蹟傑洛頭鏢",
+      "kind": "ring",
+      "formId": "zero-luna",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-17",
+      "heroId": "zero",
+      "name": "Final Ultimate Zero",
+      "kind": "beam",
+      "formId": "zero-ultimate",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-18",
+      "heroId": "zero",
+      "name": "Shining Emerium Slash",
+      "kind": "ring",
+      "formId": "zero-shining",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-19",
+      "heroId": "zero",
+      "name": "Twin Giga Break",
+      "kind": "burst",
+      "formId": "zero-beyond",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-20",
+      "heroId": "z",
+      "name": "傑斯帝姆光線",
+      "kind": "beam",
+      "formId": "z-original",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "move-21",
+      "heroId": "z",
+      "name": "傑斯帝姆邁射光",
+      "kind": "beam",
+      "formId": "z-alpha",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "move-22",
+      "heroId": "z",
+      "name": "傑斯帝姆升龍拳",
+      "kind": "burst",
+      "formId": "z-beta",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "move-23",
+      "heroId": "z",
+      "name": "傑斯帝姆驅動",
+      "kind": "beam",
+      "formId": "z-gamma",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "move-24",
+      "heroId": "z",
+      "name": "傑斯帝姆光輪",
+      "kind": "ring",
+      "formId": "z-delta",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Z"
+    },
+    {
+      "id": "move-25",
+      "heroId": "trigger",
+      "name": "哉佩利敖光線",
+      "kind": "beam",
+      "formId": "trigger-multi",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "move-26",
+      "heroId": "trigger",
+      "name": "迪拉修姆光流",
+      "kind": "burst",
+      "formId": "trigger-power",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "move-27",
+      "heroId": "trigger",
+      "name": "蘭帕爾特光彈",
+      "kind": "beam",
+      "formId": "trigger-sky",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "move-28",
+      "heroId": "trigger",
+      "name": "閃耀哉佩利敖光線",
+      "kind": "beam",
+      "formId": "trigger-eternity",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "move-29",
+      "heroId": "trigger",
+      "name": "真實哉佩利敖光線",
+      "kind": "beam",
+      "formId": "trigger-truth",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Trigger"
+    },
+    {
+      "id": "move-30",
+      "heroId": "decker",
+      "name": "賽魯傑德光線",
+      "kind": "beam",
+      "formId": "decker-flash",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "move-31",
+      "heroId": "decker",
+      "name": "德魯涅德烈破",
+      "kind": "beam",
+      "formId": "decker-strong",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "move-32",
+      "heroId": "decker",
+      "name": "雷亞琉特波動",
+      "kind": "beam",
+      "formId": "decker-miracle",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "move-33",
+      "heroId": "decker",
+      "name": "戴謬德光線",
+      "kind": "beam",
+      "formId": "decker-dynamic",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Decker"
+    },
+    {
+      "id": "move-34",
+      "heroId": "arc",
+      "name": "雅克終結光線",
+      "kind": "beam",
+      "formId": "arc-base",
+      "source": "https://zh.wikipedia.org/zh-tw/亚刻奥特曼"
+    },
+    {
+      "id": "move-35",
+      "heroId": "omega",
+      "name": "雷特克魯特光線",
+      "kind": "beam",
+      "formId": "omega-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王OMEGA"
+    },
+    {
+      "id": "move-36",
+      "heroId": "geed",
+      "name": "毀滅爆裂",
+      "kind": "beam",
+      "formId": "geed-primitive",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-37",
+      "heroId": "geed",
+      "name": "Strike Boost",
+      "kind": "burst",
+      "formId": "geed-solid",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-38",
+      "heroId": "geed",
+      "name": "Atmos Impact",
+      "kind": "beam",
+      "formId": "geed-acro",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-39",
+      "heroId": "geed",
+      "name": "Big Burst Away",
+      "kind": "burst",
+      "formId": "geed-magnificent",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-40",
+      "heroId": "geed",
+      "name": "Royal End",
+      "kind": "beam",
+      "formId": "geed-royal",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-41",
+      "heroId": "geed",
+      "name": "Crescent Final Geed",
+      "kind": "beam",
+      "formId": "geed-ultimate",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-42",
+      "heroId": "geed",
+      "name": "Wrecking Phoenix",
+      "kind": "beam",
+      "formId": "geed-galaxy",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Geed"
+    },
+    {
+      "id": "move-43",
+      "heroId": "orb",
+      "name": "Orb Supreme Calibur",
+      "kind": "beam",
+      "formId": "orb-origin",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "move-45",
+      "heroId": "orb",
+      "name": "Stobium Dynamite",
+      "kind": "burst",
+      "formId": "orb-burnmite",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "move-46",
+      "heroId": "orb",
+      "name": "Trident Slash",
+      "kind": "ring",
+      "formId": "orb-hurricane",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "move-47",
+      "heroId": "orb",
+      "name": "Zedcium 光線",
+      "kind": "beam",
+      "formId": "orb-thunder",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "move-48",
+      "heroId": "orb",
+      "name": "Trinitium 光輪",
+      "kind": "ring",
+      "formId": "orb-trinity",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王Orb"
+    },
+    {
+      "id": "move-49",
+      "heroId": "ultraman",
+      "name": "斯派修姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman"
+    },
+    {
+      "id": "move-50",
+      "heroId": "seven",
+      "name": "艾梅利姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraseven"
+    },
+    {
+      "id": "move-52",
+      "heroId": "mebius",
+      "name": "梅比姆射線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-mebius"
+    },
+    {
+      "id": "move-53",
+      "heroId": "zoffy",
+      "name": "M87 光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/zoffy"
+    },
+    {
+      "id": "move-54",
+      "heroId": "jack",
+      "name": "斯派修姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-jack"
+    },
+    {
+      "id": "move-55",
+      "heroId": "ace",
+      "name": "梅塔利姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ace"
+    },
+    {
+      "id": "move-56",
+      "heroId": "taro",
+      "name": "斯特利姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-taro"
+    },
+    {
+      "id": "move-57",
+      "heroId": "leo",
+      "name": "雷歐飛踢",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-leo"
+    },
+    {
+      "id": "move-58",
+      "heroId": "astra",
+      "name": "兄弟合體光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/astra"
+    },
+    {
+      "id": "move-59",
+      "heroId": "king",
+      "name": "尊王閃光",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-king"
+    },
+    {
+      "id": "move-61",
+      "heroId": "mother-of-ultra",
+      "name": "治癒之光",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/mother-of-ultra"
+    },
+    {
+      "id": "move-62",
+      "heroId": "80",
+      "name": "沙庫修姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-80"
+    },
+    {
+      "id": "move-63",
+      "heroId": "yullian",
+      "name": "雙重力量",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/yullian"
+    },
+    {
+      "id": "move-64",
+      "heroId": "joneus",
+      "name": "普拉尼姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-joneus"
+    },
+    {
+      "id": "move-68",
+      "heroId": "great",
+      "name": "燃燒電漿",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-great"
+    },
+    {
+      "id": "move-69",
+      "heroId": "powered",
+      "name": "超級斯派修姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-powered"
+    },
+    {
+      "id": "move-70",
+      "heroId": "agul",
+      "name": "光子粉碎機",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-agul"
+    },
+    {
+      "id": "move-71",
+      "heroId": "neos",
+      "name": "新馬格紐姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-neos"
+    },
+    {
+      "id": "move-72",
+      "heroId": "ultraseven-21",
+      "name": "雷吉亞射線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraseven-21"
+    },
+    {
+      "id": "move-73",
+      "heroId": "justice",
+      "name": "維克托利姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-justice"
+    },
+    {
+      "id": "move-74",
+      "heroId": "nexus",
+      "name": "十字光線風暴",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-nexus"
+    },
+    {
+      "id": "move-75",
+      "heroId": "max",
+      "name": "馬克修姆加農",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-max"
+    },
+    {
+      "id": "move-76",
+      "heroId": "xenon",
+      "name": "傑諾尼姆加農",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-xenon"
+    },
+    {
+      "id": "move-77",
+      "heroId": "hikari",
+      "name": "騎士射線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-hikari"
+    },
+    {
+      "id": "move-78",
+      "heroId": "ginga",
+      "name": "銀河十字光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ginga"
+    },
+    {
+      "id": "move-79",
+      "heroId": "victory",
+      "name": "勝利射線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-victory"
+    },
+    {
+      "id": "move-80",
+      "heroId": "x",
+      "name": "扎納帝姆光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-x"
+    },
+    {
+      "id": "move-81",
+      "heroId": "orb",
+      "name": "斯派利敖光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-orb"
+    },
+    {
+      "id": "move-82",
+      "heroId": "rosso",
+      "name": "烈焰球",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-rosso"
+    },
+    {
+      "id": "move-83",
+      "heroId": "blu",
+      "name": "水流射線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-blu"
+    },
+    {
+      "id": "move-84",
+      "heroId": "grigio",
+      "name": "格麗喬治癒",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultrawoman-grigio"
+    },
+    {
+      "id": "move-85",
+      "heroId": "taiga",
+      "name": "斯特利姆爆裂",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-taiga"
+    },
+    {
+      "id": "move-86",
+      "heroId": "titas",
+      "name": "普拉尼姆爆裂",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-titas"
+    },
+    {
+      "id": "move-87",
+      "heroId": "fuma",
+      "name": "極星光波手裏劍",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-fuma"
+    },
+    {
+      "id": "move-88",
+      "heroId": "ribut",
+      "name": "加拉克西姆爆裂",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-ribut"
+    },
+    {
+      "id": "move-90",
+      "heroId": "regulos",
+      "name": "宇宙幻獸拳",
+      "kind": "burst",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-regulos"
+    },
+    {
+      "id": "move-91",
+      "heroId": "blazar",
+      "name": "螺旋光矛",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-blazar"
+    },
+    {
+      "id": "move-92",
+      "heroId": "teo",
+      "name": "Teocium 光線",
+      "kind": "beam",
+      "formId": null,
+      "source": "https://tsuburaya-prod.com/heroes/ultraman-teo"
+    },
+    {
+      "id": "move-zero-extra-0",
+      "heroId": "zero",
+      "name": "艾梅利姆切割",
+      "kind": "beam",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-zero-extra-1",
+      "heroId": "zero",
+      "name": "傑洛頭鏢突擊",
+      "kind": "ring",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-zero-extra-2",
+      "heroId": "zero",
+      "name": "傑洛飛踢",
+      "kind": "burst",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-zero-extra-3",
+      "heroId": "zero",
+      "name": "傑洛雙擊",
+      "kind": "beam",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    },
+    {
+      "id": "move-zero-extra-4",
+      "heroId": "zero",
+      "name": "電漿火花斬",
+      "kind": "ring",
+      "formId": "zero-base",
+      "source": "https://zh.wikipedia.org/zh-tw/超人力霸王傑洛"
+    }
+  ],
+  "monsters": [
+    {
+      "id": "gomora",
+      "name": "哥摩拉",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "頭上的彎角和長尾巴，是牠醒目的特徵。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gomora",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "baltan",
+      "name": "巴爾坦星人",
+      "tag": "分身",
+      "pattern": "clone",
+      "friendly": false,
+      "fact": "大鉗子、蟬一樣的臉，還會分身。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/baltan",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "zetton",
+      "name": "傑頓",
+      "tag": "屏障",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "黑色身體配橘色發光部位，是經典強敵。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/zetton",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "red-king",
+      "name": "雷德王",
+      "tag": "重裝",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "粗壯的身體，擅長用強大的力氣。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/red-king",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "eleking",
+      "name": "艾雷王",
+      "tag": "電流",
+      "pattern": "electric",
+      "friendly": false,
+      "fact": "頭上有兩支角，長尾巴能釋放電流。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/eleking",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "king-joe",
+      "name": "金古橋",
+      "tag": "重裝",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "由宇宙機器組合而成的巨大機器人。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/king-joe",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "neronga",
+      "name": "內隆嘎",
+      "tag": "隱形",
+      "pattern": "clone",
+      "friendly": false,
+      "fact": "能隱藏身影，也喜歡吸收電力。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/neronga",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "bemular",
+      "name": "貝姆拉",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "早期就登場的宇宙怪獸，嘴巴可以發出能量。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/bemular",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "dada",
+      "name": "達達",
+      "tag": "分身",
+      "pattern": "clone",
+      "friendly": false,
+      "fact": "黑白花紋的宇宙人，臉孔會變化。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/dada",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "gubila",
+      "name": "古維拉",
+      "tag": "鑽地",
+      "pattern": "burrow",
+      "friendly": false,
+      "fact": "鼻尖像鑽頭，既能游泳也能鑽地。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gubila",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "telesdon",
+      "name": "泰萊斯通",
+      "tag": "鑽地",
+      "pattern": "burrow",
+      "friendly": false,
+      "fact": "在地底生活的怪獸，有長長的尖嘴。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/telesdon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "antlar",
+      "name": "安東拉",
+      "tag": "磁力",
+      "pattern": "electric",
+      "friendly": false,
+      "fact": "像大甲蟲，頭上有巨大的鉗子。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/antlar",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "bemstar",
+      "name": "貝姆斯塔",
+      "tag": "飛行",
+      "pattern": "flight",
+      "friendly": false,
+      "fact": "身體像大鳥，腹部還有吸收能量的器官。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/bemstar",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "twin-tail",
+      "name": "雙尾怪",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "有兩條長尾巴，身體造型像倒過來的蝦。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/twin-tail",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "gudon",
+      "name": "古敦",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "雙手像長鞭，是雙尾怪的天敵。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gudon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "black-king",
+      "name": "布萊克王",
+      "tag": "重裝",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "黑色的怪獸，額頭長著金色大角。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/black-king",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "birdon",
+      "name": "巴頓",
+      "tag": "飛行",
+      "pattern": "flight",
+      "friendly": false,
+      "fact": "像巨大鳥類，翅膀和尖嘴很醒目。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/birdon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "tyrant",
+      "name": "泰蘭特",
+      "tag": "重裝",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "集合多種怪獸特徵的暴君怪獸。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/tyrant",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "pigmon",
+      "name": "皮古蒙",
+      "tag": "救援",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "會幫助人類的友善小怪獸。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/pigmon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "kanegon",
+      "name": "卡內貢",
+      "tag": "救援",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "嘴巴像拉鍊，最喜歡吃硬幣。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/kanegon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "golza",
+      "name": "哥爾贊",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "迪卡故事裡登場，額頭能釋放光線。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/golza",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "melba",
+      "name": "美爾巴",
+      "tag": "飛行",
+      "pattern": "flight",
+      "friendly": false,
+      "fact": "展開翅膀在空中飛行的古代怪獸。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/melba",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "gan-q",
+      "name": "加恩Q",
+      "tag": "分身",
+      "pattern": "clone",
+      "friendly": false,
+      "fact": "最醒目的特徵，是身體中央的大眼睛。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gan-q",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "bazanga",
+      "name": "巴贊加",
+      "tag": "突進",
+      "pattern": "rush",
+      "friendly": false,
+      "fact": "布雷薩故事中的強敵，雙臂有發射器官。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/bazanga",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "gedos",
+      "name": "蓋多斯",
+      "tag": "游泳",
+      "pattern": "burrow",
+      "friendly": false,
+      "fact": "住在水裡，頭頂像有小燈，喜歡吃魚。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gedos",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "gamedon",
+      "name": "加美頓",
+      "tag": "重裝",
+      "pattern": "armor",
+      "friendly": false,
+      "fact": "有堅硬甲殼，會旋轉背上的鰭。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/gamedon",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "rekiness",
+      "name": "雷基尼斯",
+      "tag": "合作",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "奧米加的流星怪獸夥伴，擅長念動能力。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/rekiness",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "trigaron",
+      "name": "特萊加隆",
+      "tag": "合作",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "奧米加的流星怪獸夥伴，力量與速度都很強。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/trigaron",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "valgeness",
+      "name": "瓦爾基涅斯",
+      "tag": "合作",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "奧米加的流星怪獸夥伴，能操控元素力量。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/valgeness",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    },
+    {
+      "id": "pucchi",
+      "name": "Pucchi",
+      "tag": "救援",
+      "pattern": "friendly",
+      "friendly": true,
+      "fact": "Teo 故事中的溫柔小怪獸，喜歡甜甜圈。",
+      "source": "https://tsuburaya-prod.com/encyclopedia/pucchi",
+      "wiki": "https://zh.wikipedia.org/zh-tw/超人力霸王怪兽列表"
+    }
+  ]
+}

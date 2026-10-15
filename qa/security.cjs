@@ -13,6 +13,7 @@ const headers=cfg.hosting.headers[0].headers;
 const csp=headers.find(h=>h.key==='Content-Security-Policy').value;
 assert.ok(csp.includes("connect-src 'none'"));
 assert.ok(csp.includes("script-src 'self';"));
+assert.ok(csp.includes("media-src 'self' data:;"),'Recorded cheers remain local');
 assert.ok(csp.includes("frame-ancestors 'none'"));
 assert.ok(headers.some(h=>h.key==='Permissions-Policy'&&h.value.includes('microphone=()')));
 const app=read('app.js');
@@ -22,6 +23,9 @@ const secrets=[/AIza[0-9A-Za-z_-]{30,}/,/\bgh[pousr]_[A-Za-z0-9]{20,}/,/\bgithub
 const allow=new Set(['index.html','style.css','app.js','404.html','version.json',...JSON.parse(read('asset-manifest.json')).map(f=>'assets/'+f)]);
 function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(dir,e.name)):[path.join(dir,e.name)]);}
 const files=walk(path.join(root,'dist'));
+const voiceFiles=files.filter(f=>/voice-[a-z]+\.mp3$/.test(f));
+assert.equal(voiceFiles.length,9);
+for(const file of voiceFiles)assert.ok(fs.statSync(file).size>1000,'Voice must contain audio frames');
 assert.equal(files.length,allow.size);
 for(const file of files){
   const relative=path.relative(path.join(root,'dist'),file).split(path.sep).join('/');
