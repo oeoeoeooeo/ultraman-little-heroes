@@ -14,3 +14,5 @@ firebase-debug.log*
 *credentials*.json
 *service-account*.json
 小英雄基地.html
+__pycache__/
+.venv/

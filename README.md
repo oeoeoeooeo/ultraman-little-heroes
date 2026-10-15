@@ -4,7 +4,7 @@
 
 **版本：v1.1.0（2026-10-15）**。首頁頁尾與側欄顯示版號，`version.json` 提供部署版本。
 
-公開原始碼：[oeoeoeooeo/ultraman-little-heroes](https://github.com/oeoeoeooeo/ultraman-little-heroes)。新版預定站點：https://ultraman-little-heroes.web.app（部署與上線驗證完成後更新本段）。
+線上遊戲：[ultraman-little-heroes.web.app](https://ultraman-little-heroes.web.app)。公開原始碼：[oeoeoeooeo/ultraman-little-heroes](https://github.com/oeoeoeooeo/ultraman-little-heroes)。
 
 ## 立即玩
 
