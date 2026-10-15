@@ -29,7 +29,8 @@ module.exports=async function reactionQA(page,out,prefix='chromium'){
  for(const [w,h] of [[834,1194],[390,844],[320,740],[844,390]]){
   await page.setViewportSize({width:w,height:h});await page.locator('[data-action="reaction-input"]').last().scrollIntoViewIfNeeded();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-  const r=await page.locator('.reaction-stage').boundingBox();assert.ok(r.y>=-1&&r.y+r.height<=h+1,'reaction signals visible at '+w);
+  await page.screenshot({path:path.join(out,prefix+'-reaction-play-'+w+'.png'),fullPage:false});
+  const r=await page.locator('.reaction-stage').boundingBox();assert.ok(r.y>=-1&&r.y+r.height<=h+1,'reaction signals visible at '+w+' '+JSON.stringify(r));
   assert.ok(await page.locator('[data-action="reaction-input"]').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize))>=18);
   await page.screenshot({path:path.join(out,prefix+'-reaction-play-'+w+'.png'),fullPage:false});
  }
