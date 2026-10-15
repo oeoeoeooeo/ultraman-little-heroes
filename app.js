@@ -3438,7 +3438,7 @@ function updateChrome(){
   $$('.nav-item').forEach(el=>{el.classList.toggle('active',el.dataset.nav===state.page);el.setAttribute('aria-current',el.dataset.nav===state.page?'page':'false');});
 }
 function later(fn,ms){const token=state.token;const timer=setTimeout(()=>{state.timers.delete(timer);if(token===state.token)fn();},ms);state.timers.add(timer);return timer;}
-function leave(){document.body.classList.remove('playing-battle');releaseHeld();state.token++;state.timers.forEach(clearTimeout);state.timers.clear();stopVoice();state.game=null;}
+function leave(){$('#confetti').innerHTML='';document.body.classList.remove('playing-battle');releaseHeld();state.token++;state.timers.forEach(clearTimeout);state.timers.clear();stopVoice();state.game=null;}
 function navigate(page,focus=true){
   leave();state.page=page;updateChrome();
   $('#breadcrumb-text').textContent = page==='home'?'今天，也一起閃閃發光！':page==='heroes'?'認識一起守護地球的朋友':'每一份勇氣，都值得收藏';

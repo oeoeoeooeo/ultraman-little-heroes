@@ -256,3 +256,5 @@ for(const player of ['little','big'])for(let trial=0;trial<10;trial++){
  assert.equal(c.run('state.game.type'),'result');assert.equal(c.run('state.stars'),stars+15);c.advance(1000);assert.equal(c.run('state.stars'),stars+15);
 }
 console.log('PASS: independent simultaneous pointers/release/cancel, no compatibility double-click, pause/navigation cleanup; all flight speeds/scoring/shields; 60 generated solvable puzzles, hint/undo/reset and completion-only rewards.');
+
+const fx=boot();fx.run('matchMedia=()=>({matches:false});confetti()');assert.equal(fx.document.querySelectorAll('#confetti i').length,45);fx.click('[data-action="start"][data-game="flight"]');assert.equal(fx.document.querySelectorAll('#confetti i').length,0,'leaving clears celebration before the next game');fx.advance(5000);assert.equal(fx.document.querySelectorAll('#confetti i').length,0);console.log('PASS: victory confetti cannot remain over the next game after navigation.');

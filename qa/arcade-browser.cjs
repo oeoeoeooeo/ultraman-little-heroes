@@ -19,7 +19,7 @@ module.exports=async function arcadeQA(page,out,prefix='chromium'){
   await page.evaluate(()=>{state.game.lanes=[...state.game.targets];state.game.elapsed=FLIGHT_LEVELS[state.game.level].ms-40;flightPaint()});await page.waitForFunction(()=>state.game.resolved);await page.evaluate(()=>state.game.elapsed=FLIGHT_LEVELS[state.game.level].ms+850);await page.waitForFunction(w=>state.game.type==='result'||state.game.wave>w,wave);
  }
  assert.equal(await page.evaluate(()=>state.game.type),'result');await page.screenshot({path:path.join(out,prefix+'-arcade-result.png'),fullPage:true});
- await page.evaluate(()=>navigate('home'));await page.locator('.game-card[data-game="circuit"]').click();
+ await page.evaluate(()=>navigate('home'));assert.equal(await page.locator('#confetti i').count(),0,'old celebration is cleared');await page.locator('.game-card[data-game="circuit"]').click();
  for(let round=1;round<=3;round++){
   for(const [w,h]of(round===2?[[834,1194],[390,844],[320,740],[844,390]]:[[834,1194]])){
    await page.setViewportSize({width:w,height:h});await page.locator('.circuit-grid').scrollIntoViewIfNeeded();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'circuit overflow '+w);assert.ok((await page.locator('[data-action="circuit-turn"]').first().boundingBox()).width>=40,'readable puzzle tile '+w);
