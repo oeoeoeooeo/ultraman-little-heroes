@@ -181,7 +181,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
   }
   if(stage<2){await page.waitForSelector('[data-action="quest-next"]');await page.screenshot({path:path.join(out,'phone-quest-checkpoint-'+stage+'.png'),fullPage:true});await page.locator('[data-action="quest-next"]').click();}
  }
- await page.waitForSelector('.result');assert.equal(await page.evaluate(()=>state.questRuns),1);assert.equal(await page.locator('.result .primary').getAttribute('data-action'),'start-quest');await page.screenshot({path:path.join(out,'phone-quest-victory.png'),fullPage:true});
+ await page.waitForSelector('.result');assert.equal(await page.evaluate(()=>state.questRuns),1);assert.equal(await page.locator('.result .primary').getAttribute('data-action'),'start-quest');assert.equal(await page.evaluate(()=>window.scrollY),0,'victory should start at the top');await page.screenshot({path:path.join(out,'phone-quest-victory.png'),fullPage:true});
  const stickerCount=await page.evaluate(()=>state.collection.length);assert.ok(stickerCount>=3);
  await page.locator('[data-action="badges"]').click();assert.equal(await page.locator('.sticker.collected').count(),stickerCount);
  for(const [width,height,label] of [[320,740,'small-phone'],[390,844,'phone'],[834,1194,'tablet'],[1440,1100,'desktop']]){
