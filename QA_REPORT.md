@@ -1,40 +1,46 @@
-# v1.3.0 驗證紀錄
+# v1.4.0 驗證紀錄
 
 查核日期：2026-10-15。線上遊戲：https://ultraman-heroes-base.web.app
 
-## 已通過的檢查
+## 玩家體驗升級與測試
 
-- `node --check app.js`、`npm test`、`npm run build`、`npm run test:security`。
-- 53 位英雄、55 種型態、60 件道具、90 招代表招式、30 隻怪獸的唯一識別碼、來源、主人關聯及實際本機圖片。
-- 全部型態題的選項均來自同一位英雄；道具題排除同一件道具的其他主人，不形成多重正解。翻牌可使用新增道具，每輪不重複主人或道具。
-- 全六種任務的完整流程、錯題重試、五題完成、不同年齡難度、兩人變身／能量、翻牌、九枚徽章、進度儲存、導覽取消與背景暫停。
-- 力量型的傷害加成、重裝／飛行型態挑戰、分身與鑽地點星星、Pucchi 友善救援、慈愛型救援加成。暫停期間不能換型態、換招式或答分身挑戰。
-- 真正 Chromium 下的全部百科分頁、圖片完整載入、鍵盤與大按鈕操作、型態／招式切換、分身找目標及友善救援。沒有腳本錯誤與跨站執行期請求。
-- 九段 MP3 全部可解碼，含實際聲音，長度約 1.9～3.7 秒、峰值未達削波；瀏覽器實際播放、靜音與換頁取消。未人工聆聽，未宣稱已做主觀音色驗收。讀題聲音仍依裝置中文語音而定。
+新增三站「星星救援旅程」、30 位怪獸夥伴貼紙簿、最近英雄組合、長按集氣、每人每場一次的雙人能量援助，以及集氣與招式的畫面回饋。旅程為原創遊戲安排，不是官方劇情；未做真人兒童遊玩研究，也沒有分析追蹤服務。設計檢視見 [UX_REVIEW.md](UX_REVIEW.md)。
+
+- `node --check app.js`、`npm test`、`npm run build`、`npm run test:security` 通過。
+- 三站完整流程實際經過按鈕與鍵盤事件：收集星星、找腳印、找分身；找滿三個線索之前不能發射光線；重複點同一星星不增加進度，答錯可重試。等待不觸發倒數，暫停禁止操作。
+- 前兩站只收集貼紙，完成第三站才給一次旅程星星；重新開啟仍保有貼紙與旅程次數，重複夥伴不產生重複貼紙；存檔中的未知識別碼與不合法英雄組合會被過濾。
+- 以 Chromium 真實滑鼠按住攻擊鈕 1.1 秒集滿能量，放開後不再連續攻擊；暫停、離開畫面與舊延遲回呼都不能繼續集氣。雙人能量援助每人每場只送一格。
+- 通關後回到畫面頂端，首先看見完成標題；旅程的「再出發」重新進入救援地圖。
+- 原有六種任務完整流程、錯題重試、五題完成、年齡難度、雙人變身／能量、護盾、翻牌、九枚徽章、儲存、導覽取消與背景暫停仍通過。
+- 53 位英雄、55 種型態、60 件道具、90 招代表招式、30 隻怪獸的唯一識別碼、來源與主人關聯通過；同英雄型態選項、共用道具避免多重正解、力量／速度／慈愛加成、分身與鑽地、友善救援均通過。
+- 九段本機 MP3 全部可解碼與實際播放，靜音、暫停與換頁會取消播放；未人工聆聽確認音色。讀題聲音仍依裝置中文語音而定。
+- 瀏覽器沒有腳本錯誤；正式站台沒有第三方執行期網路請求。
 
 ## RWD 與實際畫面
 
-Chromium 測試 1920×1080、1440×1100、1366×768、1280×720、1024×768、834×1194、390×844、320×740、844×390，檢查首頁、雙人選角、變身及對戰。新增四個百科分頁另在桌機、平板、手機與 320px 窄螢幕驗證。共 63 張截圖，保留在免費 Actions job log，不使用 artifact 儲存。
+Chromium 驗證 1920×1080、1440×1100、1366×768、1280×720、1024×768、834×1194、390×844、320×740、844×390，涵蓋首頁、雙人選角、變身及對戰。百科與貼紙簿另在四個寬度檢查。新旅程以 390×844 實際操作完整雙人三站、暫停、線索重試、過站、通關與貼紙儲存。
 
-已實際查看桌機型態與招式百科、窄螢幕道具百科、手機怪獸百科、320px 雙人對戰、手機巴爾坦分身與 Pucchi 救援截圖。修正窄螢幕怪獸遮住第二位英雄的問題，測試也檢查兩位英雄和怪獸的邊界不重疊。型態／道具為明示的簡化配色示意；人物圖為基本造型搭配型態光暈與標籤。沒有宣稱已在實體手機、Safari 或所有字型組合驗證。
+每次完整執行產生 75 張截圖，存於免費 Actions job log，不配置 artifact 儲存。已實際查看桌機／手機首頁、320px 雙人對戰、手機旅程地圖與三站關卡、過站貼紙、勝利、長按後暫停，以及窄螢幕與桌機貼紙簿。修正雙人控制面板過長，以及通關後仍停在頁面中段的問題；最終截圖確認勝利頁從頂端呈現，貼紙提示不再把最後一字擠到下一行。
+
+未宣稱已在實體手機、Safari、所有字型組合或真人兒童上驗證。型態／道具仍為明示的簡化配色示意，人物圖為基本造型搭配型態光暈與標籤。
 
 ## 可重現的公開紀錄
 
-- 最終程式 commit：`9b5f4f1d15c3a6fbb4b07ce780e82b7a68cb6a3e`。
-- [最終原始碼完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38678802841)：成功。
-- [正式 web.app 完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38678842798)：成功，包含正式站台的語音播放與媒體政策。
-- 本紀錄與 README 的最後提交只更新說明，不修改已測試的程式與資產。
+- 最終程式 commit：`ef67095b7d5ce02a8128ea79668dc5bac8eb303b`。
+- [最終原始碼完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38682457443)：成功。
+- [正式 web.app 完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38682672395)：成功，包含正式站台的歡呼播放、旅程、貼紙與媒體政策。
+- 最後說明文件提交只更新此紀錄，不改動已測試的程式與資產。
 
 ## 正式站台與安全
 
-Hosting 版本：`sites/ultraman-heroes-base/versions/ff93a8dc07d2aa87`。正式站台的 98 個白名單檔案全部下載，比對本機 `dist` 逐位元組一致。受保護的 `.env`、`firebase.json`、`package.json`、`qa/logic.cjs`、`hero-catalogue.json` 路徑均回 404。
+Hosting 版本：`sites/ultraman-heroes-base/versions/2271cfb279194d4e`。98 個正式白名單檔案全部下載，比對本機 `dist` 逐位元組一致。`.env`、`firebase.json`、`package.json`、`qa/logic.cjs`、`hero-catalogue.json` 路徑均回 404。
 
-已確認 `billingEnabled=false`、未綁定帳單、Firebase Web Apps 數量 0、有效 Google API key 數量 0。部署工具自動建立的閒置 Browser key 在最後一次部署後再次撤銷，且撤銷作業完成。平台保留端點仍可能含已撤銷的快取 key，詳見 SECURITY.md；遊戲檔案沒有上傳金鑰、憑證、付費 API、SDK、分析或後端。
+已確認 `billingEnabled=false`、未綁定帳單、Firebase Web Apps 數量 0、有效 Google API key 數量 0。最後部署自動建立的閒置 Browser key 已撤銷，且撤銷作業完成。平台保留端點仍可能含已撤銷的快取 key，詳見 [SECURITY.md](SECURITY.md)；遊戲檔案沒有金鑰、憑證、付費 API、SDK、分析或後端。貼紙、英雄組合與進度只存在本機瀏覽器。
 
-正式 HTML 已核對 CSP 的 `connect-src 'none'`、`media-src 'self' data:` 和 `nosniff`。GitHub 公開儲存庫開啟 secret scanning 與 push protection，公開警報 0；Actions artifact 與 cache 均為 0。敏感稽核用暫存設定已刪除。
+正式 HTML 已核對 CSP 的 `connect-src 'none'`、`media-src 'self' data:` 與 `nosniff`。公開 GitHub 儲存庫開啟 secret scanning 與 push protection，警報、Actions artifact 與 cache 均為 0。敏感稽核用暫存設定於發布後刪除。
 
 | 正式檔案 | SHA-256 |
 | --- | --- |
-| `index.html` | `72dc43058fefb66104c579a48231574e795526b316f68021d32d134ccb740277` |
-| `app.js` | `62fcdea01cd2d8266ca0b56a7cb2536d21e1da24a7bcfca253a0747784146b6d` |
-| `style.css` | `36120652bcc78f37d958001edeb9130648af0b1451cdc17aeb120df107482eb2` |
+| `index.html` | `b1f538263ecddfd3ad56c2d8fd6b10994f893a49044392cde248357f30b59c0d` |
+| `app.js` | `fbe5058ec69e81248e9ebf3cc14a54451783477e363797da659e73bfff1691f7` |
+| `style.css` | `f3a51c4cfce1d644dbb14bd348f8dbae3d98a8390ca6ad66fdc714615b16c2a9` |
