@@ -146,3 +146,7 @@ button{min-height:44px;letter-spacing:0}
 .battle-board .battle-controls .pilot-controls .attack-button,.battle-board .battle-controls .pilot-controls .shield-button,.playing-battle .battle-board .battle-message,.quest-launch .primary,.quest-launch .secondary,.quest-map>.primary,.quest-map>.secondary,.feedback .primary,.hero-copy .primary,.quest-team-button,.pause-button{font-size:16px;min-height:48px}
 .quest-launch p,.quest-map>p,.checkpoint>p,.result p,.select-copy,.coop-hint,.hero-search-label,.achievement p,.star-summary p,dialog p,dialog li,.memory-card span,.text-button,.strip-label{font-size:16px;line-height:1.75}
 .answer .key-hint,.library-card .english-name,.device-name-label,.form-question-owner small,.earned-sticker small,#hero-count,#toast,.status-label,.eyebrow,.today,.strip-label span,.quest-team b,.sticker-teaser b{font-size:14px;line-height:1.6}
+
+.battle-stage .arena .arena-hero,.battle-stage .arena .arena-hero.hero-two,.battle-stage .arena .arena-monster{z-index:2}
+.battle-stage .arena-status,.battle-stage .monster-label{z-index:7}
+.arena.is-firing:before{inset:0;background:radial-gradient(ellipse at 55% 50%,#19495400 15%,#173b5966 60%,#132b4d99);opacity:1;z-index:1;animation:none}

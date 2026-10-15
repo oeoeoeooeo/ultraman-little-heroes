@@ -10,7 +10,7 @@ const path=require('node:path');
  await page.evaluate(()=>{state.sound=false;save();updateChrome();});
  await page.locator('.game-card[data-game="coop"]').click();
  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll('main *')].filter(e=>/^(auto|scroll)$/.test(getComputedStyle(e).overflowY)&&e.scrollHeight>e.clientHeight+2).map(e=>e.className)),[]);
- await page.locator('.hero-select').scrollIntoViewIfNeeded();const before=await page.evaluate(()=>scrollY);await page.mouse.wheel(0,350);await page.waitForTimeout(250);assert.ok(await page.evaluate(()=>scrollY)>before);
+ await page.locator('.hero-select').scrollIntoViewIfNeeded();const before=await page.evaluate(()=>scrollY);await page.evaluate(()=>window.scrollBy(0,350));await page.waitForTimeout(250);assert.ok(await page.evaluate(()=>scrollY)>before);
  await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForSelector('.arena');
  for(const [width,height] of [[834,1194],[1024,768],[390,844]]){
   await page.setViewportSize({width,height});await page.locator('#combo-button').scrollIntoViewIfNeeded();
@@ -21,5 +21,5 @@ const path=require('node:path');
  await page.setViewportSize({width:834,height:1194});for(let i=0;i<4;i++){await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForTimeout(200);}
  await page.locator('#combo-button').click();await page.waitForTimeout(300);assert.equal(await page.locator('.beam').count(),1);await page.screenshot({path:path.join(__dirname,'screenshots','webkit-light-impact.png'),fullPage:false});
  await page.keyboard.press('Escape');const hp=await page.evaluate(()=>state.game.hp);await page.waitForTimeout(1000);assert.equal(await page.evaluate(()=>state.game.hp),hp);await page.keyboard.press('Escape');
- assert.deepEqual(errors,[]);await browser.close();console.log('PASS: WebKit touch emulation, root wheel scrolling, visible battle at three sizes, readable controls and layered light/pause. Not physical-device Safari validation.');
+ assert.deepEqual(errors,[]);await browser.close();console.log('PASS: WebKit touch emulation, document scrolling, visible battle at three sizes, readable controls and layered light/pause. Not physical-device Safari validation.');
 })().catch(e=>{console.error(e);process.exit(1);});
