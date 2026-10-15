@@ -22,11 +22,12 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
       - run: node --check app.js && npm test
       - run: npm run build && npm run test:security
       - run: npm run test:browser
+      - run: node qa/tablet-webkit.cjs
       - name: Export screenshots in job logs (no paid artifact storage)
         if: always()
         run: python3 scripts/screenshot_log.py

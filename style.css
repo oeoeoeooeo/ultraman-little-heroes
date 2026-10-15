@@ -142,3 +142,7 @@ button{min-height:44px;letter-spacing:0}
 @media(prefers-reduced-motion:reduce){.arena.energy-ready:before{animation:none}.arena .beam,.arena .beam:after,.arena.is-firing:after{animation:none}.arena .beam{opacity:1;transform:none}.arena.is-firing:after{opacity:.15}.battle-pop{animation:none}}
 
 .arena.is-paused::before,.arena.is-paused::after,.arena.is-paused *::before,.arena.is-paused *::after{animation-play-state:paused!important}
+/* Keep older narrow-screen rules from shrinking essential controls. */
+.battle-board .battle-controls .pilot-controls .attack-button,.battle-board .battle-controls .pilot-controls .shield-button,.playing-battle .battle-board .battle-message,.quest-launch .primary,.quest-launch .secondary,.quest-map>.primary,.quest-map>.secondary,.feedback .primary,.hero-copy .primary,.quest-team-button,.pause-button{font-size:16px;min-height:48px}
+.quest-launch p,.quest-map>p,.checkpoint>p,.result p,.select-copy,.coop-hint,.hero-search-label,.achievement p,.star-summary p,dialog p,dialog li,.memory-card span,.text-button,.strip-label{font-size:16px;line-height:1.75}
+.answer .key-hint,.library-card .english-name,.device-name-label,.form-question-owner small,.earned-sticker small,#hero-count,#toast,.status-label,.eyebrow,.today,.strip-label span,.quest-team b,.sticker-teaser b{font-size:14px;line-height:1.6}
