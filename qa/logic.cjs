@@ -166,7 +166,7 @@ for(let stage=1;stage<3;stage++){
 }
 assert.equal(play.run('state.questRuns'),1);assert.equal(play.run('state.completed.battle'),1);assert.equal(play.run('state.stars'),20);assert.ok(route.every(id=>play.run('state.collection.includes('+JSON.stringify(id)+')')));const earnedCount=play.run('state.collection.length');play.click('.result .primary');assert.equal(play.run('state.game.type'),'quest-map','replay must return to the rescue journey');assert.equal(play.run('state.stars'),20);
 play.run('rememberMonster(MONSTERS.find(m=>m.id===\'pucchi\'))');assert.equal(play.run('state.collection.length'),earnedCount,'no duplicated sticker');
-play.click('[data-action="badges"]');assert.equal(play.document.querySelectorAll('.sticker.collected').length,earnedCount);const reloaded=boot();assert.equal(reloaded.run('state.collection.length'),earnedCount);assert.equal(reloaded.run('state.questRuns'),1);
+play.click('[data-nav="badges"]');assert.equal(play.document.querySelectorAll('.sticker.collected').length,earnedCount);const reloaded=boot();assert.equal(reloaded.run('state.collection.length'),earnedCount);assert.equal(reloaded.run('state.questRuns'),1);
 // Holding stops on release, pause and navigation, and does not create a delayed attack.
 play.run('leave();beginBattle({coop:false,heroes:[HEROES[2]],forms:[\'multi\'],monsterId:\'gomora\'})');
 function down(t){const e=new t.document.defaultView.Event('pointerdown',{bubbles:true});Object.assign(e,{button:0,pointerId:1});t.el('[data-action="attack"]').dispatchEvent(e);}
