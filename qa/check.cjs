@@ -28,6 +28,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
    await page.screenshot({path:path.join(out,label+'-transform.png'),fullPage:true});
    await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForSelector('.arena');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' battle overflow');
+   if(width<=600){const clear=await page.evaluate(()=>{const h=[...document.querySelectorAll('.arena-hero')].map(e=>e.getBoundingClientRect()),m=document.querySelector('.arena-monster').getBoundingClientRect();return h.every(r=>r.right<=m.left+1)&&h[0].right<=h[1].left+5;});assert.ok(clear,label+' co-op heroes must remain visible beside monster');}
    await page.screenshot({path:path.join(out,label+'-coop.png'),fullPage:true});
    await page.locator('[data-action="home"]').first().click();
  }
