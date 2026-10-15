@@ -1,22 +1,18 @@
 # v1.2.0 上線驗證紀錄
 
-本次擴充：6 → 53 位英雄、年代分類、中文／英文／年份搜尋，以及共用變身器的答案去重。
+驗證日期：2026-10-15（台灣時間）。正式站：https://ultraman-heroes-base.web.app
 
-互動、正式站與 RWD 驗證結果將於發布完成後更新。
+## 本次擴充
 
----
-
-# v1.1.0 上線驗證紀錄
-
-驗證日期：2026-10-15（台灣時間）。
-
-- 正式站點：https://ultraman-heroes-base.web.app
-- 公開原始碼：https://github.com/oeoeoeooeo/ultraman-little-heroes
-- 正式站點的完整瀏覽器測試：[GitHub Actions 成功紀錄](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38671320182)。
+角色由 6 位擴充至 53 位，收錄圓谷官方英雄百科目前列出的全部角色，包括 2026 年 Ultraman Teo。加入經典、平成、新生代、最新英雄分類，以及中文名、英文名與年份搜尋。完整資料來源見 [SOURCES.md](SOURCES.md)。
 
 ## 遊戲與 RWD
 
-六種遊戲模式的 DOM 互動測試與 Chromium 瀏覽器測試通過，涵蓋答錯重試、難度切換、雙人變身、各自集氣、護盾、暫停、翻牌、九枚徽章、星星存檔、鍵盤和畫面按鈕。
+- [原始碼完整測試成功](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38674366514)。
+- [正式網址完整測試成功](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38674604632)。
+- 六種遊戲模式、鍵盤與畫面按鈕、答錯重試、雙人變身、獨立集氣、護盾、暫停、配對、九枚徽章和存檔通過。
+- 53 位角色及圖片完整性、最新年代篩選、Teo 搜尋與實際選角變身、搜尋空結果、搜尋輸入不當作 HTML 執行均通過。
+- 共用變身器的候選答案去重，翻牌每輪道具不重複。41 個有道具角色納入題庫，無道具／意念變身／未公開道具角色仍可選角戰鬥。
 
 | 模擬螢幕 | 尺寸（CSS 像素） |
 | --- | --- |
@@ -30,24 +26,27 @@
 | 桌面 | 1440 × 1100 |
 | Full HD | 1920 × 1080 |
 
-九種尺寸均檢查首頁、選角、變身與對戰的水平溢出。40 張截圖保留在測試 job log；已人工檢視代表性的桌面、手機、平板、橫向、圖鑑、猜謎與合作畫面，以及修正後正式站的小手機首頁、手機首頁、平板合作和小手機變身畫面。實際手機硬體與中文語音聽感仍依裝置而異；此紀錄不代表已在每款實體裝置測試。
+九種尺寸的首頁、選角、變身與對戰無水平溢出；另檢查小手機猜謎、翻牌、圖鑑與成就。Chromium 產出 45 張截圖保留在測試 job log；本次人工檢視小手機最新英雄圖鑑、手機合作選角、桌面 Teo 搜尋與平板 Teo 對戰畫面。沒有宣稱已測試每款實體手機；中文語音聽感仍依裝置提供的語音而異。
 
 ## 公開部署與安全
 
-- 全新 Firebase 專案 `ultraman-heroes-base`：部署後 Google Cloud Billing 回應 `billingEnabled=false`，`billingAccountName` 為空。
-- 沒有 Firebase Web App、後端、資料庫或付費 API；有效 Google API key 清單為空。平台保留端點可能顯示已撤銷 key 的快取資料，處理方式詳見 [SECURITY.md](SECURITY.md)。
-- Hosting 只上傳 12 個白名單靜態檔案；不含憑證、開發依賴、測試程式、部署設定或 log。
-- 正式站 HTML、JavaScript 與 CSS 的內容與已驗證的部署檔案一致；HTTP 安全標頭已查驗。
-- `.env`、`.git/config`、`firebase.json`、`package.json`、`qa/check.cjs`、`scripts/build.py`、`node_modules/linkedom/package.json` 在正式站均回應 404。
-- 正式站完整玩法測試未發現 JavaScript 錯誤或第三方網路請求；CSP 設定 `connect-src 'none'`。
-- 公開 GitHub 儲存庫啟用 secret scanning 與 push protection，檢查時未有未解決的 secret scanning 警示；GitHub Actions 未使用 artifact 儲存或快取。
+- 部署使用既有隔離專案 `ultraman-heroes-base`，僅更新靜態 Hosting。
+- 部署後 Google Cloud Billing 回應 `billingEnabled=false`，`billingAccountName` 為空。
+- 移除部署工具自動建立的閒置 Browser key，確認撤銷作業完成且有效 Google API key 清單為空。平台保留端點的快取說明見 [SECURITY.md](SECURITY.md)。
+- Hosting 只部署 59 個白名單檔案：5 個網頁／版號檔、1 個 SVG 標誌、53 個 PNG 人物圖片。
+- 正式站全部 59 個檔案與已驗證的本機 dist 逐位元組一致；HTTP 安全標頭已查驗。
+- `.env`、`.git/config`、`firebase.json`、`package.json`、`hero-catalogue.json`、`asset-manifest.json`、`qa/check.cjs`、`scripts/build.py` 與 `node_modules/linkedom/package.json` 均回應 404。
+- 正式站完整玩法未發現 JavaScript 錯誤或第三方網路請求；人物素材由本站載入，不在遊玩時向百科網站抓資料。
+- GitHub secret scanning 檢查沒有未解決警示；Actions artifact 數量為 0，未使用付費儲存或依賴快取。
 
-## 正式部署檔案 SHA-256
+## 正式部署 SHA-256
 
 ```text
-index.html bdfe4b3d9c6c03bfe167321c579cede9f934785f0ed15725f7696e8317bfc3d7
-app.js     55772f8c81a1434a66495e21cc78e9481c1793c88bb2ac629b897c711d389b67
-style.css  305eb35b1f3603e201ab037e4d54e4a300b6dc33f9c3372072593246013e731d
+index.html 23cb33029a5b06866d73f5594a456c9cd88701044c166ae0b866b2b1f16f6149
+app.js 61c1472867e16577becb0b3b4c20d28679d47a1bd67f0e299a119911d74028d3
+style.css b4236e530f7afb98ba0ec36cdbc7e4755ed67002e1e94131fc806d7c259ce43c
 ```
 
-這是本次發布的查驗紀錄；日後部署、增加服務或調整帳單設定時需重新查驗。
+本次 Hosting 版本：`b9b4d7790e651438`。這是發布當下的驗證紀錄，之後新增服務或調整帳單設定需要重新查驗。
+
+[v1.1.0 既有驗證紀錄](https://github.com/oeoeoeooeo/ultraman-little-heroes/blob/v1.1.0/QA_REPORT.md)。
