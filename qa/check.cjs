@@ -29,7 +29,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
    await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForSelector('.arena');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' battle overflow');
    await page.screenshot({path:path.join(out,label+'-coop.png'),fullPage:true});
-   await page.locator('[data-action="home"]').click();
+   await page.locator('[data-action="home"]').first().click();
  }
  await page.setViewportSize({width:1440,height:1100});
  // Verify wrong answers are retryable, correct answers advance explicitly, and all quizzes finish.
@@ -51,7 +51,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  // Big brother difficulty, forms capped to 3 choices.
  await page.locator('[data-player="big"]').click();
  await page.locator('[data-action="start"][data-game="quiz"]').click();assert.equal(await page.locator('.answer').count(),4);
- await page.locator('[data-action="home"]').click();
+ await page.locator('[data-action="home"]').first().click();
  // Co-op must have both heroes' energy; pause suppresses input.
  await page.locator('[data-action="start"][data-game="coop"]').first().click();
  await page.locator('[data-action="pilot"][data-index="1"]').click();
@@ -112,14 +112,14 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');
  assert.equal(await page.evaluate(()=>state.game.heroes[0].id),'teo');
  await page.screenshot({path:path.join(out,'tablet-teo-battle.png'),fullPage:true});
- await page.locator('[data-action="home"]').click();await page.locator('[data-nav="heroes"]').click();
+ await page.locator('[data-action="home"]').first().click();await page.locator('[data-nav="heroes"]').click();
  await page.locator('#hero-search').fill('');
  for(const [width,height] of [[390,844],[320,740]]){
    await page.setViewportSize({width,height});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'library overflow');
    await page.locator('[data-nav="badges"]').click();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'badges overflow');
    await page.locator('[data-nav="home"]').click();
    for(const mode of ['quiz','forms','device','memory']){
-     await page.locator(`[data-action="start"][data-game="${mode}"]`).first().click();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),mode+' small screen overflow');await page.locator('[data-action="home"]').click();
+     await page.locator(`[data-action="start"][data-game="${mode}"]`).first().click();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),mode+' small screen overflow');await page.locator('[data-action="home"]').first().click();
    }
  }
  await page.locator('[data-action="help"]').click();assert.ok(await page.locator('dialog').evaluate(el=>el.open));await page.locator('[data-action="close-help"]').click();
@@ -142,7 +142,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  assert.match(await page.locator('[data-action="attack"]').textContent(),/送點心/);await page.screenshot({path:path.join(out,'phone-pucchi-rescue.png'),fullPage:true});
  for(let j=0;j<2;j++){for(let i=0;i<4;i++){await page.locator('[data-action="attack"]').click();await page.waitForTimeout(190);}await page.locator('#combo-button').click();await page.waitForTimeout(1000);}
  assert.match(await page.locator('.result h2').textContent(),/好朋友救援成功/);
- await page.locator('[data-action="home"]').click();await page.locator('[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="pick-monster"][data-id="baltan"]').click();
+ await page.locator('[data-action="home"]').first().click();await page.locator('[data-action="start"][data-game="battle"]').click();await page.locator('[data-action="pick-monster"][data-id="baltan"]').click();
  await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');await page.waitForSelector('.challenge-targets');
  assert.equal(await page.locator('[data-action="challenge-target"]').count(),3);await page.screenshot({path:path.join(out,'phone-baltan-clones.png'),fullPage:true});
  const target=await page.evaluate(()=>state.game.targetIndex);await page.locator(`[data-action="challenge-target"][data-index="${target}"]`).click();assert.equal(await page.evaluate(()=>state.game.challengeSolved),true);
@@ -151,7 +151,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  const encoded=Object.fromEntries(fs.readdirSync(path.resolve(__dirname,'../assets')).filter(f=>f.startsWith('voice-')&&f.endsWith('.mp3')).map(f=>[f.slice(6,-4),fs.readFileSync(path.resolve(__dirname,'../assets',f)).toString('base64')]));
  const sounds=await page.evaluate(async(encoded)=>{const ctx=new AudioContext();const result=[];for(const [id,data] of Object.entries(encoded)){const bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));const buffer=await ctx.decodeAudioData(bytes.buffer);const samples=buffer.getChannelData(0);let peak=0;for(const v of samples)peak=Math.max(peak,Math.abs(v));result.push({id,duration:buffer.duration,peak});}await ctx.close();return result;},encoded);
  assert.equal(sounds.length,9);assert.ok(sounds.every(s=>s.duration>1&&s.duration<8&&s.peak>.03&&s.peak<1),'all voice clips decode and contain unclipped sound');
- await page.locator('[data-action="home"]').click();await page.locator('[data-action="help"]').click();await page.locator('[data-action="voice-preview"]').click();
+ await page.locator('[data-action="home"]').first().click();await page.locator('[data-action="help"]').click();await page.locator('[data-action="voice-preview"]').click();
  await page.waitForFunction(()=>state.cue&&!state.cue.paused&&state.cue.currentTime>.1);assert.equal(await page.evaluate(()=>state.cue.error),null);await page.locator('[data-action="close-help"]').click();await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.cue),null);
  await page.locator('#sound-button').click();await page.waitForFunction(()=>state.cue&&!state.cue.paused);await page.locator('[data-nav="heroes"]').click();assert.equal(await page.evaluate(()=>state.cue),null);
  await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.sound),false);
