@@ -61,8 +61,8 @@ try { saved = JSON.parse(localStorage.getItem('ultra-base-v1') || '{}') || {}; }
 const state = {
   player: ['little','big','together'].includes(saved.player) ? saved.player : 'little',
   sound: saved.sound !== false,
-  stars: Math.max(0, Number(saved.stars) || 0),
-  completed: saved.completed && typeof saved.completed === 'object' && !Array.isArray(saved.completed) ? saved.completed : {},
+  stars: Number.isFinite(Number(saved.stars)) ? Math.min(999999,Math.max(0,Math.floor(Number(saved.stars)))) : 0,
+  completed: Object.fromEntries(GAMES.map(g=>[g.id,Number.isFinite(Number(saved.completed?.[g.id]))?Math.min(999999,Math.max(0,Math.floor(Number(saved.completed[g.id])))):0])),
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
 function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed}));}catch{}}
