@@ -1,0 +1,17 @@
+{
+  "name": "land-of-light-little-heroes",
+  "version": "1.1.0",
+  "private": true,
+  "description": "給 4～6 歲孩子的繁體中文超人力霸王互動遊戲",
+  "scripts": {
+    "start": "python3 -m http.server 4173 --bind 127.0.0.1",
+    "test": "node qa/logic.cjs",
+    "test:browser": "node qa/check.cjs",
+    "test:security": "node qa/security.cjs",
+    "build": "python3 scripts/build.py && python3 scripts/prepare_hosting.py"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.13",
+    "playwright": "^1.63.0"
+  }
+}

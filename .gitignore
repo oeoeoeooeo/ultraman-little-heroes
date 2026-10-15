@@ -1,0 +1,16 @@
+node_modules/
+.DS_Store
+qa/screenshots/*.png
+qa/reports/
+qa/artifacts/
+dist/
+.firebase/
+firebase-debug.log*
+*-debug.log*
+.env
+.env.*
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+小英雄基地.html
