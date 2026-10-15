@@ -3526,7 +3526,7 @@ function renderExtraLibrary(){
   const h=HEROES.find(h=>h.id===(x.heroId||x.owners?.[0]));
   let visual,copy,action;
   if(encyclopediaTab==='forms'){visual=formFigure(x);copy=`${h.short} · ${ROLES[x.role]}<br>${x.hint}<br>招式：${x.move}`;action=`<button class="read-button" data-action="try-form" data-id="${x.id}">變成這個型態！</button>`;}
-  else if(encyclopediaTab==='devices'){visual=devicePicture({...h,id:x.id,device:x.name,deviceKind:x.deviceKind});copy=`${x.kind} · ${x.owners.map(id=>HEROES.find(h=>h.id===id).short).join('、')}<br>${x.fact}`;action='';}
+  else if(encyclopediaTab==='devices'){visual=devicePicture(deviceQuestion(x));copy=`${x.kind} · ${x.owners.map(id=>HEROES.find(h=>h.id===id).short).join('、')}<br>${x.fact}`;action='';}
   else if(encyclopediaTab==='moves'){visual=`<div class="move-symbol ${x.kind}">${moveSymbol(x)}</div>${heroImage(h,'move-owner')}`;copy=`${h.short}的招式<br>${{beam:'集中光線',ring:'旋轉光輪',burst:'爆發力量',calm:'溫柔的光'}[x.kind]} · 遊戲演出分類`;action=`<button class="read-button" data-action="try-move" data-id="${x.id}">帶著這招出發！</button>`;}
   else{visual=monster('monster-library-image',x);copy=`${x.friendly?'💚 友善夥伴':'✦ '+x.tag+'挑戰'}<br>${x.fact}`;action=`<button class="read-button" data-action="try-monster" data-id="${x.id}">${x.friendly?'一起幫助牠！':'和牠玩挑戰！'}</button>`;}
   return `<article class="extra-card"><div class="extra-visual">${visual}</div><h2>${x.name}</h2><p>${copy}</p>${action}<button class="read-button" data-action="read-entry" data-id="${x.id}" data-tab="${encyclopediaTab}">♫ 聽聽小故事</button>${sourceLink(x.source)}</article>`;
