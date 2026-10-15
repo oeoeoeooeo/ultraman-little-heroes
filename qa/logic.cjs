@@ -144,6 +144,34 @@ setupMore('melba','decker','decker-flash');more.key('d');more.key('d');assert.eq
 for(const monsterId of ['baltan','gubila','pucchi']){setupMore(monsterId);more.advance(6500);assert.equal(more.document.querySelectorAll('[data-action="challenge-target"]').length,3);const target=more.run('state.game.targetIndex');more.click(`[data-action="challenge-target"][data-index="${(target+1)%3}"]`);assert.equal(more.run('state.game.challengeSolved'),false);more.key('Escape');more.click(`[data-action="challenge-target"][data-index="${target}"]`);assert.equal(more.run('state.game.challengeSolved'),false);more.key('Escape');more.click(`[data-action="challenge-target"][data-index="${target}"]`);assert.equal(more.run('state.game.challengeSolved'),true);assert.equal(more.run('state.game.energy[0]'),1);}
 // Friendly monsters are a rescue, and calming forms have an actual rescue bonus.
 setupMore('pucchi','cosmos','cosmos-luna');assert.match(more.el('[data-action="attack"]').textContent,/送點心/);for(let j=0;j<2;j++){for(let i=0;i<4;i++){more.key('a');more.advance(200);}more.key(' ');more.advance(1000);}assert.match(more.el('.result h2').textContent,/好朋友救援成功/);
-setupMore('gomora');const originalMove=more.run('chosenMove(state.game).id');more.click('[data-action="pick-move"]:last-child');assert.notEqual(more.run('chosenMove(state.game).id'),originalMove);more.key('Escape');const pausedMove=more.run('state.game.moveId');more.click('[data-action="pick-move"]:first-child');assert.equal(more.run('state.game.moveId'),pausedMove);
+setupMore('gomora');const originalMove=more.run('chosenMove(state.game).id');more.click('[data-action="pick-move"]:last-child');assert.notEqual(more.run('chosenMove(state.game).id'),originalMove);more.key('Escape');const pausedMove=more.run('state.game.moveId');assert.equal(more.el('[data-action="pick-move"]:first-child').disabled,true);more.el('[data-action="pick-move"]:first-child').click();assert.equal(more.run('state.game.moveId'),pausedMove);
 more.run('leave()');
 console.log('PASS: 55 forms, 60 items, 90 moves, 30 monsters; owner-safe quizzes, same-hero form choices, power/speed bonuses, pause-protected changes, clone/burrow targets, friendly rescue and calming bonus.');
+
+// Player-focused journey: no bypass, duplicate reward, stale timer or forged sticker.
+storage.set('ultra-base-v1',JSON.stringify({sound:false,collection:['pucchi','pucchi','<img onerror=alert(1)>'],team:['bad','zero']}));
+let play=boot();assert.deepEqual(play.json('state.collection'),['pucchi']);assert.deepEqual(play.json('state.team'),['tiga','zero']);
+play.click('[data-action="start-quest"]');assert.equal(play.run('state.game.type'),'quest-map');assert.equal(play.document.querySelectorAll('.quest-route li').length,3);
+const route=play.json('state.game.quest.route');assert.equal(new Set(route).size,3);
+play.click('[data-action="quest-transform"]');play.key(' ');play.advance(1300);assert.equal(play.run('state.game.quest.stage'),0);
+play.run('state.game.energy=[4,0];updateEnergy()');play.key(' ');assert.equal(play.run('state.game.hp'),100,'must find clues before beam');assert.equal(play.el('#combo-button').disabled,true);
+play.key('1');play.key('1');assert.equal(play.run('state.game.questFound'),1,'same star cannot be counted twice');
+play.key('Escape');play.key('2');assert.equal(play.run('state.game.questFound'),1);play.advance(20000);assert.equal(play.run('state.game.questFound'),1);play.key('Escape');play.key('2');play.key('3');assert.equal(play.run('state.game.questFound'),3);
+function winStage(t){for(let j=0;j<2;j++){for(let i=0;i<4;i++){t.key('a');t.advance(200);}t.key(' ');t.advance(1100);}}
+winStage(play);assert.equal(play.run('state.game.type'),'quest-checkpoint');assert.equal(play.run('state.collection.includes('+JSON.stringify(route[0])+')'),true);assert.equal(play.run('state.completed.battle'),0,'journey award only at end');
+for(let stage=1;stage<3;stage++){
+ play.click('[data-action="quest-next"]');assert.equal(play.run('state.game.quest.stage'),stage);play.advance(9000);assert.equal(play.run('state.game.warning'),false,'story targets have no time limit');
+ for(let k=0;k<3;k++){const answer=play.run('state.game.questTarget');play.key(String((answer+1)%3+1));assert.equal(play.run('state.game.questFound'),k);play.key(String(answer+1));}
+ winStage(play);
+}
+assert.equal(play.run('state.questRuns'),1);assert.equal(play.run('state.completed.battle'),1);assert.equal(play.run('state.stars'),20);assert.ok(route.every(id=>play.run('state.collection.includes('+JSON.stringify(id)+')')));const earnedCount=play.run('state.collection.length');
+play.run('rememberMonster(MONSTERS.find(m=>m.id===\'pucchi\'))');assert.equal(play.run('state.collection.length'),earnedCount,'no duplicated sticker');
+play.click('[data-action="badges"]');assert.equal(play.document.querySelectorAll('.sticker.collected').length,earnedCount);const reloaded=boot();assert.equal(reloaded.run('state.collection.length'),earnedCount);assert.equal(reloaded.run('state.questRuns'),1);
+// Holding stops on release, pause and navigation, and does not create a delayed attack.
+play.run('leave();beginBattle({coop:false,heroes:[HEROES[2]],forms:[\'multi\'],monsterId:\'gomora\'})');
+function down(t){const e=new t.document.defaultView.Event('pointerdown',{bubbles:true});Object.assign(e,{button:0,pointerId:1});t.el('[data-action="attack"]').dispatchEvent(e);}
+down(play);play.advance(1000);assert.equal(play.run('state.game.energy[0]'),4);play.document.dispatchEvent(new play.document.defaultView.Event('pointerup'));const hp=play.run('state.game.hp');play.advance(2000);assert.equal(play.run('state.game.hp'),hp);
+down(play);play.key('Escape');play.advance(1000);assert.equal(play.run('state.game.hp'),hp);play.key('Escape');down(play);play.click('[data-nav="heroes"]');play.advance(2000);assert.equal(play.run('state.game'),null);
+// Co-op: one extra attack when full sends exactly one energy, once per pilot per fight.
+play.run('leave();beginBattle({coop:true,heroes:[HEROES[2],HEROES[3]],forms:[\'multi\',\'zero-base\'],monsterId:\'gomora\'})');for(let i=0;i<4;i++){play.key('a');play.advance(200);}play.key('a');play.advance(200);assert.deepEqual(play.json('state.game.energy'),[4,1]);play.key('a');assert.deepEqual(play.json('state.game.energy'),[4,1]);
+play.run('leave()');console.log('PASS: complete three-stage journey, compulsory clues, no countdown, wrong/repeat answers, final-only reward, persistent sanitized stickers, held charge cancellation and one-use co-op assistance.');

@@ -3419,9 +3419,12 @@ const state = {
   sound: saved.sound !== false,
   stars: Number.isFinite(Number(saved.stars)) ? Math.min(999999,Math.max(0,Math.floor(Number(saved.stars)))) : 0,
   completed: Object.fromEntries(GAMES.map(g=>[g.id,Number.isFinite(Number(saved.completed?.[g.id]))?Math.min(999999,Math.max(0,Math.floor(Number(saved.completed[g.id])))):0])),
+  collection:Array.isArray(saved.collection)?[...new Set(saved.collection.filter(id=>MONSTERS.some(m=>m.id===id)))]:[],
+  team:Array.isArray(saved.team)&&saved.team.length===2&&saved.team.every(id=>HEROES.some(h=>h.id===id))?saved.team:['tiga','zero'],
+  questRuns:Number.isFinite(Number(saved.questRuns))?Math.min(99999,Math.max(0,Math.floor(Number(saved.questRuns)))):0,
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
-function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed}));}catch{}}
+function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns}));}catch{}}
 function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
 function updateChrome(){
   $('#star-total').textContent = state.stars;
@@ -3432,7 +3435,7 @@ function updateChrome(){
   $$('.nav-item').forEach(el=>{el.classList.toggle('active',el.dataset.nav===state.page);el.setAttribute('aria-current',el.dataset.nav===state.page?'page':'false');});
 }
 function later(fn,ms){const token=state.token;const timer=setTimeout(()=>{state.timers.delete(timer);if(token===state.token)fn();},ms);state.timers.add(timer);return timer;}
-function leave(){state.token++;state.timers.forEach(clearTimeout);state.timers.clear();stopVoice();state.game=null;}
+function leave(){document.body.classList.remove('playing-battle');releaseHeld();state.token++;state.timers.forEach(clearTimeout);state.timers.clear();stopVoice();state.game=null;}
 function navigate(page,focus=true){
   leave();state.page=page;updateChrome();
   $('#breadcrumb-text').textContent = page==='home'?'今天，也一起閃閃發光！':page==='heroes'?'認識一起守護地球的朋友':'每一份勇氣，都值得收藏';
@@ -3494,7 +3497,7 @@ function cardTitle(game){return game.id==='device'?'這是誰的<span class="kee
 function renderHome(){
   main.innerHTML=`<section class="page-intro"><div><p class="eyebrow">WELCOME TO THE LAND OF LIGHT</p><h1>小英雄，歡迎回來！<span>👋</span></h1><p class="intro-sub">今天想和超人力霸王，一起展開什麼冒險呢？</p></div><div class="today">${icon('sun')} 每一天都是冒險日</div></section>
   <section class="hero-banner" aria-label="一起守護地球"><div class="hero-copy"><span class="pill">${icon('sparkle')} 專屬你們的宇宙冒險</span><h2>小小英雄，<br><em>大大冒險！</em></h2><p>猜猜英雄、發現力量，再一起變身。<br>光之國的下一位小英雄，就是你！</p><button class="primary" data-action="start" data-game="coop">${icon('play')} 一起變身，出任務！ ${icon('arrow')}</button></div><div class="hero-art" aria-hidden="true"><div class="hero-disk"></div><div class="orbit"></div>${heroImage(HEROES[2],'tiga',false)}${heroImage(HEROES[3],'zero',false)}<span class="floating-label"><b>✦</b> 勇氣 + 合作 = 無限力量</span><span class="art-star s1">✧</span><span class="art-star s2">✦</span><span class="art-star s3">✧</span></div>${city()}<span class="banner-corner">LET'S SHINE TOGETHER ✦</span></section>
-  <section class="player-strip" aria-label="選擇玩家模式"><div class="strip-label">今天誰來玩？<span>選一個適合你的模式</span></div><div class="player-options">${[
+  ${questHome()}<section class="player-strip" aria-label="選擇玩家模式"><div class="strip-label">今天誰來玩？<span>選一個適合你的模式</span></div><div class="player-options">${[
     ['little','👦🏻','弟弟模式','4 歲・圖片提示多一點'],['big','🧑🏻','哥哥模式','6 歲・挑戰多一點'],['together','🤝','兄弟一起','雙人・合作最好玩']
   ].map(([id,face,title,sub])=>`<button class="player-button ${state.player===id?'selected':''}" data-action="player" data-player="${id}" aria-pressed="${state.player===id}"><span class="player-face">${face}</span><span><b>${title}</b><small>${sub}</small></span><span class="check-dot">✓</span></button>`).join('')}</div></section>
   <section aria-labelledby="game-heading"><div class="section-title"><h2 id="game-heading">選一個小冒險 <small>每一次嘗試，都會更厲害一點</small></h2><button class="text-button" data-action="help">怎麼玩？ ${icon('info')}</button></div><div class="game-grid">${GAMES.map((g,i)=>`<button class="game-card" data-action="start" data-game="${g.id}" style="--card-bg:${g.bg};--tag-color:${g.tagColor}" aria-label="${g.title}，${g.copy}"><div class="card-art"><span class="card-tag">${g.id==='coop'?'✦ ':''}${g.tag}</span><span class="card-number">0${i+1}</span>${cardArt(g)}</div><div class="card-detail"><h3>${cardTitle(g)}</h3><p>${g.copy}</p><div class="card-bottom"><span>${g.meta}</span>${icon('arrow')}</div></div></button>`).join('')}</div></section>
@@ -3532,7 +3535,7 @@ function renderExtraLibrary(){
   return `<article class="extra-card"><div class="extra-visual">${visual}</div><h2>${x.name}</h2><p>${copy}</p>${action}<button class="read-button" data-action="read-entry" data-id="${x.id}" data-tab="${encyclopediaTab}">♫ 聽聽小故事</button>${sourceLink(x.source)}</article>`;
  }).join('')}</div><p class="catalogue-note">型態與道具圖為簡化配色示意，辨識時請一起看名稱；不是官方造型複製圖。招式動畫與力量加成是本遊戲的趣味設計。中文譯名可能因地區不同，沒有確定譯名時保留原名。資料查核：2026/10/15。</p>`;
 }
-function renderBadges(){main.innerHTML=screenHead('我的小成就','每一份勇氣，都會變成一顆閃亮的星星。')+`<div class="star-summary"><span>★</span><div><strong>${state.stars} <small style="font-size:14px">顆冒險星星</small></strong><p>已收集 ${BADGES.filter(b=>hasBadge(b.id)).length} / ${BADGES.length} 枚徽章，一起慢慢收集吧！</p></div></div><div class="badge-grid">${BADGES.map(b=>`<article class="achievement ${hasBadge(b.id)?'earned':'locked'}"><div class="medal">${b.emoji}</div><h2>${b.name}</h2><p>${b.description}</p><span class="status-label">${hasBadge(b.id)?'✓ 已獲得・你好棒！':'等待你的冒險'}</span></article>`).join('')}</div><p class="badge-help">星星與徽章會保存在這個瀏覽器裡，不用登入。</p>`;}
+function renderBadges(){main.innerHTML=stickerBook()+screenHead('我的小成就','每一份勇氣，都會變成一顆閃亮的星星。')+`<div class="star-summary"><span>★</span><div><strong>${state.stars} <small style="font-size:14px">顆冒險星星</small></strong><p>已收集 ${BADGES.filter(b=>hasBadge(b.id)).length} / ${BADGES.length} 枚徽章，一起慢慢收集吧！</p></div></div><div class="badge-grid">${BADGES.map(b=>`<article class="achievement ${hasBadge(b.id)?'earned':'locked'}"><div class="medal">${b.emoji}</div><h2>${b.name}</h2><p>${b.description}</p><span class="status-label">${hasBadge(b.id)?'✓ 已獲得・你好棒！':'等待你的冒險'}</span></article>`).join('')}</div><p class="badge-help">星星與徽章會保存在這個瀏覽器裡，不用登入。</p>`;}
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
   $('#breadcrumb-text').textContent=GAMES.find(g=>g.id===mode).title;
@@ -3608,18 +3611,86 @@ function challengeTarget(i){
  updateEnergy();$('#battle-message').textContent=g.monster.friendly?'好朋友開心了！送你們一格愛心能量！':'找到本尊了！送你們一格光之能量！';tone('success');playCue('correct');
 }
 
+const QUEST_PLACES=[
+ {id:'forest',name:'森林找朋友',emoji:'🌳',task:'collect',copy:'朋友迷路了！收集三顆光之星，幫牠找到回家的路。',pool:['pigmon','pucchi','kanegon']},
+ {id:'coast',name:'海岸追蹤隊',emoji:'🌊',task:'track',copy:'怪獸躲起來了！觀察腳印，找出三次正確的位置。',pool:['gubila','telesdon','gedos']},
+ {id:'space',name:'宇宙分身謎',emoji:'🪐',task:'clone',copy:'分身擋住航線！找到三次真正的夥伴，再發射光線。',pool:['baltan','dada','neronga']}
+];
+function questHome(){return `<section class="quest-launch" aria-label="星星救援旅程"><div><span class="pill">🌟 新冒險 · 三站故事</span><h2>出發！星星救援隊</h2><p>森林找朋友 → 海岸追蹤 → 宇宙分身<br>每完成一站，就能帶回一張怪獸貼紙！</p><div class="quest-launch-actions"><button class="primary" data-action="start-quest">🚀 ${state.player==='together'?'兄弟一起':'小英雄'}，直接出發！</button><button class="secondary" data-action="start" data-game="${state.player==='together'?'coop':'battle'}">先挑我的英雄</button></div></div><button class="sticker-teaser" data-action="badges" aria-label="打開怪獸貼紙簿"><span>📒</span><b>我的怪獸貼紙簿</b><small>${state.collection.length} / ${MONSTERS.length} 位冒險夥伴</small></button></section>`;}
+function newQuest(){return {stage:0,route:QUEST_PLACES.map(p=>shuffle(p.pool)[0])};}
+function startQuest(useTeam=false){
+ const selection=useTeam&&state.game?.type==='selection'?state.game:null;
+ const coop=selection?selection.coop:state.player==='together';
+ const heroes=selection?selection.selected.map(i=>HEROES[i]):state.team.map(id=>HEROES.find(h=>h.id===id));
+ const forms=selection?selection.forms:heroes.map(h=>heroForms(h)[0]?.id||null);
+ state.team=heroes.map(h=>h.id);save();leave();state.page='home';updateChrome();state.game={type:'quest-map',coop,heroes,forms,quest:newQuest()};
+ renderQuestMap();main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});
+}
+function questSteps(q){return `<ol class="quest-route" aria-label="救援旅程">${QUEST_PLACES.map((p,i)=>`<li class="${i<q.stage?'done':i===q.stage?'current':''}"><span>${i<q.stage?'✓':p.emoji}</span><b>${p.name}</b><small>${i<q.stage?'完成啦！':i===q.stage?'這一站出發':'下一站'}</small></li>`).join('')}</ol>`;}
+function renderQuestMap(){
+ const g=state.game;if(g?.type!=='quest-map')return;
+ main.innerHTML=screenHead('星星救援隊，集合！','先找朋友，再追蹤腳印，最後破解宇宙分身。','三站小旅程')+`<section class="panel center quest-map"><div class="quest-map-art" aria-hidden="true">🌳 ✨ 🌊 ✨ 🪐</div>${questSteps(g.quest)}<div class="quest-team">${g.heroes.slice(0,g.coop?2:1).map(h=>`<div>${heroImage(h)}<b>${h.short}</b></div>`).join('')}</div><p>這次的救援夥伴是 <b>${MONSTERS.find(m=>m.id===g.quest.route[0]).name}</b>！<br>不用比快，準備好了就一起出發。</p><button class="primary" data-action="quest-transform">✦ 我的英雄，準備變身！</button><button class="secondary" data-action="start" data-game="${g.coop?'coop':'battle'}">換一組英雄</button></section>`;
+ playCue('rescue');
+}
+function questTransform(){
+ const g=state.game;if(g?.type!=='quest-map')return;
+ state.game={...g,type:'transform',monsterId:g.quest.route[0],ready:[false,false],busy:false};renderTransform();
+}
+function questEnvironment(g){if(!g.quest)return '';const p=QUEST_PLACES[g.quest.stage];return `<div class="quest-scenery ${p.id}" aria-hidden="true">${p.id==='forest'?'<span>🌳</span><span>🌿</span><span>🌳</span>':p.id==='coast'?'<span>🌊</span><span>🐚</span><span>🌊</span>':'<span>🪐</span><span>✧</span><span>🌙</span>'}</div>`;}
+function questObjective(g){if(!g.quest)return '';const p=QUEST_PLACES[g.quest.stage];return `<section class="quest-objective"><span>${p.emoji}</span><div><b>第 ${g.quest.stage+1} 站：${p.name}</b><p>${p.copy}</p><strong id="quest-task-status" role="status">${'☆ '.repeat(3)} 0 / 3</strong></div></section>`;}
+function renderQuestTargets(){
+ const g=state.game;if(g?.type!=='battle'||!g.quest||g.questFound>=3)return;
+ $('.quest-targets')?.remove();const p=QUEST_PLACES[g.quest.stage];const targets=document.createElement('div');targets.className='quest-targets '+p.task;
+ g.questTarget=Math.floor(Math.random()*3);
+ targets.innerHTML=Array.from({length:3},(_,i)=>`<button data-action="quest-target" data-index="${i}" aria-label="${p.task==='collect'?'收集第 '+(i+1)+' 顆光之星':i===g.questTarget?'找到了！正確的線索':'再觀察這個線索'}" ${p.task==='collect'&&g.questPicked.includes(i)?'disabled':''}>${p.task==='clone'?monster('clone-thumb',g.monster):''}<span>${p.task==='collect'?g.questPicked.includes(i)?'✓':'🌟':i===g.questTarget?p.task==='track'?'🐾 ★':'🌟':p.task==='track'?'🪨':'?'}</span></button>`).join('');$('#arena').append(targets);
+}
+function questTarget(i){
+ const g=state.game;if(g?.type!=='battle'||!g.quest||g.paused||g.firing||g.finished||g.questFound>=3||i<0||i>2)return;
+ const p=QUEST_PLACES[g.quest.stage];
+ if(p.task==='collect'&&g.questPicked.includes(i))return;
+ if(p.task!=='collect'&&i!==g.questTarget){$('#battle-message').textContent='再看看星星或腳印的提示！慢慢找，沒關係。';tone('try');return;}
+ g.questPicked.push(i);g.questFound++;
+ for(let j=0;j<(g.coop?2:1);j++)g.energy[j]=Math.min(4,g.energy[j]+1);
+ updateEnergy();$('#quest-task-status').textContent='★ '.repeat(g.questFound)+'☆ '.repeat(3-g.questFound)+` ${g.questFound} / 3`;
+ if(g.questFound===3){$('.quest-targets')?.remove();$('#battle-message').textContent='三個線索都找到了！集滿能量，送出光之力量！';playCue('correct');}
+ else{renderQuestTargets();$('#battle-message').textContent=`找到了 ${g.questFound} 個！還有 ${3-g.questFound} 個小發現！`;tone('success');}
+ showBattlePop('★ 找到了！',g.coop?1:0);
+}
+function rememberMonster(m){if(!m||state.collection.includes(m.id))return false;state.collection.push(m.id);save();return true;}
+function stickerBook(){return `<section class="sticker-book"><div class="section-title"><h2>📒 我的怪獸貼紙簿 <small>${state.collection.length} / ${MONSTERS.length} 位冒險夥伴</small></h2></div><p>完成對戰或救援，就能帶回夥伴貼紙。沒有重複抽卡，想找誰就和誰出任務！</p><div class="sticker-grid">${MONSTERS.map(m=>{const got=state.collection.includes(m.id);return `<button class="sticker ${got?'collected':''}" data-action="try-monster" data-id="${m.id}" aria-label="${m.name}，${got?'已收集':'還沒一起出任務'}">${got?monster('sticker-image',m):'<span class="sticker-mystery">?</span>'}<b>${m.name}</b><small>${got?'✓ 一起冒險過':'找牠出任務 ↗'}</small></button>`;}).join('')}</div></section>`;}
+function questCheckpoint(g){
+ const next={...g.quest,stage:g.quest.stage+1};
+ if(next.stage>=3){state.questRuns++;save();finish(g.coop?'coop':'battle',g.coop?25:20,'三站救援，全部成功！','森林、海岸與宇宙都有你們的光！貼紙已經收進小英雄的冒險簿。');return;}
+ const fresh=rememberMonster(g.monster);
+ const setup={coop:g.coop,heroes:g.heroes,forms:[...g.forms],quest:next,monsterId:next.route[next.stage]};
+ leave();state.game={type:'quest-checkpoint',setup};
+ main.innerHTML=screenHead('這一站，任務完成！','先收好貼紙，再往下一站出發。')+`<section class="panel center checkpoint">${questSteps(next)}<div class="earned-sticker">${monster('sticker-image',g.monster)}<b>${g.monster.name}</b><small>${fresh?'✨ 新夥伴貼紙！':'💚 老朋友又見面了！'}</small></div><h2>下一站：${QUEST_PLACES[next.stage].name}</h2><p>${QUEST_PLACES[next.stage].copy}</p><button class="primary" data-action="quest-next">🚀 準備好了，繼續旅程！</button><button class="secondary" data-action="home">先休息一下</button></section>`;
+ confetti();playCue('victory');main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});
+}
+function questNext(){const g=state.game;if(g?.type!=='quest-checkpoint')return;const setup=g.setup;leave();beginBattle(setup);main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
+let heldAttack=null;
+function releaseHeld(){if(heldAttack){heldAttack.active=false;heldAttack=null;}}
+function holdAttack(event){
+ const button=event.target.closest('[data-action="attack"]');if(!button||button.disabled||event.button!==0)return;
+ releaseHeld();const press={active:true,index:Number(button.dataset.index),token:state.token};heldAttack=press;
+ function repeat(){const g=state.game;if(!press.active||press.token!==state.token||g?.type!=='battle'||g.paused||g.firing||g.finished){releaseHeld();return;}attack(press.index);later(repeat,190);}
+ later(repeat,300);
+}
+function showBattlePop(text,i=0){const g=state.game;if(g?.type!=='battle')return;const pop=document.createElement('span');pop.className='battle-pop '+(i?'second':'');pop.textContent=text;$('#arena').append(pop);later(()=>pop.remove(),800);}
+
 function startSelection(coop){
   state.game={type:'selection',coop,selected:[2,3],forms:['multi','zero-base'],monsterId:MONSTERS[(state.completed[coop?'coop':'battle']||0)%MONSTERS.length].id,pilot:0};
   renderSelection();
 }
 function renderSelection(){
   const g=state.game;if(!g||g.type!=='selection')return;
-  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div>${selectionExtras(g)}<div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button></section>`;
+  main.innerHTML=screenHead(g.coop?'兄弟合體出任務':'變身！怪獸對戰','先選一位最喜歡的英雄，再一起把勇氣準備好。',g.coop?'雙人合作':'單人冒險')+`<section class="panel center"><h2 class="select-title">${g.coop?'哥哥和弟弟，選好你們的英雄！':'今天想變身成哪一位英雄？'}</h2><p class="select-copy">${g.coop?'兩個人都準備好，光之力量就會加倍！':'沒有倒數時間，準備好了再出發就好。'}</p>${g.coop?`<div class="player-options" style="max-width:500px;margin:22px auto 0">${['哥哥的英雄','弟弟的英雄'].map((s,i)=>`<button class="player-button ${g.pilot===i?'selected':''}" data-action="pilot" data-index="${i}"><span><b>${s}</b><small>已選擇：${HEROES[g.selected[i]].short}</small></span><span class="check-dot">✓</span></button>`).join('')}</div>`:''}${catalogueTools()}<div class="hero-select">${HEROES.map((h,i)=>`<button data-hero-card="${h.id}" class="pick-hero ${g.selected[g.pilot]===i?'selected':''}" data-action="pick-hero" data-index="${i}" aria-pressed="${g.selected[g.pilot]===i}">${heroImage(h)}${h.short}</button>`).join('')}</div>${selectionExtras(g)}<div class="coop-hint">${g.coop?'<span>哥哥：<kbd>A</kbd> 攻擊 <kbd>S</kbd> 護盾</span><span>弟弟：<kbd>L</kbd> 攻擊 <kbd>K</kbd> 護盾</span>':'<span><kbd>A</kbd> / <kbd>←</kbd> 攻擊 <kbd>S</kbd> / <kbd>↓</kbd> 護盾</span>'}<span><kbd>空白鍵</kbd> ${g.coop?'合體':'必殺'}光線</span></div><p class="select-copy">也可以點畫面上的大按鈕，不用鍵盤也能玩。</p><button class="primary" data-action="prepare-transform">${icon('sparkle')} 英雄選好了，準備變身！ ${icon('arrow')}</button><button class="secondary quest-team-button" data-action="quest-with-team">🌍 用這組英雄玩三站救援！</button></section>`;
   restoreHeroTools();
 }
 function prepareTransform(){
   const old=state.game;if(!old||old.type!=='selection')return;
-  state.game={type:'transform',coop:old.coop,heroes:old.selected.map(i=>HEROES[i]),forms:old.forms,monsterId:old.monsterId,moveId:old.moveId,ready:[false,false],busy:false};renderTransform();
+  state.team=old.selected.map(i=>HEROES[i].id);save();
+  state.game={type:'transform',coop:old.coop,heroes:old.selected.map(i=>HEROES[i]),forms:old.forms,monsterId:old.monsterId,moveId:old.moveId,quest:old.quest,ready:[false,false],busy:false};renderTransform();
 }
 function renderTransform(){
   const g=state.game;if(!g||g.type!=='transform')return;
@@ -3636,12 +3707,13 @@ function transform(index){
   later(()=>beginBattle(g),1250);
 }
 function beginBattle(setup){
-  state.game={type:'battle',coop:setup.coop,heroes:setup.heroes,forms:setup.forms||[],monster:MONSTERS.find(m=>m.id===setup.monsterId)||MONSTERS[0],moveId:setup.moveId||null,hp:100,round:(state.completed[setup.coop?'coop':'battle']||0)%3,energy:[0,0],last:[-Infinity,-Infinity],shieldUntil:[0,0],paused:false,warning:false,warnElapsed:0,nextWarning:6500,warningLimit:state.player==='big'?3500:6000,lastTick:performance.now(),elapsed:0,finished:false,firing:false,beamRemaining:0};
-  renderBattle();if(document.hidden)pauseBattle(true);battleTick();
+  document.body.classList.add('playing-battle');
+  state.game={type:'battle',coop:setup.coop,heroes:setup.heroes,forms:setup.forms||[],monster:MONSTERS.find(m=>m.id===setup.monsterId)||MONSTERS[0],moveId:setup.moveId||null,quest:setup.quest||null,questFound:0,questPicked:[],helpGiven:[false,false],hp:100,round:(state.completed[setup.coop?'coop':'battle']||0)%3,energy:[0,0],last:[-Infinity,-Infinity],shieldUntil:[0,0],paused:false,warning:false,warnElapsed:0,nextWarning:6500,warningLimit:state.player==='big'?3500:6000,lastTick:performance.now(),elapsed:0,finished:false,firing:false,beamRemaining:0};
+  renderBattle();if(state.game.quest){state.game.nextWarning=Infinity;renderQuestTargets();}if(document.hidden)pauseBattle(true);battleTick();
 }
 function renderBattle(){
   const g=state.game;if(!g||g.type!=='battle')return;
-  main.innerHTML=screenHead(g.monster.friendly?'好朋友救援隊':g.coop?'兄弟合體出任務':'地球守護大作戰',g.monster.friendly?'把愛心送給夥伴，集滿能量，一起點亮友善之光！':g.coop?'哥哥和弟弟各自集滿能量，再按空白鍵發射合體光線！':'攻擊集氣、護盾守護，能量滿了就能發射必殺光線！')+`<section class="panel"><div style="display:flex;align-items:center;gap:10px"><span class="pill">✦ ${g.round+1} 號訓練場 · ${g.monster.friendly?'友善救援':g.coop?'最佳拍檔':'勇氣練習'}</span><button class="pause-button" data-action="pause">Ⅱ 暫停</button></div><div class="arena" id="arena"><span class="arena-status">☀ 城市安全・英雄就位</span><div class="monster-label">${g.monster.name} · ${g.monster.friendly?'友善救援':g.monster.tag+'挑戰'}<div class="hp-bar" role="progressbar" aria-label="${g.monster.friendly?'還需要的幫助':'怪獸能量'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${g.hp}"><i id="enemy-hp" style="width:${g.hp}%"></i></div></div>${city()}${heroImage(g.heroes[0],'arena-hero',false)}${g.coop?heroImage(g.heroes[1],'arena-hero hero-two',false):''}<span class="arena-vs">${g.monster.friendly?'♥':'VS'}</span>${monster('arena-monster',g.monster)}</div><div class="battle-message" id="battle-message" role="status" aria-live="polite">${g.coop?'一人一份能量，準備一起發光！':g.monster.friendly?'把愛心送給好朋友！每次幫忙都能集氣。':'勇敢出擊！每次攻擊都會累積能量。'}</div><div class="battle-controls">${Array.from({length:g.coop?2:1},(_,i)=>`<div class="pilot-controls"><strong>${g.coop?['哥哥','弟弟'][i]+'・':''}${g.heroes[i].short}<small class="current-form" id="form-label-${i}">${activeForm(g,i)?.name||'基本型態'}</small></strong><div class="energy-cells" id="energy-${i}" aria-label="能量 0 / 4">${'<span></span>'.repeat(4)}</div><button class="attack-button" data-action="attack" data-index="${i}">${g.monster.id==='pucchi'?'🍩 送點心':g.monster.id==='kanegon'?'🪙 送硬幣':g.monster.friendly?'♥ 幫助牠':'✦ 攻擊'} <kbd>${i?'L':'A'}</kbd></button><button class="shield-button" data-action="shield" data-index="${i}">◇ 護盾 <kbd>${i?'K':'S'}</kbd></button><button class="form-button" data-action="cycle-form" data-index="${i}">🌈 換型態 <kbd>${i?'J':'D'}</kbd></button></div>`).join('')}</div>${battleMoves(g)}<button class="primary combo-button" id="combo-button" data-action="beam" disabled>⚡ ${g.monster.friendly?'友善之光':g.coop?'兄弟合體光線':'必殺光線'} <kbd>空白鍵</kbd></button><p class="memory-caption">${g.monster.friendly?'集滿 4 格愛心，送出友善之光！大家互相幫忙。':g.coop?'兩位英雄的能量都滿 4 格，合體光線就準備好了。':'集滿 4 格能量，發射光線！護盾可以擋住怪獸的能量波。'}</p></section>`;
+  main.innerHTML=screenHead(g.monster.friendly?'好朋友救援隊':g.coop?'兄弟合體出任務':'地球守護大作戰',g.monster.friendly?'把愛心送給夥伴，集滿能量，一起點亮友善之光！':g.coop?'哥哥和弟弟各自集滿能量，再按空白鍵發射合體光線！':'攻擊集氣、護盾守護，能量滿了就能發射必殺光線！')+`<section class="panel"><div style="display:flex;align-items:center;gap:10px"><span class="pill">✦ ${g.round+1} 號訓練場 · ${g.monster.friendly?'友善救援':g.coop?'最佳拍檔':'勇氣練習'}</span><button class="pause-button" data-action="pause">Ⅱ 暫停</button></div>${questObjective(g)}<div class="arena ${g.quest?'quest-arena '+QUEST_PLACES[g.quest.stage].id:''}" id="arena"><span class="arena-status">☀ 城市安全・英雄就位</span><div class="monster-label">${g.monster.name} · ${g.monster.friendly?'友善救援':g.monster.tag+'挑戰'}<div class="hp-bar" role="progressbar" aria-label="${g.monster.friendly?'還需要的幫助':'怪獸能量'}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${g.hp}"><i id="enemy-hp" style="width:${g.hp}%"></i></div></div>${city()}${questEnvironment(g)}${heroImage(g.heroes[0],'arena-hero',false)}${g.coop?heroImage(g.heroes[1],'arena-hero hero-two',false):''}<span class="arena-vs">${g.monster.friendly?'♥':'VS'}</span>${monster('arena-monster',g.monster)}</div><div class="battle-message" id="battle-message" role="status" aria-live="polite">${g.coop?'一人一份能量，準備一起發光！':g.monster.friendly?'把愛心送給好朋友！每次幫忙都能集氣。':'勇敢出擊！每次攻擊都會累積能量。'}</div><div class="battle-dock"><div class="battle-controls">${Array.from({length:g.coop?2:1},(_,i)=>`<div class="pilot-controls"><strong>${g.coop?['哥哥','弟弟'][i]+'・':''}${g.heroes[i].short}<small class="current-form" id="form-label-${i}">${activeForm(g,i)?.name||'基本型態'}</small></strong><div class="energy-cells" id="energy-${i}" aria-label="能量 0 / 4">${'<span></span>'.repeat(4)}</div><button class="attack-button" data-action="attack" data-index="${i}">${g.monster.id==='pucchi'?'🍩 送點心':g.monster.id==='kanegon'?'🪙 送硬幣':g.monster.friendly?'♥ 幫助牠':'✦ 攻擊'} <kbd>${i?'L':'A'}</kbd></button><button class="shield-button" data-action="shield" data-index="${i}">◇ 護盾 <kbd>${i?'K':'S'}</kbd></button><button class="form-button" data-action="cycle-form" data-index="${i}">🌈 換型態 <kbd>${i?'J':'D'}</kbd></button></div>`).join('')}</div><button class="primary combo-button" id="combo-button" data-action="beam" disabled>⚡ ${g.monster.friendly?'友善之光':g.coop?'兄弟合體光線':'必殺光線'} <kbd>空白鍵</kbd></button></div>${battleMoves(g)}<p class="memory-caption">長按攻擊也能集氣。${g.monster.friendly?'集滿 4 格愛心，送出友善之光！大家互相幫忙。':g.coop?'兩位英雄的能量都滿 4 格，合體光線就準備好了。':'集滿 4 格能量，發射光線！護盾可以擋住怪獸的能量波。'}</p></section>`;
   updateEnergy();applyBattleForms();if(!state.cue||state.cue.paused)playCue(g.monster.friendly?'rescue':'ready');
 }
 function battleTick(){
@@ -3658,15 +3730,18 @@ function battleTick(){
 function updateEnergy(){
   const g=state.game;if(!g||g.type!=='battle')return;
   g.energy.slice(0,g.coop?2:1).forEach((n,i)=>{const el=$(`#energy-${i}`);if(!el)return;el.setAttribute('aria-label',`能量 ${n} / 4`);el.innerHTML=Array.from({length:4},(_,j)=>`<span class="${j<n?'full':''}"></span>`).join('');});
-  const ready=g.energy[0]>=4&&(!g.coop||g.energy[1]>=4);$('#combo-button').disabled=!ready||g.paused||g.firing;
-  if(ready&&!g.warning&&!g.firing)$('#battle-message').textContent=g.coop?'兩份勇氣都充滿了！按空白鍵，一起發射！':'能量充滿！按空白鍵發射必殺光線！';
+  const ready=g.energy[0]>=4&&(!g.coop||g.energy[1]>=4);const taskReady=!g.quest||g.questFound>=3;$('#combo-button').disabled=!ready||g.paused||g.firing||!taskReady;
+  $$('[data-action="attack"],[data-action="shield"],[data-action="cycle-form"],[data-action="pick-move"],[data-action="quest-target"]').forEach(el=>el.disabled=g.paused||g.firing||(el.dataset.action==='quest-target'&&g.quest&&QUEST_PLACES[g.quest.stage].task==='collect'&&g.questPicked.includes(Number(el.dataset.index))));
+  if(g.quest&&g.questFound<3)$('#combo-button').textContent=`🌟 先找到 ${3-g.questFound} 個線索，再送出光！`;else $('#combo-button').innerHTML=`⚡ ${g.monster.friendly?'友善之光':g.coop?'兄弟合體光線':'必殺光線'} <kbd>空白鍵</kbd>`;
+  if(ready&&taskReady&&!g.warning&&!g.firing)$('#battle-message').textContent=g.coop?'兩份勇氣都充滿了！按空白鍵，一起發射！':'能量充滿！按空白鍵發射必殺光線！';
 }
 function updateHp(){const g=state.game;$('#enemy-hp').style.width=`${g.hp}%`;$('.hp-bar').setAttribute('aria-valuenow',g.hp);}
 function attack(i){
   const g=state.game;if(!g||g.type!=='battle'||g.paused||g.finished||g.firing||i>=(g.coop?2:1))return;
   const now=performance.now();if(now-g.last[i]<(activeForm(g,i)?.role==='speed'?140:180))return;g.last[i]=now;
   if(g.warning&&!g.challengeSolved&&['armor','flight'].includes(g.monster.pattern)&&activeForm(g,i)?.role===(g.monster.pattern==='armor'?'power':'speed')){g.challengeSolved=true;g.energy[i]=Math.min(4,g.energy[i]+1);$('#battle-message').textContent='型態用對了！多送一格能量！';}
-  g.energy[i]=Math.min(4,g.energy[i]+1);g.hp=Math.max(1,g.hp-(activeForm(g,i)?.role==='power'?3:2));updateEnergy();updateHp();tone('attack');
+  if(g.coop&&g.energy[i]===4&&g.energy[1-i]<4&&!g.helpGiven[i]){g.helpGiven[i]=true;g.energy[1-i]++;updateEnergy();showBattlePop('🤝 送你一格！',1-i);$('#battle-message').textContent=`${i?'弟弟':'哥哥'}把一格能量送給夥伴！`;tone('success');return;}
+  g.energy[i]=Math.min(4,g.energy[i]+1);showBattlePop(g.monster.friendly?'♥ +1 愛心':'✦ +1 能量',i);g.hp=Math.max(1,g.hp-(activeForm(g,i)?.role==='power'?3:2));updateEnergy();updateHp();tone('attack');
   const actor=$$('.arena-hero')[i];actor.classList.remove('punch');void actor.offsetWidth;actor.classList.add('punch');$('.arena-monster').classList.remove('hit');void $('.arena-monster').offsetWidth;$('.arena-monster').classList.add('hit');
   if(g.energy[i]===4&&!g.warning&&!(g.energy[0]>=4&&(!g.coop||g.energy[1]>=4)))$('#battle-message').textContent=`${i?'弟弟':'哥哥'}的能量滿了！幫另一位英雄加油吧！`;
 }
@@ -3678,20 +3753,20 @@ function shield(i){
   $('#battle-message').textContent=g.coop?`${i?'弟弟':'哥哥'}的護盾開啟！我們互相保護。`:'光之護盾開啟！你正在保護城市。';
 }
 function fireBeam(){
-  const g=state.game;if(!g||g.type!=='battle'||g.paused||g.finished||g.firing||g.energy[0]<4||(g.coop&&g.energy[1]<4))return;
-  g.firing=true;g.beamRemaining=900;g.energy=[0,0];g.hp=Math.max(0,g.hp-(g.monster.friendly&&activeForm(g,0)?.role==='calm'?64:52));updateEnergy();updateHp();
-  const move=chosenMove(g);const el=document.createElement('div');el.className='beam '+(g.monster.friendly?'calm':move.kind);$('#arena').append(el);tone('beam');
+  const g=state.game;if(!g||g.type!=='battle'||(g.quest&&g.questFound<3)||g.paused||g.finished||g.firing||g.energy[0]<4||(g.coop&&g.energy[1]<4))return;
+  releaseHeld();g.firing=true;g.beamRemaining=900;g.energy=[0,0];g.hp=Math.max(0,g.hp-(g.monster.friendly&&activeForm(g,0)?.role==='calm'?64:52));updateEnergy();updateHp();
+  const move=chosenMove(g);const el=document.createElement('div');el.className='beam '+(g.monster.friendly?'calm':move.kind);$('#arena').append(el);const label=document.createElement('strong');label.className='beam-announcement';label.textContent=g.monster.friendly?'♥ 友善之光！':g.coop?'兄弟合體！':move.name+'！';$('#arena').append(label);tone('beam');
   $('#battle-message').textContent=g.monster.friendly?'送出友善的光！夥伴越來越安心了！':`${g.coop?'兄弟合體！':''}${move.name}！`;playCue(g.monster.friendly?'kindness':'beam');
 }
 function resolveBeam(){
   const g=state.game;if(!g||g.type!=='battle')return;
-  $('.beam')?.remove();g.firing=false;
-  if(g.hp<=0){g.finished=true;if(g.monster.friendly){finish(g.coop?'coop':'battle',g.coop?15:10,'好朋友救援成功！',`你們幫助了${g.monster.name}，大家一起成為好朋友！`);return;}finish(g.coop?'coop':'battle',g.coop?15:10,g.coop?'兄弟齊心，地球平安！':'勇敢的小英雄，任務成功！',g.coop?'哥哥和弟弟互相幫忙，用合作的光守護了城市。':'你的勇氣充滿光之力量，城市裡的大家都在為你歡呼！');}
+  $('.beam')?.remove();$('.beam-announcement')?.remove();g.firing=false;
+  if(g.hp<=0){g.finished=true;if(g.quest){questCheckpoint(g);return;}if(g.monster.friendly){finish(g.coop?'coop':'battle',g.coop?15:10,'好朋友救援成功！',`你們幫助了${g.monster.name}，大家一起成為好朋友！`);return;}finish(g.coop?'coop':'battle',g.coop?15:10,g.coop?'兄弟齊心，地球平安！':'勇敢的小英雄，任務成功！',g.coop?'哥哥和弟弟互相幫忙，用合作的光守護了城市。':'你的勇氣充滿光之力量，城市裡的大家都在為你歡呼！');}
   else{updateEnergy();$('#battle-message').textContent=g.monster.friendly?'好朋友收到你的心意了！再一起幫忙一次吧！':'怪獸的能量變少了！再一起集氣一次吧！';}
 }
 function pauseBattle(value){
   const g=state.game;if(!g||g.type!=='battle'||g.finished)return;
-  const shouldPause=value===undefined?!g.paused:value;if(g.paused===shouldPause)return;g.paused=shouldPause;
+  const shouldPause=value===undefined?!g.paused:value;if(g.paused===shouldPause)return;g.paused=shouldPause;if(g.paused)releaseHeld();$('#arena').classList.toggle('is-paused',g.paused);
   if(g.paused){g.pauseAt=performance.now();stopVoice();const el=document.createElement('div');el.className='battle-paused';el.innerHTML='<strong>小英雄休息一下</strong><span>準備好了，我們再繼續。</span><button class="primary" data-action="pause">▶ 繼續冒險</button>';$('#arena').append(el);}
   else{const delta=performance.now()-g.pauseAt;g.shieldUntil=g.shieldUntil.map(t=>t? t+delta:0);$('.battle-paused')?.remove();g.lastTick=performance.now();}
   const button=$('.pause-button');button.textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';updateEnergy();
@@ -3711,10 +3786,11 @@ function flip(index){
   else{$('#memory-status').textContent='還不是同一組，記住位置，再試一次！';later(()=>{[a,b].forEach(i=>{const e=$$('[data-action="flip"]')[i];e.classList.remove('flipped');e.innerHTML='<img class="card-back-icon" src="assets/emblem.svg" alt="">';e.setAttribute('aria-label',`第 ${i+1} 張卡片，尚未翻開`);});g.flipped=[];g.locked=false;},1600);}
 }
 function finish(mode,stars,title,copy){
+  const defeated=state.game?.type==='battle'?state.game.monster:null;const freshSticker=rememberMonster(defeated);
   leave();state.game={type:'result',mode};const before=BADGES.filter(b=>hasBadge(b.id)).length;
   state.stars+=stars;state.completed[mode]=(state.completed[mode]||0)+1;save();updateChrome();
   const earned=BADGES.filter(b=>hasBadge(b.id)).length-before;
-  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p><div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="start" data-game="${mode}">再玩一次 ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
+  main.innerHTML=screenHead('冒險完成','把這份勇氣，收藏在小英雄的心裡。')+`<section class="panel result"><div class="result-symbol">${mode==='coop'?'🏆':'🌟'}</div><p class="eyebrow">MISSION COMPLETE</p><h2>${title}</h2><p>${copy}<br>${earned?`還獲得了 ${earned} 枚新徽章，快去收藏看看吧！`:'每一次勇敢嘗試，都值得給自己一個大大的擁抱。'}</p>${defeated?`<div class="earned-sticker">${monster('sticker-image',defeated)}<b>${defeated.name}</b><small>${freshSticker?'✨ 收到新的夥伴貼紙！':'💚 又和朋友冒險了！'}</small></div>`:''}<div class="result-stars">★ +${stars} 顆冒險星星</div><div class="result-actions"><button class="primary" data-action="start" data-game="${mode}">再玩一次 ${icon('arrow')}</button><button class="secondary" data-action="home">回冒險大廳</button><button class="secondary" data-action="badges">看看我的徽章</button></div></section>`;
   confetti();tone('victory');playCue('victory');main.focus({preventScroll:true});
 }
 function speak(text){
@@ -3739,14 +3815,19 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
 document.addEventListener('click',event=>{
   const nav=event.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return;}
   const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const action=el.dataset.action,index=Number(el.dataset.index);
-  if(action==='home')navigate('home');
+  if(action==='start-quest')startQuest();
+  else if(action==='quest-with-team')startQuest(true);
+  else if(action==='quest-transform')questTransform();
+  else if(action==='quest-next')questNext();
+  else if(action==='quest-target')questTarget(index);
+  else if(action==='home')navigate('home');
   else if(action==='badges')navigate('badges');
   else if(action==='start')startGame(el.dataset.game);
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
@@ -3789,11 +3870,16 @@ document.addEventListener('keydown',event=>{
   if(g.type==='transform'&&['a','l',' '].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='l'&&g.coop)transform(1);else if(key!=='l')transform(0);}
   if(g.type==='battle'){
     if(['a','l','s','k',' ','arrowleft','arrowdown','escape','d','j'].includes(key))event.preventDefault();
-    if(event.repeat)return;
+    if(event.repeat){if(key==='a'||key==='arrowleft')attack(0);else if(key==='l'&&g.coop)attack(1);return;}
+    if(g.quest&&/^[1-3]$/.test(key)){event.preventDefault();questTarget(Number(key)-1);return;}
     if(key==='escape')pauseBattle();else if(key==='d')cycleForm(0);else if(key==='j'&&g.coop)cycleForm(1);
     else if(key==='a'||key==='arrowleft')attack(0);else if(key==='l'&&g.coop)attack(1);else if(key==='s'||key==='arrowdown')shield(0);else if(key==='k'&&g.coop)shield(1);else if(key===' ')fireBeam();
   }
 });
+document.addEventListener('pointerdown',holdAttack);
+document.addEventListener('pointerup',releaseHeld);
+document.addEventListener('pointercancel',releaseHeld);
+window.addEventListener('blur',releaseHeld);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);stopVoice();}});
 $('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{tone('success');playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});

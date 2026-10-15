@@ -10,7 +10,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  const base=process.env.GAME_URL || 'file://'+path.resolve(__dirname,'../index.html');
  const foreignRequests=[];page.on('request',r=>{if(/^https?:/.test(base)&&new URL(r.url()).origin!==new URL(base).origin)foreignRequests.push(r.url());});
  await page.goto(base);
- assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.3.0');
+ assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.4.0');
  await page.evaluate(()=>{state.sound=false;save();updateChrome();});
  assert.equal(await page.locator('.game-card').count(),6);
  assert.equal(await page.locator('.player-button.selected').count(),1);
@@ -157,6 +157,44 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await page.locator('#sound-button').click();await page.waitForFunction(()=>state.cue&&!state.cue.paused);await page.locator('[data-nav="heroes"]').click();assert.equal(await page.evaluate(()=>state.cue),null);
  await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.sound),false);
  console.log('PASS: all expanded galleries across four widths, Pucchi rescue, real clone target, form/move switching, all 9 local MP3 decodes/playback, and mute/navigation cancellation.');
+
+ // Play the new journey as a player, using visible buttons at phone width.
+ await page.locator('[data-nav="home"]').click();await page.setViewportSize({width:390,height:844});
+ await page.locator('[data-player="together"]').click();await page.locator('[data-action="start-quest"]').click();
+ assert.equal(await page.locator('.quest-route li').count(),3);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.screenshot({path:path.join(out,'phone-quest-map.png'),fullPage:true});
+ await page.locator('[data-action="quest-transform"]').click();await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForSelector('.quest-arena');
+ assert.equal(await page.evaluate(()=>state.game.quest.stage),0);
+ for(let stage=0;stage<3;stage++){
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'quest stage overflow');
+  await page.locator('.quest-objective').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'phone-quest-stage-'+stage+'.png'),fullPage:true});
+  await page.keyboard.press('Escape');const found=await page.evaluate(()=>state.game.questFound);await page.keyboard.press('1');assert.equal(await page.evaluate(()=>state.game.questFound),found);await page.keyboard.press('Escape');
+  for(let k=0;k<3;k++){
+   const index=stage===0?k:await page.evaluate(()=>state.game.questTarget);
+   if(stage>0){const wrong=(index+1)%3;await page.locator(`[data-action="quest-target"][data-index="${wrong}"]`).click();assert.equal(await page.evaluate(()=>state.game.questFound),k);}
+   await page.locator(`[data-action="quest-target"][data-index="${index}"]`).click();
+  }
+  assert.equal(await page.evaluate(()=>state.game.questFound),3);
+  for(let round=0;round<2;round++){
+   for(let i=0;i<4;i++){await page.keyboard.press('a');await page.keyboard.press('l');await page.waitForTimeout(190);}
+   await page.locator('#combo-button').click();await page.waitForTimeout(1000);
+  }
+  if(stage<2){await page.waitForSelector('[data-action="quest-next"]');await page.screenshot({path:path.join(out,'phone-quest-checkpoint-'+stage+'.png'),fullPage:true});await page.locator('[data-action="quest-next"]').click();}
+ }
+ await page.waitForSelector('.result');assert.equal(await page.evaluate(()=>state.questRuns),1);await page.screenshot({path:path.join(out,'phone-quest-victory.png'),fullPage:true});
+ const stickerCount=await page.evaluate(()=>state.collection.length);assert.ok(stickerCount>=3);
+ await page.locator('[data-action="badges"]').click();assert.equal(await page.locator('.sticker.collected').count(),stickerCount);
+ for(const [width,height,label] of [[320,740,'small-phone'],[390,844,'phone'],[834,1194,'tablet'],[1440,1100,'desktop']]){
+  await page.setViewportSize({width,height});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'sticker book '+label+' overflow');await page.screenshot({path:path.join(out,label+'-sticker-book.png'),fullPage:false});
+ }
+ await page.reload();assert.equal(await page.evaluate(()=>state.collection.length),stickerCount);
+ // Real pointer holding: releasing and pausing must stop repeat attacks.
+ await page.setViewportSize({width:390,height:844});await page.locator('[data-action="start"][data-game="battle"]').first().click();await page.locator('[data-action="prepare-transform"]').click();await page.keyboard.press('a');await page.waitForSelector('.arena');
+ const attackButton=page.locator('[data-action="attack"]').first();await attackButton.scrollIntoViewIfNeeded();const box=await attackButton.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.waitForTimeout(1100);await page.mouse.up();
+ assert.equal(await page.evaluate(()=>state.game.energy[0]),4,'hold collects energy');const heldHp=await page.evaluate(()=>state.game.hp);await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>state.game.hp),heldHp,'release stops repeat');
+ await page.keyboard.press('Escape');assert.ok(await page.locator('[data-action="attack"]').isDisabled());await page.screenshot({path:path.join(out,'phone-hold-charge-paused.png'),fullPage:true});await page.keyboard.press('Escape');
+ await page.locator('[data-nav="home"]').click();assert.equal(await page.evaluate(()=>heldAttack),null);
+ console.log('PASS: visible-control three-stage phone co-op journey, clue gating, wrong answers, pause, checkpoints, final reward, persisted sticker book at four sizes, and real pointer hold/release.');
 
  assert.deepEqual(errors,[]);
  assert.deepEqual(foreignRequests,[],'game must not request any external API or asset');
