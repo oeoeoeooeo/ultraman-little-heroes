@@ -1,52 +1,40 @@
-# v1.2.0 上線驗證紀錄
+# v1.3.0 驗證紀錄
 
-驗證日期：2026-10-15（台灣時間）。正式站：https://ultraman-heroes-base.web.app
+查核日期：2026-10-15。線上遊戲：https://ultraman-heroes-base.web.app
 
-## 本次擴充
+## 已通過的檢查
 
-角色由 6 位擴充至 53 位，收錄圓谷官方英雄百科目前列出的全部角色，包括 2026 年 Ultraman Teo。加入經典、平成、新生代、最新英雄分類，以及中文名、英文名與年份搜尋。完整資料來源見 [SOURCES.md](SOURCES.md)。
+- `node --check app.js`、`npm test`、`npm run build`、`npm run test:security`。
+- 53 位英雄、55 種型態、60 件道具、90 招代表招式、30 隻怪獸的唯一識別碼、來源、主人關聯及實際本機圖片。
+- 全部型態題的選項均來自同一位英雄；道具題排除同一件道具的其他主人，不形成多重正解。翻牌可使用新增道具，每輪不重複主人或道具。
+- 全六種任務的完整流程、錯題重試、五題完成、不同年齡難度、兩人變身／能量、翻牌、九枚徽章、進度儲存、導覽取消與背景暫停。
+- 力量型的傷害加成、重裝／飛行型態挑戰、分身與鑽地點星星、Pucchi 友善救援、慈愛型救援加成。暫停期間不能換型態、換招式或答分身挑戰。
+- 真正 Chromium 下的全部百科分頁、圖片完整載入、鍵盤與大按鈕操作、型態／招式切換、分身找目標及友善救援。沒有腳本錯誤與跨站執行期請求。
+- 九段 MP3 全部可解碼，含實際聲音，長度約 1.9～3.7 秒、峰值未達削波；瀏覽器實際播放、靜音與換頁取消。未人工聆聽，未宣稱已做主觀音色驗收。讀題聲音仍依裝置中文語音而定。
 
-## 遊戲與 RWD
+## RWD 與實際畫面
 
-- [原始碼完整測試成功](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38674366514)。
-- [正式網址完整測試成功](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38674604632)。
-- 六種遊戲模式、鍵盤與畫面按鈕、答錯重試、雙人變身、獨立集氣、護盾、暫停、配對、九枚徽章和存檔通過。
-- 53 位角色及圖片完整性、最新年代篩選、Teo 搜尋與實際選角變身、搜尋空結果、搜尋輸入不當作 HTML 執行均通過。
-- 共用變身器的候選答案去重，翻牌每輪道具不重複。41 個有道具角色納入題庫，無道具／意念變身／未公開道具角色仍可選角戰鬥。
+Chromium 測試 1920×1080、1440×1100、1366×768、1280×720、1024×768、834×1194、390×844、320×740、844×390，檢查首頁、雙人選角、變身及對戰。新增四個百科分頁另在桌機、平板、手機與 320px 窄螢幕驗證。共 63 張截圖，保留在免費 Actions job log，不使用 artifact 儲存。
 
-| 模擬螢幕 | 尺寸（CSS 像素） |
+已實際查看桌機型態與招式百科、窄螢幕道具百科、手機怪獸百科、320px 雙人對戰、手機巴爾坦分身與 Pucchi 救援截圖。修正窄螢幕怪獸遮住第二位英雄的問題，測試也檢查兩位英雄和怪獸的邊界不重疊。型態／道具為明示的簡化配色示意；人物圖為基本造型搭配型態光暈與標籤。沒有宣稱已在實體手機、Safari 或所有字型組合驗證。
+
+## 可重現的公開紀錄
+
+- 最終程式 commit：`9b5f4f1d15c3a6fbb4b07ce780e82b7a68cb6a3e`。
+- [最終原始碼完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38678802841)：成功。
+- [正式 web.app 完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/38678842798)：成功，包含正式站台的語音播放與媒體政策。
+- 本紀錄與 README 的最後提交只更新說明，不修改已測試的程式與資產。
+
+## 正式站台與安全
+
+Hosting 版本：`sites/ultraman-heroes-base/versions/ff93a8dc07d2aa87`。正式站台的 98 個白名單檔案全部下載，比對本機 `dist` 逐位元組一致。受保護的 `.env`、`firebase.json`、`package.json`、`qa/logic.cjs`、`hero-catalogue.json` 路徑均回 404。
+
+已確認 `billingEnabled=false`、未綁定帳單、Firebase Web Apps 數量 0、有效 Google API key 數量 0。部署工具自動建立的閒置 Browser key 在最後一次部署後再次撤銷，且撤銷作業完成。平台保留端點仍可能含已撤銷的快取 key，詳見 SECURITY.md；遊戲檔案沒有上傳金鑰、憑證、付費 API、SDK、分析或後端。
+
+正式 HTML 已核對 CSP 的 `connect-src 'none'`、`media-src 'self' data:` 和 `nosniff`。GitHub 公開儲存庫開啟 secret scanning 與 push protection，公開警報 0；Actions artifact 與 cache 均為 0。敏感稽核用暫存設定已刪除。
+
+| 正式檔案 | SHA-256 |
 | --- | --- |
-| 小手機直向 | 320 × 740 |
-| 手機直向 | 390 × 844 |
-| 手機橫向 | 844 × 390 |
-| 平板直向 | 834 × 1194 |
-| 平板橫向 | 1024 × 768 |
-| 小桌面 | 1280 × 720 |
-| 筆電 | 1366 × 768 |
-| 桌面 | 1440 × 1100 |
-| Full HD | 1920 × 1080 |
-
-九種尺寸的首頁、選角、變身與對戰無水平溢出；另檢查小手機猜謎、翻牌、圖鑑與成就。Chromium 產出 45 張截圖保留在測試 job log；本次人工檢視小手機最新英雄圖鑑、手機合作選角、桌面 Teo 搜尋與平板 Teo 對戰畫面。沒有宣稱已測試每款實體手機；中文語音聽感仍依裝置提供的語音而異。
-
-## 公開部署與安全
-
-- 部署使用既有隔離專案 `ultraman-heroes-base`，僅更新靜態 Hosting。
-- 部署後 Google Cloud Billing 回應 `billingEnabled=false`，`billingAccountName` 為空。
-- 移除部署工具自動建立的閒置 Browser key，確認撤銷作業完成且有效 Google API key 清單為空。平台保留端點的快取說明見 [SECURITY.md](SECURITY.md)。
-- Hosting 只部署 59 個白名單檔案：5 個網頁／版號檔、1 個 SVG 標誌、53 個 PNG 人物圖片。
-- 正式站全部 59 個檔案與已驗證的本機 dist 逐位元組一致；HTTP 安全標頭已查驗。
-- `.env`、`.git/config`、`firebase.json`、`package.json`、`hero-catalogue.json`、`asset-manifest.json`、`qa/check.cjs`、`scripts/build.py` 與 `node_modules/linkedom/package.json` 均回應 404。
-- 正式站完整玩法未發現 JavaScript 錯誤或第三方網路請求；人物素材由本站載入，不在遊玩時向百科網站抓資料。
-- GitHub secret scanning 檢查沒有未解決警示；Actions artifact 數量為 0，未使用付費儲存或依賴快取。
-
-## 正式部署 SHA-256
-
-```text
-index.html 23cb33029a5b06866d73f5594a456c9cd88701044c166ae0b866b2b1f16f6149
-app.js 61c1472867e16577becb0b3b4c20d28679d47a1bd67f0e299a119911d74028d3
-style.css b4236e530f7afb98ba0ec36cdbc7e4755ed67002e1e94131fc806d7c259ce43c
-```
-
-本次 Hosting 版本：`b9b4d7790e651438`。這是發布當下的驗證紀錄，之後新增服務或調整帳單設定需要重新查驗。
-
-[v1.1.0 既有驗證紀錄](https://github.com/oeoeoeooeo/ultraman-little-heroes/blob/v1.1.0/QA_REPORT.md)。
+| `index.html` | `72dc43058fefb66104c579a48231574e795526b316f68021d32d134ccb740277` |
+| `app.js` | `62fcdea01cd2d8266ca0b56a7cb2536d21e1da24a7bcfca253a0747784146b6d` |
+| `style.css` | `36120652bcc78f37d958001edeb9130648af0b1451cdc17aeb120df107482eb2` |
