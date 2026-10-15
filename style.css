@@ -39,3 +39,106 @@ main:focus{outline:none}.keep-word{white-space:nowrap}.nav-item{white-space:nowr
 @media(prefers-reduced-motion:reduce){.battle-pop,.beam-announcement{animation:none}.sticker-teaser,.earned-sticker{transform:none}}
 
 @media(max-width:600px){.battle-dock{position:static}.playing-battle .topbar{padding-top:10px;padding-bottom:10px;min-height:48px}.playing-battle main{padding-top:14px}.playing-battle .screen-head{margin-bottom:12px}.playing-battle .screen-head h1{font-size:20px}.playing-battle .screen-head p{font-size:10px}.playing-battle .panel{padding-top:14px;padding-bottom:16px}.playing-battle .quest-objective{margin-top:12px;margin-bottom:4px;padding:10px}.playing-battle .quest-objective p{margin:3px 0}.playing-battle .arena{margin-top:12px;height:250px}.playing-battle .battle-message{font-size:12px;min-height:24px;margin:10px 0}.playing-battle .battle-controls{margin-top:8px}.playing-battle .battle-moves{margin-top:12px}.playing-battle .pilot-controls{padding:9px 6px}}
+
+/* v1.4.2: one document scroll, readable type and a visible battle stage. */
+html{font-size:16px;scroll-behavior:auto;scroll-padding-top:16px}
+body{font-size:16px;line-height:1.65}
+button,input{font-size:16px;line-height:1.5}
+button{min-height:44px;letter-spacing:0}
+.hero-select,.monster-select{max-height:none;overflow:visible;overscroll-behavior:auto}
+.primary,.secondary,.answer,.attack-button,.shield-button,.form-button,.read-button,.era-tab,.form-choice,.move-choice{font-size:16px;min-height:48px}
+.intro-sub,.screen-head p,.hero-copy p,.card-detail p,.library-card p,.extra-card p,.loadout p,.memory-caption,.badge-help,.catalogue-note,.welcome-note,.sticker-book>p{font-size:16px;line-height:1.8}
+.player-button b,.pick-hero,.monster-choice b,.sticker b{font-size:16px}
+.player-button small,.section-title h2 small,.card-bottom,.card-tag,.round-tag,.pill,.breadcrumb,.hero-count,.hero-source,.english-name,.hero-year,.current-form,.form-choice small,.monster-choice small,.sticker small,.quest-route small,.sticker-teaser small,.quiz-toolbar,.parent-link,.sidebar-footer,.page-footer,.side-mission p{font-size:14px;line-height:1.6}
+.question-title{font-size:26px;line-height:1.5}
+.quiz-hint,.feedback{font-size:18px;line-height:1.7}
+.quiz-toolbar{flex-wrap:wrap;gap:12px;justify-content:center}
+.answer{font-size:18px;padding:16px 12px;overflow-wrap:anywhere}
+.answer img{height:100px;max-width:100%;object-fit:contain}
+.quiz-progress{margin-bottom:16px}
+.hero-search-label input{font-size:16px;min-height:48px}
+.battle-board{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,1fr);align-items:start;gap:24px;margin-top:18px}
+.battle-stage{position:sticky;top:16px;min-width:0;background:var(--paper);border-radius:20px;z-index:8}
+.battle-stage .quest-objective{margin:0 0 10px;padding:12px}
+.quest-objective p{font-size:16px;line-height:1.6}
+.battle-stage .arena{height:clamp(280px,38svh,420px);margin:0}
+.battle-actions{min-width:0}
+.battle-message{font-size:18px;line-height:1.6;min-height:54px;margin:0 0 12px}
+.battle-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:0}
+.battle-controls:not(:has(.pilot-controls:nth-child(2))){grid-template-columns:1fr}
+.pilot-controls{max-width:none;min-width:0;padding:12px 8px}
+.pilot-controls strong{font-size:17px}
+.current-form{display:block;white-space:normal}
+.battle-dock{position:static;padding:8px;border:1px solid var(--line);box-shadow:none;margin:0}
+.combo-button{width:100%;font-size:18px;margin-top:12px;padding:14px 8px;min-height:54px;white-space:normal}
+.battle-moves{gap:8px;margin-top:16px}
+.battle-moves .move-choice{font-size:16px;padding:10px 12px;flex:1 1 44%;line-height:1.5}
+.battle-stage .arena .arena-hero{height:65%;max-width:22%;left:3%;bottom:18%;object-fit:contain}
+.battle-stage .arena .arena-hero.hero-two{height:60%;max-width:25%;left:26%;bottom:18%}
+.battle-stage .arena .arena-monster{width:38%;height:68%;right:2%;bottom:16%;object-fit:contain}
+.battle-stage .arena-vs{left:49%;font-size:20px;top:48%}
+.battle-stage .arena-status{font-size:14px;line-height:1.5;top:10px;left:10px;max-width:44%;padding:5px 8px}
+.battle-stage .monster-label{font-size:14px;line-height:1.5;top:10px;right:10px;max-width:47%;min-width:0}
+.battle-paused{backdrop-filter:none;background:#204d46f5;gap:12px}
+.battle-paused h2{font-size:24px;margin:0}
+.battle-paused p{font-size:16px;margin:0}
+.quest-targets{gap:12px;padding:8px;bottom:3%}
+.quest-targets button{min-width:60px;min-height:56px}
+.beam-announcement{top:15%;left:3%;right:3%;padding:8px;font-size:20px;line-height:1.5;border-width:2px;box-shadow:0 4px 20px #fff8}
+@media(max-width:1100px){
+ .sidebar{position:relative;inset:auto;width:100%;height:auto;min-height:76px;padding:12px 20px;display:flex;flex-direction:row;justify-content:space-between;gap:16px;border-right:0;border-bottom:1px solid var(--line)}
+ .sidebar .brand{padding:0;flex-shrink:0}.sidebar .brand>span{display:block;font-size:23px}.brand small{font-size:12px}
+ .sidebar nav{display:flex;gap:8px}.sidebar .nav-item{font-size:16px;width:auto;padding:10px 14px;margin:0;gap:8px;letter-spacing:0}
+ .sidebar .side-label,.sidebar .side-mission,.sidebar .sidebar-footer,.sidebar .parent-link{display:none}
+ .sidebar .nav-dot,.sidebar .badge-count{display:none}
+ .workspace{margin-left:0}.topbar{height:70px;margin:0 24px}main{padding:24px;min-height:0}
+ .hero-select{grid-template-columns:repeat(4,minmax(0,1fr))}.monster-select{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .hero-banner{height:350px}.page-footer{padding:20px 24px;gap:12px;flex-wrap:wrap}
+ .battle-board{gap:16px;grid-template-columns:minmax(0,1.15fr) minmax(290px,1fr)}
+ .playing-battle main{padding:16px}.playing-battle .panel{padding:16px}
+}
+@media(max-width:700px){
+ .sidebar{padding:10px 14px;gap:10px}.sidebar .brand>span{font-size:21px;letter-spacing:1px}.sidebar .brand img{width:32px;height:38px}.brand small{letter-spacing:1px}
+ .sidebar nav{gap:4px}.sidebar .nav-item{font-size:0;width:44px;height:48px;padding:10px;justify-content:center}.sidebar .nav-item .icon{width:24px;height:24px;flex-shrink:0}
+ .topbar{margin:0 16px;height:66px}.breadcrumb{font-size:14px;letter-spacing:0}.top-actions{gap:8px}.icon-button{width:44px;height:44px}.star-wallet{padding:7px 10px}.star-wallet small{display:none}
+ main{padding:20px 16px}.panel{padding:20px 14px}.screen-head{gap:10px;flex-wrap:wrap;margin-bottom:18px}.screen-head h1{font-size:24px}.screen-head .round-tag{margin-left:0}
+ .hero-copy h2{font-size:36px}.hero-copy p{max-width:68%}.hero-banner{height:380px}.hero-copy{padding:24px 18px}.hero-copy .primary{max-width:80%}
+ .hero-select{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pick-hero{font-size:16px;padding:8px 4px}
+ .monster-select{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.monster-thumb{height:110px}.monster-choice b{font-size:17px}.monster-choice small{font-size:14px}
+ .section-title h2 small{display:block;margin:6px 0 0}.section-title{gap:10px;align-items:flex-start}
+ .player-strip{display:block}.player-options{gap:8px}.player-button{padding:12px 8px}.player-button b{font-size:16px}.player-button small{font-size:14px}.player-button .player-face{display:none}
+ .answer{font-size:17px;min-height:76px}.answer img{height:80px}.key-hint{font-size:14px}
+ .extra-card p,.library-card p{font-size:16px}.extra-card .read-button{font-size:16px}.extra-card h2{font-size:20px}
+ .encyclopedia-tabs .secondary{font-size:16px;padding:10px;min-width:85px}.sticker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sticker-book{padding:16px}.sticker b{font-size:16px}.sticker small{font-size:14px}
+ .quest-route{gap:8px}.quest-route li{padding:12px 6px}.quest-route b{font-size:16px}.quest-route small{font-size:14px}.quest-map-art{font-size:32px;word-spacing:0;padding:12px}
+ .quest-objective>span{font-size:25px}.quest-objective b{font-size:17px}.quest-objective p{font-size:16px}.quest-objective strong{font-size:18px}
+ .playing-battle main{padding:12px 10px}.playing-battle .panel{padding:12px 8px}.playing-battle .screen-head p{font-size:16px}
+ .battle-board{display:block;margin-top:12px}.battle-stage{top:0;border-radius:0;padding-bottom:8px;box-shadow:0 8px 12px #274e4114}
+ .battle-stage .quest-objective{padding:8px;margin-bottom:8px;gap:8px}.battle-stage .quest-objective p{display:none}
+ .playing-battle .battle-stage .arena{height:clamp(190px,29svh,270px);margin:0}
+ .battle-actions{padding-top:14px}.playing-battle .pilot-controls{padding:12px 6px}.battle-controls{gap:8px}
+ .battle-stage .arena-status{font-size:12px;max-width:43%;padding:4px}.battle-stage .monster-label{font-size:14px;max-width:47%}
+ .battle-moves .move-choice{font-size:16px}.memory-caption{font-size:16px}.beam-announcement{font-size:18px;top:16%;padding:5px}
+ .transform-panel .primary{font-size:16px;padding:12px 8px}.transform-panel p{font-size:16px}
+}
+@media(max-width:420px){.game-grid,.extra-library{grid-template-columns:1fr}.game-card .card-art{height:180px}.card-detail h3{font-size:21px}.quest-launch-actions{display:grid;grid-template-columns:1fr}.quiz-options,.quiz-options.four{grid-template-columns:1fr}.answer{display:flex;align-items:center;justify-content:center;gap:12px}.answer img{height:64px}.question-visual{height:210px}.question-title{font-size:23px}.hero-copy p{max-width:70%;font-size:16px}.hero-copy h2{font-size:34px}.hero-art .tiga{left:30%;opacity:.8}.topbar .breadcrumb{max-width:52%}.star-wallet{gap:4px}.quest-team img{height:150px;max-width:110px}}
+@media(max-height:500px) and (max-width:1100px){.battle-stage{top:8px}.battle-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1fr);gap:12px}.playing-battle .battle-stage .arena{height:230px}.battle-stage .quest-objective p{display:none}}
+
+/* Light builds from a soft halo to a bright core and an impact ring. */
+.arena:before,.arena:after{content:"";position:absolute;pointer-events:none;opacity:0}
+.arena.energy-ready:before{inset:12% 44% 5% 0;background:radial-gradient(ellipse at 50% 60%,#fffbdcbb 0,#8ce7e88c 28%,#89d1ef33 49%,transparent 70%);opacity:1;animation:charge-breathe 1.6s ease-in-out infinite;z-index:0}
+.arena.energy-ready .arena-hero{filter:drop-shadow(0 0 8px #f7f5b9) drop-shadow(0 0 18px #82dfe9)}
+.arena.is-firing:after{inset:0;background:radial-gradient(ellipse at 76% 54%,#fff9e9ee,transparent 65%);z-index:4;animation:impact-flash .95s ease-out both}
+.arena .beam{top:50%;left:18%;right:10%;height:28px;border:1px solid #fffde3;background:linear-gradient(0deg,#57c9e0,#d7ffff 30%,#fff 50%,#e3ffff 70%,#60d6df);box-shadow:0 0 8px #fff,0 0 22px #79eff4,0 0 44px #93e7efb0;transform-origin:left center;animation:cinema-beam .95s cubic-bezier(.16,.8,.3,1) both;z-index:5}
+.arena .beam:before{content:"";position:absolute;inset:-16px 5%;border-top:2px solid #d9ffffc9;border-bottom:2px solid #fff2d7b0;border-radius:50%;transform:skewX(-18deg);box-shadow:0 0 16px #a8eef588}
+.arena .beam:after{content:"";position:absolute;right:-8%;top:50%;width:100px;height:100px;margin-top:-50px;border:4px solid #fff6c4;border-radius:50%;box-shadow:0 0 16px #fff6c4,inset 0 0 18px #b6ffff;animation:impact-ring .95s ease-out both}
+.arena .beam.calm{background:linear-gradient(#9ce8ba,#fffbe4,#b5eae5);box-shadow:0 0 18px #fff4b8,0 0 38px #9ee9bd}.arena .beam.ring{height:65px;background:transparent;border:8px solid #fff0a8;border-radius:50%;box-shadow:0 0 20px #f8da75}.arena .beam.burst{height:65px;background:radial-gradient(#fff,#ffefb6 35%,#efb97588 65%,transparent);border:0}
+.beam-announcement{background:linear-gradient(110deg,#fffdf2f5,#ddf9fcf2);border-color:#edcc77;color:#235568;letter-spacing:.5px}
+.battle-pop{box-shadow:0 4px 12px #316b5a26;animation:reward-rise .85s ease-out both}
+@keyframes charge-breathe{0%,100%{transform:scale(.93);opacity:.65}50%{transform:scale(1.06);opacity:1}}
+@keyframes cinema-beam{0%{transform:scaleX(.05) scaleY(.15);opacity:0}12%{transform:scaleX(.35) scaleY(.5);opacity:1}28%,65%{transform:scaleX(1) scaleY(1);opacity:1}100%{transform:scaleX(1) scaleY(.1);opacity:0}}
+@keyframes impact-ring{0%,22%{transform:scale(.15);opacity:0}35%{transform:scale(.5);opacity:1}100%{transform:scale(2);opacity:0}}
+@keyframes impact-flash{0%,20%{opacity:0}34%{opacity:.85}60%{opacity:.25}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.arena.energy-ready:before{animation:none}.arena .beam,.arena .beam:after,.arena.is-firing:after{animation:none}.arena .beam{opacity:1;transform:none}.arena.is-firing:after{opacity:.15}.battle-pop{animation:none}}
+
+.arena.is-paused::before,.arena.is-paused::after,.arena.is-paused *::before,.arena.is-paused *::after{animation-play-state:paused!important}

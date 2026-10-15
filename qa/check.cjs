@@ -10,7 +10,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  const base=process.env.GAME_URL || 'file://'+path.resolve(__dirname,'../index.html');
  const foreignRequests=[];page.on('request',r=>{if(/^https?:/.test(base)&&new URL(r.url()).origin!==new URL(base).origin)foreignRequests.push(r.url());});
  await page.goto(base);
- assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.4.0');
+ assert.equal(await page.locator('meta[name="game-version"]').getAttribute('content'),'1.4.2');
  await page.evaluate(()=>{state.sound=false;save();updateChrome();});
  assert.equal(await page.locator('.game-card').count(),6);
  assert.equal(await page.locator('.player-button.selected').count(),1);
@@ -195,6 +195,53 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await page.keyboard.press('Escape');assert.ok(await page.locator('[data-action="attack"]').isDisabled());await page.screenshot({path:path.join(out,'phone-hold-charge-paused.png'),fullPage:true});await page.keyboard.press('Escape');
  await page.locator('[data-nav="home"]').click();assert.equal(await page.evaluate(()=>heldAttack),null);
  console.log('PASS: visible-control three-stage phone co-op journey, clue gating, wrong answers, pause, checkpoints, final reward, persisted sticker book at four sizes, and real pointer hold/release.');
+
+ // Tablet regression: root scrolling, readable controls and effects visible while operating.
+ const touchContext=await browser.newContext({viewport:{width:834,height:1194},hasTouch:true,isMobile:true});
+ const tablet=await touchContext.newPage();tablet.on('pageerror',e=>errors.push(e.message));
+ tablet.on('request',r=>{if(/^https?:/.test(base)&&new URL(r.url()).origin!==new URL(base).origin)foreignRequests.push(r.url());});
+ await tablet.goto(base);await tablet.evaluate(()=>{state.sound=false;save();updateChrome();});
+ await tablet.locator('.game-card[data-game="coop"]').click();
+ const nestedScrolls=()=>[...document.querySelectorAll('main *')].filter(e=>/^(auto|scroll)$/.test(getComputedStyle(e).overflowY)&&e.scrollHeight>e.clientHeight+2).map(e=>e.className);
+ assert.deepEqual(await tablet.evaluate(nestedScrolls),[],'selection has no nested scroll containers');assert.equal(await tablet.locator('iframe').count(),0);
+ await tablet.locator('.hero-select').scrollIntoViewIfNeeded();const beforeWheel=await tablet.evaluate(()=>scrollY);await tablet.mouse.wheel(0,400);await tablet.waitForTimeout(250);assert.ok(await tablet.evaluate(()=>scrollY)>beforeWheel,'wheel scroll reaches document');
+ await tablet.evaluate(()=>window.scrollTo(0,document.querySelector('.hero-select').getBoundingClientRect().top+scrollY+100));
+ const beforeTouch=await tablet.evaluate(()=>scrollY),session=await touchContext.newCDPSession(tablet);
+ await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:400,y:850}]});
+ for(const y of [780,700,620,540,460])await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:400,y}]});
+ await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await tablet.waitForTimeout(250);assert.ok(await tablet.evaluate(()=>scrollY)>beforeTouch+100,'touch swipe reaches document');
+ await tablet.screenshot({path:path.join(out,'tablet-root-scroll-selection.png'),fullPage:false});
+ await tablet.locator('[data-action="prepare-transform"]').click();await tablet.keyboard.press('a');await tablet.keyboard.press('l');await tablet.waitForSelector('.arena');
+ for(const [width,height] of [[768,1024],[834,1194],[1024,768],[1180,820],[390,844],[844,390]]){
+  await tablet.setViewportSize({width,height});await tablet.locator('#combo-button').scrollIntoViewIfNeeded();
+  assert.deepEqual(await tablet.evaluate(nestedScrolls),[],'battle has no nested scroll at '+width);assert.ok(await tablet.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'battle overflow '+width);
+  const rect=await tablet.locator('.arena').boundingBox();assert.ok(rect.y>=-1&&rect.y+rect.height<=height+1,'arena visible while using controls '+width);
+  for(const selector of ['.attack-button','.form-button','.move-choice','.combo-button'])assert.ok(await tablet.locator(selector).first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize))>=16,'readable '+selector);
+  await tablet.screenshot({path:path.join(out,'battle-visible-'+width+'.png'),fullPage:false});
+ }
+ await tablet.setViewportSize({width:834,height:1194});
+ for(let k=0;k<4;k++){await tablet.keyboard.press('a');await tablet.keyboard.press('l');await tablet.waitForTimeout(200);}
+ assert.ok(await tablet.locator('.arena').evaluate(e=>e.classList.contains('energy-ready')));await tablet.locator('#combo-button').scrollIntoViewIfNeeded();await tablet.screenshot({path:path.join(out,'tablet-energy-halo.png'),fullPage:false});
+ await tablet.locator('#combo-button').click();await tablet.waitForTimeout(320);assert.equal(await tablet.locator('.beam').count(),1);assert.ok(await tablet.locator('.arena').evaluate(e=>e.classList.contains('is-firing')));await tablet.screenshot({path:path.join(out,'tablet-light-impact.png'),fullPage:false});
+ await tablet.keyboard.press('Escape');assert.equal(await tablet.locator('.beam').evaluate(e=>getComputedStyle(e,'::after').animationPlayState),'paused');await tablet.keyboard.press('Escape');
+ await tablet.locator('[data-nav="home"]').click();
+ // Native MP3 playback with instrumented TTS: answer reveal follows the actual ended event.
+ await tablet.evaluate(()=>{
+  window.voiceEvents=[];speechSynthesis.speak=u=>voiceEvents.push({kind:'speech',text:u.text,time:performance.now()});speechSynthesis.cancel=()=>{};
+  const Original=window.Audio;window.Audio=class extends Original{constructor(url){super(url);this.addEventListener('playing',()=>voiceEvents.push({kind:'clip',time:performance.now()}));this.addEventListener('ended',()=>voiceEvents.push({kind:'ended',time:performance.now()}));}};
+  state.sound=true;
+ });
+ for(const mode of ['quiz','forms','device']){
+  await tablet.locator(`.game-card[data-game="${mode}"]`).click();await tablet.waitForTimeout(200);
+  assert.ok(await tablet.evaluate(()=>voiceEvents.filter(x=>x.kind==='speech').every(x=>!x.text.includes('第1個')&&!x.text.includes('小提示'))));
+  const correct=await tablet.evaluate(()=>state.game.options.findIndex(x=>x.id===state.game.deck[0].id));await tablet.locator(`[data-action="answer"][data-index="${correct}"]`).click();
+  await tablet.waitForFunction(()=>state.cue&&!state.cue.paused&&state.cue.currentTime>.05);assert.equal(await tablet.evaluate(()=>activeTones.size),0);
+  await tablet.waitForFunction(()=>voiceEvents.some(x=>x.kind==='ended')&&voiceEvents.at(-1).kind==='speech');
+  const events=await tablet.evaluate(()=>voiceEvents);const ended=events.find(x=>x.kind==='ended');assert.ok(events.at(-1).time-ended.time>=100,'answer waits for cheer and gap');
+  await tablet.locator('[data-nav="home"]').click();await tablet.evaluate(()=>voiceEvents=[]);
+ }
+ await tablet.evaluate(()=>{playCue('correct','這句不能播放');stopVoice()});await tablet.waitForTimeout(350);assert.equal(await tablet.evaluate(()=>state.cue),null);assert.deepEqual(await tablet.evaluate(()=>voiceEvents),[]);
+ await touchContext.close();console.log('PASS: real tablet touch/wheel document scrolling, no inner frames, visible battle at six sizes, readable controls, layered light and pause, and actual MP3-to-reveal sequencing.');
 
  assert.deepEqual(errors,[]);
  assert.deepEqual(foreignRequests,[],'game must not request any external API or asset');

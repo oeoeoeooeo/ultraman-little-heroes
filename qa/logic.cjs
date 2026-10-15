@@ -48,7 +48,7 @@ expanded.run("catalogueSearch='';catalogueFilter='all';filterHeroCards()");expan
 for(const h of catalogue.filter(h=>h.deviceQuiz)){
  expanded.run(`state.game.deck[0]=HEROES.find(h=>h.id===${JSON.stringify(h.id)});state.game.index=0;nextQuiz()`);
  const options=expanded.json('state.game.options');assert.ok(options.filter(o=>o.deviceKey===h.deviceKey).length===1,'shared device ambiguous: '+h.id);
- assert.match(expanded.el('.question-visual').textContent,new RegExp(h.device.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+ assert.match(expanded.el('.question-visual').textContent,/觀察道具的形狀/);
 }
 expanded.click('[data-action="home"]');expanded.click('[data-action="start"][data-game="battle"]');expanded.click('[data-action="pick-hero"][data-index="52"]');expanded.click('[data-action="prepare-transform"]');assert.equal(expanded.run('state.game.heroes[0].id'),'teo');expanded.key(' ');expanded.advance(1300);assert.equal(expanded.run('state.game.heroes[0].id'),'teo');
 for(let i=0;i<20;i++){expanded.run('startMemory()');const keys=expanded.json("state.game.cards.filter(c=>c.kind==='device').map(c=>c.hero.deviceKey)");assert.equal(new Set(keys).size,keys.length);}
@@ -175,3 +175,22 @@ down(play);play.key('Escape');play.advance(1000);assert.equal(play.run('state.ga
 // Co-op: one extra attack when full sends exactly one energy, once per pilot per fight.
 play.run('leave();beginBattle({coop:true,heroes:[HEROES[2],HEROES[3]],forms:[\'multi\',\'zero-base\'],monsterId:\'gomora\'})');for(let i=0;i<4;i++){play.key('a');play.advance(200);}play.key('a');play.advance(200);assert.deepEqual(play.json('state.game.energy'),[4,1]);play.key('a');assert.deepEqual(play.json('state.game.energy'),[4,1]);
 play.run('leave()');console.log('PASS: complete three-stage journey, compulsory clues, no countdown, wrong/repeat answers, final-only reward, persistent sanitized stickers, held charge cancellation and one-use co-op assistance.');
+
+// Speech never reads the answer or raw hints before a choice; cheers and reveal are serial.
+const voice=boot();voice.run(`
+ var spoken=[],clips=[];
+ speechSynthesis={cancel(){},getVoices(){return []},speak(u){spoken.push(u.text)}};
+ window.speechSynthesis=speechSynthesis;SpeechSynthesisUtterance=class{constructor(text){this.text=text}};
+ window.Audio=class{constructor(src){this.src=src;this.paused=true;this.handlers={};clips.push(this)}addEventListener(k,fn){this.handlers[k]=fn}play(){this.paused=false;return Promise.resolve()}pause(){this.paused=true}end(){this.paused=true;this.handlers.ended?.()}};
+ state.sound=true;
+`);
+for(const mode of ['quiz','forms','device']){
+ voice.run(`startGame('${mode}');state.game.deck[0].hint='答案就是'+state.game.deck[0].name;nextQuiz()`);voice.advance(151);
+ assert.equal(voice.run('spoken.length'),1);assert.ok(!voice.run('spoken[0]').includes('答案就是'));assert.ok(!voice.el('.quiz-hint').textContent.includes('答案就是'));
+ const right=voice.run('state.game.options.findIndex(o=>o.id===state.game.deck[0].id)');voice.click(`[data-action="answer"][data-index="${right}"]`);
+ voice.advance(159);assert.equal(voice.run('clips.length'),0,'do not begin cheer during speech cancellation');voice.advance(1);assert.equal(voice.run('clips.length'),1);assert.equal(voice.run('spoken.length'),1,'reveal cannot speak over cheer');
+ voice.advance(2000);assert.equal(voice.run('spoken.length'),1);voice.run('clips[0].end()');voice.advance(149);assert.equal(voice.run('spoken.length'),1);voice.advance(1);assert.equal(voice.run('spoken.length'),2,'reveal follows cheer and pause');
+ voice.run('playCue("correct","不應播出的舊答案")');voice.advance(160);voice.click('[data-action="next-question"]');voice.run('clips[1].end()');voice.advance(500);assert.ok(!voice.json('spoken').includes('不應播出的舊答案'),'next question cancels pending reveal');voice.run('stopVoice();spoken=[];clips=[]');
+}
+voice.run('var stopped=0;activeTones.add({stop(){stopped++}});playCue("correct");stopVoice()');voice.advance(1000);assert.equal(voice.run('stopped'),1);assert.equal(voice.run('state.cue'),null);assert.equal(voice.run('activeTones.size'),0);
+console.log('PASS: all quiz modes use neutral prompts, never raw answer hints; cheer/reveal are serialized with gaps; next question and mute cancel pending sound and tones.');

@@ -1,4 +1,4 @@
-# v1.4.0 安全與免費部署範圍
+# v1.4.2 安全與免費部署範圍
 
 此遊戲只提供靜態 HTML、CSS、JavaScript、PNG、SVG、MP3 和版號 JSON。
 
