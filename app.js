@@ -3400,8 +3400,6 @@ const BADGES = [
   {id:'device',name:'變身器達人',emoji:'⚡',description:'完成一次變身器猜謎',goal:1},
   {id:'battle',name:'地球守護者',emoji:'🛡️',description:'完成一次怪獸對戰',goal:1},
   {id:'coop',name:'宇宙最佳拍檔',emoji:'🏆',description:'兄弟一起完成合作任務',goal:1},
-  {id:'flight',title:'雙人星際飛行',copy:'左右閃隕石，一起收集閃亮星光！',tag:'街機出發',meta:'雙人駕駛 · 三段速度',bg:'#dbe4fa',tagColor:'#617fba'},
-  {id:'circuit',title:'光能接線',copy:'轉轉管道，讓光抵達太空基地。',tag:'動腦小工程師',meta:'空間推理 · 提示與復原',bg:'#f7e8cc',tagColor:'#af8d50'},
   {id:'memory',name:'超強記憶力',emoji:'🧩',description:'完成一次翻牌配對',goal:1},
   {id:'stars',name:'閃閃發光的你',emoji:'🌟',description:'累積獲得 50 顆星星',goal:50},
   {id:'explorer',name:'光之國探險家',emoji:'🚀',description:'完成全部六種任務',goal:6}
@@ -3876,7 +3874,7 @@ function flightPaint(){const g=state.game;if(g?.type!=='flight')return;g.lanes.f
 function flightMove(i,dir){const g=state.game;if(g?.type!=='flight'||g.paused||g.resolved||![0,1].includes(i)||![-1,1].includes(dir))return;const next=Math.max(0,Math.min(2,g.lanes[i]+dir));if(next===g.lanes[i])return;g.lanes[i]=next;flightPaint();tone('flip');}
 function flightTick(){const g=state.game;if(g?.type!=='flight')return;const now=performance.now(),dt=Math.min(100,now-g.last);g.last=now;if(!g.paused){g.elapsed+=dt;const ms=FLIGHT_LEVELS[g.level].ms;$('#flight-stage').style.setProperty('--fall',Math.min(1,g.elapsed/ms));
  if(g.elapsed>=ms&&!g.resolved){g.resolved=true;const hits=g.lanes.map((lane,i)=>lane===g.targets[i]);hits.forEach((hit,i)=>{if(hit)g.score[i]++;else g.bumps[i]++;});g.combo=hits.every(Boolean)?g.combo+1:0;g.best=Math.max(g.best,g.combo);$('#flight-message').textContent=hits.every(Boolean)?`✨ 合作成功！${g.combo} 連擊！`:hits.some(Boolean)?'接到星光了！另一艘的護盾也安全擋住隕石。':'🛡 護盾保護成功！下一波再一起接星光。';tone(hits.some(Boolean)?'success':'shield');flightPaint();}
- if(g.elapsed>=ms+850){if(g.wave===12){finish('flight',12+Math.floor((g.score[0]+g.score[1])/2),'星際雙人任務完成！',`哥哥收集 ${g.score[0]} 顆、弟弟收集 ${g.score[1]} 顆星光；最佳合作連擊 ${g.best} 次！`);return;}flightWave();}}
+ if(g.elapsed>=ms+850){if(g.wave===12){const level=g.level;finish('flight',12+Math.floor((g.score[0]+g.score[1])/2),'星際雙人任務完成！',`哥哥收集 ${g.score[0]} 顆、弟弟收集 ${g.score[1]} 顆星光；最佳合作連擊 ${g.best} 次！`);state.game.flightLevel=level;return;}flightWave();}}
  later(flightTick,50);}
 function arcadePause(force=false){const g=state.game;if(g?.type!=='flight'||force&&g.paused)return;g.paused=force||!g.paused;releaseHeld();g.last=performance.now();$('.flight-stage .reaction-pause').hidden=!g.paused;$$('[data-action="flight-move"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="arcade-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';if(g.paused)stopVoice();}
 // Pipe masks: north=1, east=2, south=4, west=8. A monotone path guarantees a solution.
@@ -4000,7 +3998,7 @@ document.addEventListener('click',event=>{
   else if(action==='quest-target')questTarget(index);
   else if(action==='home')navigate('home');
   else if(action==='badges')navigate('badges');
-  else if(action==='start'){if(el.dataset.game==='reaction'&&state.game?.type==='result')reactionSetup(state.game.reactionLevel??1);else startGame(el.dataset.game);}
+  else if(action==='start'){if(el.dataset.game==='reaction'&&state.game?.type==='result')reactionSetup(state.game.reactionLevel??1);else if(el.dataset.game==='flight'&&state.game?.type==='result')flightSetup(state.game.flightLevel??0);else startGame(el.dataset.game);}
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
   else if(action==='encyclopedia-tab'){encyclopediaTab=el.dataset.tab;renderHeroes();}
   else if(action==='read-entry'){stopVoice();const rows={forms:FORMS,devices:DEVICES,moves:MOVES,monsters:MONSTERS}[el.dataset.tab];const x=rows.find(x=>x.id===el.dataset.id);speak(`${x.name}。${x.description||x.fact||'光之力量，準備發射！'}`);}

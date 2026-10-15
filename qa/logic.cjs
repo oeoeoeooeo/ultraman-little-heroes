@@ -40,7 +40,7 @@ function boot() {
 const catalogue=JSON.parse(fs.readFileSync(path.join(root,'hero-catalogue.json'),'utf8'));
 assert.equal(catalogue.length,53);assert.equal(new Set(catalogue.map(h=>h.id)).size,53);
 for(const h of catalogue){assert.ok(h.source.startsWith('https://tsuburaya-prod.com/heroes/'));assert.equal(fs.readFileSync(path.join(root,'assets',h.id+'.png')).subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
-const expanded=boot();assert.deepEqual(expanded.json('HEROES'),catalogue);
+const expanded=boot();assert.equal(expanded.run('BADGES.length'),9);assert.equal(expanded.run('BADGES.every(b=>b.name&&b.description&&b.emoji&&b.goal)'),true);assert.equal(expanded.run('GAMES.length'),9);assert.deepEqual(expanded.json('HEROES'),catalogue);
 expanded.click('[data-nav="heroes"]');expanded.click('[data-filter="latest"]');assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,4);
 expanded.run("catalogueSearch='teo';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,1);
 expanded.run("catalogueSearch='<img onerror=alert(1)>';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,0);
@@ -243,7 +243,7 @@ for(let level=0;level<3;level++){
  const stars=f.run('state.stars');for(let wave=1;wave<=12;wave++){
   f.run('state.game.lanes=[...state.game.targets];flightPaint()');f.advance(f.run('FLIGHT_LEVELS[state.game.level].ms-state.game.elapsed+50'));assert.deepEqual(f.json('state.game.score'),[wave,wave]);assert.equal(f.run('state.stars'),stars);f.advance(850);
  }
- assert.equal(f.run('state.game.type'),'result');assert.equal(f.run('state.stars'),stars+24);f.advance(10000);assert.equal(f.run('state.stars'),stars+24);f.click('.result .primary');f.click('[data-action="flight-begin"]');f.click('[data-action="home"]');f.advance(10000);assert.equal(f.run('state.game'),null);
+ assert.equal(f.run('state.game.type'),'result');assert.equal(f.run('state.stars'),stars+24);f.advance(10000);assert.equal(f.run('state.stars'),stars+24);f.click('.result .primary');assert.equal(f.run('state.game.level'),level);f.click('[data-action="flight-begin"]');f.click('[data-action="home"]');f.advance(10000);assert.equal(f.run('state.game'),null);
 }
 const miss=boot();miss.run('state.sound=false');miss.click('[data-action="start"][data-game="flight"]');miss.click('[data-action="flight-begin"]');miss.run('state.game.lanes=state.game.targets.map(x=>(x+1)%3)');miss.advance(3250);assert.deepEqual(miss.json('state.game.bumps'),[1,1]);assert.equal(miss.run('state.game.type'),'flight','shields prevent elimination');
 // Puzzle: many random guaranteed-solvable boards, hint progress, undo/reset, no time penalty.
