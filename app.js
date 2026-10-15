@@ -3677,7 +3677,7 @@ function holdAttack(event){
  function repeat(){const g=state.game;if(!press.active||press.token!==state.token||g?.type!=='battle'||g.paused||g.firing||g.finished){releaseHeld();return;}attack(press.index);later(repeat,190);}
  later(repeat,300);
 }
-function showBattlePop(text,i=0){const g=state.game;if(g?.type!=='battle')return;const pop=document.createElement('span');pop.className='battle-pop '+(i?'second':'');pop.textContent=text;$('#arena').append(pop);later(()=>pop.remove(),800);}
+function showBattlePop(text,i=0){const g=state.game;if(g?.type!=='battle')return;$('#arena').querySelector(i?'.battle-pop.second':'.battle-pop:not(.second)')?.remove();const pop=document.createElement('span');pop.className='battle-pop '+(i?'second':'');pop.textContent=text;$('#arena').append(pop);later(()=>pop.remove(),800);}
 
 function startSelection(coop){
   state.game={type:'selection',coop,selected:[2,3],forms:['multi','zero-base'],monsterId:MONSTERS[(state.completed[coop?'coop':'battle']||0)%MONSTERS.length].id,pilot:0};
@@ -3702,7 +3702,7 @@ function transform(index){
   const g=state.game;if(!g||g.type!=='transform'||g.busy||index>=(g.coop?2:1)||g.ready[index])return;
   g.ready[index]=true;tone('transform');
   if(!g.ready[0]||(g.coop&&!g.ready[1])){renderTransform();return;}
-  g.busy=true;
+  g.busy=true;$('.transform-panel').classList.add('is-transforming');
   $('.transform-panel').innerHTML=`<span class="pill">✦ 變身成功</span><div style="display:flex;gap:15px">${g.heroes.slice(0,g.coop?2:1).map(h=>heroImage(h)).join('')}</div><h2>${g.coop?'兄弟的光，一起出發！':`${g.heroes[0].short}，登場！`}</h2><p>勇氣已充滿，準備守護地球！</p>`;
   playCue('transform');
   later(()=>beginBattle(g),1250);
@@ -3756,7 +3756,7 @@ function shield(i){
 function fireBeam(){
   const g=state.game;if(!g||g.type!=='battle'||(g.quest&&g.questFound<3)||g.paused||g.finished||g.firing||g.energy[0]<4||(g.coop&&g.energy[1]<4))return;
   releaseHeld();g.firing=true;g.beamRemaining=900;g.energy=[0,0];g.hp=Math.max(0,g.hp-(g.monster.friendly&&activeForm(g,0)?.role==='calm'?64:52));updateEnergy();updateHp();
-  $('#arena').classList.add('is-firing');const move=chosenMove(g);const el=document.createElement('div');el.className='beam '+(g.monster.friendly?'calm':move.kind);$('#arena').append(el);const label=document.createElement('strong');label.className='beam-announcement';label.textContent=g.monster.friendly?'♥ 友善之光！':g.coop?'兄弟合體！':move.name+'！';$('#arena').append(label);tone('beam');
+  $$('.battle-pop').forEach(el=>el.remove());$('#arena').classList.add('is-firing');const move=chosenMove(g);const el=document.createElement('div');el.className='beam '+(g.monster.friendly?'calm':move.kind);$('#arena').append(el);const label=document.createElement('strong');label.className='beam-announcement';label.textContent=g.monster.friendly?'♥ 友善之光！':g.coop?'兄弟合體！':move.name+'！';$('#arena').append(label);tone('beam');
   $('#battle-message').textContent=g.monster.friendly?'送出友善的光！夥伴越來越安心了！':`${g.coop?'兄弟合體！':''}${move.name}！`;playCue(g.monster.friendly?'kindness':'beam');
 }
 function resolveBeam(){

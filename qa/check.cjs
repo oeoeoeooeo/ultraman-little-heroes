@@ -211,7 +211,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  for(const y of [780,700,620,540,460])await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:400,y}]});
  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await tablet.waitForTimeout(250);assert.ok(await tablet.evaluate(()=>scrollY)>beforeTouch+100,'touch swipe reaches document');
  await tablet.screenshot({path:path.join(out,'tablet-root-scroll-selection.png'),fullPage:false});
- await tablet.locator('[data-action="prepare-transform"]').click();await tablet.keyboard.press('a');await tablet.keyboard.press('l');await tablet.waitForSelector('.arena');
+ await tablet.locator('[data-action="prepare-transform"]').click();await tablet.keyboard.press('a');await tablet.keyboard.press('l');await tablet.waitForSelector('.is-transforming');await tablet.waitForTimeout(250);await tablet.screenshot({path:path.join(out,'tablet-transformation-portal.png'),fullPage:false});await tablet.waitForSelector('.arena');
  for(const [width,height] of [[768,1024],[834,1194],[1024,768],[1180,820],[390,844],[844,390]]){
   await tablet.setViewportSize({width,height});await tablet.locator('#combo-button').scrollIntoViewIfNeeded();
   assert.deepEqual(await tablet.evaluate(nestedScrolls),[],'battle has no nested scroll at '+width);assert.ok(await tablet.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'battle overflow '+width);

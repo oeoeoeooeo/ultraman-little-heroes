@@ -150,3 +150,14 @@ button{min-height:44px;letter-spacing:0}
 .battle-stage .arena .arena-hero,.battle-stage .arena .arena-hero.hero-two,.battle-stage .arena .arena-monster{z-index:2}
 .battle-stage .arena-status,.battle-stage .monster-label{z-index:7}
 .arena.is-firing:before{inset:0;background:radial-gradient(ellipse at 55% 50%,#19495400 15%,#173b5966 60%,#132b4d99);opacity:1;z-index:1;animation:none}
+
+/* Final readability and light choreography polish. */
+.battle-pop{top:auto;bottom:5%;left:4%;font-size:16px;padding:5px 10px;max-width:44%}.battle-pop.second{left:auto;right:4%}
+.battle-stage .arena-status,.hero-copy .pill{font-size:14px}.star-wallet b{font-size:18px}.quest-team b,.sticker-teaser b{font-size:16px}
+.transform-panel{position:relative;isolation:isolate;overflow:hidden}.transform-panel.is-transforming{background:radial-gradient(ellipse at 50% 45%,#d9f7fa,#fff9df 52%,#fffefa 78%)}
+.transform-panel.is-transforming:before{content:"";position:absolute;pointer-events:none;left:50%;top:45%;width:min(80vw,420px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,transparent 45%,#95ddeb88 47%,transparent 49%,#fff9d1 53%,#a0e6e899 54%,transparent 57%,#e7cf8288 61%,transparent 63%);animation:portal-open 1.25s ease-out both;z-index:-1}
+.transform-panel.is-transforming img{animation:hero-arrive 1.25s ease-out both}
+@keyframes portal-open{0%{transform:translate(-50%,-50%) scale(.3);opacity:0}35%{transform:translate(-50%,-50%) scale(1.05);opacity:1}100%{transform:translate(-50%,-50%) scale(1.2);opacity:.45}}
+@keyframes hero-arrive{0%{opacity:0;transform:scale(.75) translateY(20px)}35%{opacity:1;transform:scale(1.03)}100%{opacity:1;transform:none}}
+@media(max-width:700px){.floating-label,.banner-corner,.card-number{display:none}}
+@media(prefers-reduced-motion:reduce){.transform-panel.is-transforming:before{animation:none;transform:translate(-50%,-50%);opacity:.6}.transform-panel.is-transforming img{animation:none}}

@@ -170,7 +170,7 @@ play.click('[data-nav="badges"]');assert.equal(play.document.querySelectorAll('.
 // Holding stops on release, pause and navigation, and does not create a delayed attack.
 play.run('leave();beginBattle({coop:false,heroes:[HEROES[2]],forms:[\'multi\'],monsterId:\'gomora\'})');
 function down(t){const e=new t.document.defaultView.Event('pointerdown',{bubbles:true});Object.assign(e,{button:0,pointerId:1});t.el('[data-action="attack"]').dispatchEvent(e);}
-down(play);play.advance(1000);assert.equal(play.run('state.game.energy[0]'),4);play.document.dispatchEvent(new play.document.defaultView.Event('pointerup'));const hp=play.run('state.game.hp');play.advance(2000);assert.equal(play.run('state.game.hp'),hp);
+down(play);play.advance(1000);assert.equal(play.run('state.game.energy[0]'),4);assert.equal(play.document.querySelectorAll('.battle-pop').length,1,'holding does not stack reward labels');play.document.dispatchEvent(new play.document.defaultView.Event('pointerup'));const hp=play.run('state.game.hp');play.advance(2000);assert.equal(play.run('state.game.hp'),hp);
 down(play);play.key('Escape');play.advance(1000);assert.equal(play.run('state.game.hp'),hp);play.key('Escape');down(play);play.click('[data-nav="heroes"]');play.advance(2000);assert.equal(play.run('state.game'),null);
 // Co-op: one extra attack when full sends exactly one energy, once per pilot per fight.
 play.run('leave();beginBattle({coop:true,heroes:[HEROES[2],HEROES[3]],forms:[\'multi\',\'zero-base\'],monsterId:\'gomora\'})');for(let i=0;i<4;i++){play.key('a');play.advance(200);}play.key('a');play.advance(200);assert.deepEqual(play.json('state.game.energy'),[4,1]);play.key('a');assert.deepEqual(play.json('state.game.energy'),[4,1]);
