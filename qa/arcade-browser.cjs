@@ -8,7 +8,8 @@ module.exports=async function arcadeQA(page,out,prefix='chromium'){
   await page.setViewportSize({width:w,height:h});await page.locator('.flight-controls').scrollIntoViewIfNeeded();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'flight overflow '+w);
   const b=await page.locator('[data-action="flight-move"]').first().boundingBox();assert.ok(b.width>=44&&b.height>=60,'large flight pad '+w);
-  {const r=await page.locator('.flight-stage').boundingBox();assert.ok(r.y>=-1&&r.y+r.height<=h+1,'visible flight on tablet '+w);}
+  await page.screenshot({path:path.join(out,prefix+'-arcade-flight-'+w+'.png'),fullPage:false});
+  {const r=await page.locator('.flight-stage').boundingBox();assert.ok(r.y>=-1&&r.y+r.height<=h+1,'visible flight '+w+' '+JSON.stringify(r));}
   await page.screenshot({path:path.join(out,prefix+'-arcade-flight-'+w+'.png'),fullPage:false});
  }
  await page.locator('[data-action="arcade-pause"]').first().click();const clock=await page.evaluate(()=>state.game.elapsed);await page.waitForTimeout(250);assert.equal(await page.evaluate(()=>state.game.elapsed),clock);
