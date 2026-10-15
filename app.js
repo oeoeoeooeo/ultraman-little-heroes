@@ -3852,7 +3852,7 @@ function reactionInput(pilot,action){
  else if(!parallel)$('#reaction-message').textContent=`接力！換${g.steps[g.done.length].pilot?'弟弟':'哥哥'}出手。`;
 }
 function reactionPause(force){
- const g=state.game;if(g?.type!=='reaction')return;g.paused=force===undefined?!g.paused:force;g.lastTick=performance.now();if(g.paused)stopVoice();$('#reaction-stage').classList.toggle('is-paused',g.paused);$('.reaction-pause').hidden=!g.paused;
+ const g=state.game;if(g?.type!=='reaction')return;g.paused=force===undefined?!g.paused:force;g.lastTick=performance.now();if(g.paused){releaseHeld();stopVoice();}$('#reaction-stage').classList.toggle('is-paused',g.paused);$('.reaction-pause').hidden=!g.paused;
  $$('[data-action="reaction-input"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="reaction-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
 }
 

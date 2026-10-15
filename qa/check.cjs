@@ -14,6 +14,9 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await page.evaluate(()=>{state.sound=false;save();updateChrome();});
  assert.equal(await page.locator('.game-card').count(),9);
  assert.equal(await page.locator('.player-button.selected').count(),1);
+ const arcadePage=await browser.newPage({viewport:{width:834,height:1194}});arcadePage.on('pageerror',e=>errors.push(e.message));await arcadePage.goto(base);
+ await require('./arcade-browser.cjs')(arcadePage,out);await arcadePage.close();
+ await require('./arcade-browser.cjs').multiTouch(browser,base);
  for(const [width,height,label] of [[1920,1080,'full-hd'],[1440,1100,'desktop'],[1366,768,'laptop'],[1280,720,'hd'],[1024,768,'tablet-landscape'],[834,1194,'tablet'],[390,844,'phone'],[320,740,'small-phone'],[844,390,'phone-landscape']]){
    await page.setViewportSize({width,height});await page.waitForTimeout(250);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' home overflow');
@@ -193,7 +196,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  const attackButton=page.locator('[data-action="attack"]').first();await attackButton.scrollIntoViewIfNeeded();const box=await attackButton.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.waitForTimeout(1100);await page.mouse.up();
  assert.equal(await page.evaluate(()=>state.game.energy[0]),4,'hold collects energy');const heldHp=await page.evaluate(()=>state.game.hp);await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>state.game.hp),heldHp,'release stops repeat');
  await page.keyboard.press('Escape');assert.ok(await page.locator('[data-action="attack"]').isDisabled());await page.screenshot({path:path.join(out,'phone-hold-charge-paused.png'),fullPage:true});await page.keyboard.press('Escape');
- await page.locator('[data-nav="home"]').click();assert.equal(await page.evaluate(()=>heldAttack),null);
+ await page.locator('[data-nav="home"]').click();assert.equal(await page.evaluate(()=>heldPointers.size),0);
  console.log('PASS: visible-control three-stage phone co-op journey, clue gating, wrong answers, pause, checkpoints, final reward, persisted sticker book at four sizes, and real pointer hold/release.');
 
  // Tablet regression: root scrolling, readable controls and effects visible while operating.
@@ -244,8 +247,7 @@ const out=path.join(__dirname,'screenshots');fs.mkdirSync(out,{recursive:true});
  await touchContext.close();console.log('PASS: real tablet touch/wheel document scrolling, no inner frames, visible battle at six sizes, readable controls, layered light and pause, and actual MP3-to-reveal sequencing.');
 
  await require('./reaction-browser.cjs')(page,out);
- await require('./arcade-browser.cjs')(page,out);
- await require('./arcade-browser.cjs').multiTouch(browser,base);
+
  assert.deepEqual(errors,[]);
  assert.deepEqual(foreignRequests,[],'game must not request any external API or asset');
  console.log('PASS: 6 game modes, 9 viewport sizes (320px to 1920px), portrait/landscape, images, keyboard/touch controls, co-op energy, pause, retries, memory, 9 badges, persistence, and no browser errors.');

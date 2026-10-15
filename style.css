@@ -181,3 +181,4 @@ button{min-height:44px;letter-spacing:0}
 @media(prefers-reduced-motion:reduce){.flight-ship{transition:none}}
 
 @media(min-height:501px){.flight-stage{position:sticky;top:8px;z-index:5}}
+.card-art .arcade-card-art{font-size:30px;line-height:1.2;padding:16px 12px 0}
