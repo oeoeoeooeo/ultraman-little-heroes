@@ -3400,6 +3400,8 @@ const BADGES = [
   {id:'device',name:'變身器達人',emoji:'⚡',description:'完成一次變身器猜謎',goal:1},
   {id:'battle',name:'地球守護者',emoji:'🛡️',description:'完成一次怪獸對戰',goal:1},
   {id:'coop',name:'宇宙最佳拍檔',emoji:'🏆',description:'兄弟一起完成合作任務',goal:1},
+  {id:'flight',title:'雙人星際飛行',copy:'左右閃隕石，一起收集閃亮星光！',tag:'街機出發',meta:'雙人駕駛 · 三段速度',bg:'#dbe4fa',tagColor:'#617fba'},
+  {id:'circuit',title:'光能接線',copy:'轉轉管道，讓光抵達太空基地。',tag:'動腦小工程師',meta:'空間推理 · 提示與復原',bg:'#f7e8cc',tagColor:'#af8d50'},
   {id:'memory',name:'超強記憶力',emoji:'🧩',description:'完成一次翻牌配對',goal:1},
   {id:'stars',name:'閃閃發光的你',emoji:'🌟',description:'累積獲得 50 顆星星',goal:50},
   {id:'explorer',name:'光之國探險家',emoji:'🚀',description:'完成全部六種任務',goal:6}
@@ -3411,6 +3413,8 @@ const GAMES = [
   {id:'battle',title:'變身！怪獸對戰',copy:'選擇你的英雄，勇敢守護地球！',tag:'勇氣出任務',meta:'單人冒險 · 鍵盤也能玩',bg:'#f2e1d6',tagColor:'#c18c70'},
   {id:'coop',title:'兄弟合體出任務',copy:'一人一份力量，合作就是最強！',tag:'兩個人更好玩',meta:'雙人合作 · 一起發射光線',bg:'#dde9cf',tagColor:'#8c9f6b'},
   {id:'reaction',title:'兄弟反應特訓',copy:'真假訊號、輪流接力，挑戰你們的默契！',tag:'全新反應挑戰',meta:'三種難度 · 記憶與合作',bg:'#d8e9f6',tagColor:'#5588ab'},
+  {id:'flight',title:'雙人星際飛行',copy:'左右閃隕石，一起收集閃亮星光！',tag:'街機出發',meta:'雙人駕駛 · 三段速度',bg:'#dbe4fa',tagColor:'#617fba'},
+  {id:'circuit',title:'光能接線',copy:'轉轉管道，讓光抵達太空基地。',tag:'動腦小工程師',meta:'空間推理 · 提示與復原',bg:'#f7e8cc',tagColor:'#af8d50'},
   {id:'memory',title:'英雄翻翻樂',copy:'翻開小卡片，找出變身好搭檔。',tag:'記憶力練習',meta:'翻牌配對 · 慢慢想沒關係',bg:'#dceae6',tagColor:'#7a9d91'}
 ];
 let saved = {};
@@ -3426,7 +3430,7 @@ const state = {
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
 function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns}));}catch{}}
-function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.filter(g=>g.id!=='reaction').every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
+function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.filter(g=>['quiz','forms','device','battle','coop','memory'].includes(g.id)).every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
 function updateChrome(){
   $('#star-total').textContent = state.stars;
   $('#badge-count').textContent = BADGES.filter(b=>hasBadge(b.id)).length;
@@ -3487,6 +3491,8 @@ function monster(cls='monster-picture',variant=0){
 }
 
 function cardArt(game){
+  if(game.id==='flight')return '<div class="arcade-card-art">✦<br>🚀 🚀</div>';
+  if(game.id==='circuit')return '<div class="arcade-card-art">☀ ━ ┓<br>　 ┏ ┛<br>　 ┗ 🚩</div>';
   if(game.id==='quiz')return heroImage(HEROES[0],'card-hero',false)+'<span class="question-bubble">?</span>';
   if(game.id==='forms')return FORMS.slice(0,3).map(f=>formFigure(f,'form-figure')).join('');
   if(game.id==='device')return devicePicture(HEROES[2],'art-device');
@@ -3541,7 +3547,7 @@ function renderBadges(){main.innerHTML=stickerBook()+screenHead('我的小成就
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
   $('#breadcrumb-text').textContent=GAMES.find(g=>g.id===mode).title;
-  if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
+  if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='flight')flightSetup();else if(mode==='circuit')circuitBegin();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
   const pool = mode==='forms'?FORMS:mode==='device'?DEVICES.filter(d=>d.kind!=='武器').map(deviceQuestion):HEROES;
@@ -3671,12 +3677,23 @@ function questCheckpoint(g){
  confetti();playCue('victory');main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});
 }
 function questNext(){const g=state.game;if(g?.type!=='quest-checkpoint')return;const setup=g.setup;leave();beginBattle(setup);main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
-let heldAttack=null;
-function releaseHeld(){if(heldAttack){heldAttack.active=false;heldAttack=null;}}
+// Every contact owns its lifetime. A second finger never replaces the first.
+const heldPointers=new Map(), touchClicks=new WeakMap();
+const directActions=new Set(['attack','shield','beam','cycle-form','transform','reaction-input','flight-move']);
+function releaseHeld(event){
+ const ids=event&&Number.isFinite(event.pointerId)?[event.pointerId]:[...heldPointers.keys()];
+ for(const id of ids){const press=heldPointers.get(id);if(!press)continue;heldPointers.delete(id);if(touchClicks.has(press.button))touchClicks.set(press.button,performance.now()+1500);press.active=false;press.button.classList.remove('contact-down');try{if(press.button.hasPointerCapture?.(id))press.button.releasePointerCapture(id);}catch{}}
+}
+function directControl(button){const i=Number(button.dataset.index);switch(button.dataset.action){case 'attack':attack(i);break;case 'shield':shield(i);break;case 'beam':fireBeam();break;case 'cycle-form':cycleForm(i);break;case 'transform':transform(i);break;case 'reaction-input':reactionInput(i,button.dataset.kind);break;case 'flight-move':flightMove(i,Number(button.dataset.dir));break;}}
 function holdAttack(event){
- const button=event.target.closest('[data-action="attack"]');if(!button||button.disabled||event.button!==0)return;
- releaseHeld();const press={active:true,index:Number(button.dataset.index),token:state.token};heldAttack=press;
- function repeat(){const g=state.game;if(!press.active||press.token!==state.token||g?.type!=='battle'||g.paused||g.firing||g.finished){releaseHeld();return;}attack(press.index);later(repeat,190);}
+ const button=event.target.closest('[data-action]');if(!button||button.disabled||!directActions.has(button.dataset.action)||event.button!==0||$('#info-dialog').open)return;
+ const touch=event.pointerType==='touch'||event.pointerType==='pen';
+ if(!touch&&button.dataset.action!=='attack')return;
+ releaseHeld(event);const press={active:true,button,index:Number(button.dataset.index),token:state.token};heldPointers.set(event.pointerId,press);button.classList.add('contact-down');
+ try{button.setPointerCapture?.(event.pointerId);}catch{}
+ if(touch){event.preventDefault();touchClicks.set(button,performance.now()+1500);directControl(button);}
+ if(button.dataset.action!=='attack')return;
+ function repeat(){const g=state.game;if(!press.active)return;if(press.token!==state.token||g?.type!=='battle'||g.paused||g.firing||g.finished){releaseHeld({pointerId:event.pointerId});return;}attack(press.index);later(repeat,190);}
  later(repeat,300);
 }
 function showBattlePop(text,i=0){const g=state.game;if(g?.type!=='battle')return;$('#arena').querySelector(i?'.battle-pop.second':'.battle-pop:not(.second)')?.remove();const pop=document.createElement('span');pop.className='battle-pop '+(i?'second':'');pop.textContent=text;$('#arena').append(pop);later(()=>pop.remove(),800);}
@@ -3841,6 +3858,46 @@ function reactionPause(force){
  $$('[data-action="reaction-input"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="reaction-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
 }
 
+const FLIGHT_LEVELS=[{name:'小小駕駛',ms:3200},{name:'勇敢飛行',ms:2400},{name:'王牌機師',ms:1700}];
+function flightSetup(level=state.player==='big'?1:0){
+ if(!FLIGHT_LEVELS[level])return;state.game={type:'flight-setup',level};
+ main.innerHTML=screenHead('雙人星際飛行','一人一艘飛船，各有自己的三條航道。','街機合作')+`<section class="panel center"><div class="arcade-card-art">🚀 ✦ 🚀</div><h2>看準星光，閃開隕石！</h2><p>✦ 收星光加分　☄ 隕石會被護盾擋住<br>兩人都收星光，就能累積合作連擊！<br>每趟 12 波；碰到隕石也能繼續冒險。</p><div class="reaction-levels">${FLIGHT_LEVELS.map((x,i)=>`<button data-action="flight-level" data-index="${i}" class="${i===level?'selected':''}" aria-pressed="${i===level}"><b>${x.name}</b><span>每波 ${(x.ms/1000).toFixed(1)} 秒</span></button>`).join('')}</div><p>哥哥 A／D 向左／右　弟弟 J／L 向左／右<br>平板直接按各自的大按鈕，雙手可以同時操作。</p><button class="primary" data-action="flight-begin">🚀 出發，守護星空！</button></section>`;
+}
+function flightBegin(level){
+ if(!FLIGHT_LEVELS[level])return;
+ state.game={type:'flight',level,lanes:[1,1],wave:0,score:[0,0],bumps:[0,0],combo:0,best:0,paused:false,last:performance.now(),elapsed:0,resolved:false};
+ main.innerHTML=screenHead('雙人星際飛行','✦ 星光要接住　☄ 隕石要閃開',FLIGHT_LEVELS[level].name)+`<section class="flight-board"><div class="reaction-hud"><strong id="flight-progress"></strong><span id="flight-score"></span><button class="secondary" data-action="arcade-pause">Ⅱ 暫停</button></div><div class="flight-stage" id="flight-stage"><div class="flight-tracks">${['哥哥','弟弟'].map((n,i)=>`<section class="flight-track"><b>${n}的航道</b><div class="flight-lanes">${[0,1,2].map(j=>`<div class="flight-lane"><span class="flight-object" id="flight-object-${i}-${j}"></span></div>`).join('')}</div><div class="flight-ship" id="flight-ship-${i}">${heroImage(HEROES.find(h=>h.id===state.team[i]),'',false)}<span>🚀</span></div></section>`).join('')}</div><p id="flight-message" role="status">準備出發！</p><div class="reaction-pause" hidden><strong>飛船停好了，休息一下！</strong><button class="primary" data-action="arcade-pause">▶ 繼續飛行</button></div></div><div class="flight-controls">${['哥哥','弟弟'].map((n,i)=>`<section><h3>${n}駕駛台</h3><div>${[-1,1].map(d=>`<button data-action="flight-move" data-index="${i}" data-dir="${d}" aria-label="${n}向${d<0?'左':'右'}">${d<0?'◀':'▶'} <kbd>${i?(d<0?'J':'L'):(d<0?'A':'D')}</kbd></button>`).join('')}</div></section>`).join('')}</div><p class="reaction-note">在物件抵達飛船前換航道。星光在閃亮的航道；兩人同時接住可連擊！</p></section>`;
+ flightWave();flightTick();
+}
+function flightWave(){const g=state.game;if(g?.type!=='flight')return;g.wave++;g.elapsed=0;g.resolved=false;g.targets=[Math.floor(Math.random()*3),Math.floor(Math.random()*3)];
+ for(let i=0;i<2;i++)for(let j=0;j<3;j++){const e=$(`#flight-object-${i}-${j}`);e.textContent=j===g.targets[i]?'✦':'☄';e.className='flight-object '+(j===g.targets[i]?'star':'rock');}
+ $('#flight-progress').textContent=`第 ${g.wave} / 12 波`;$('#flight-message').textContent=g.wave===1?'先看星光在哪一條！':'下一波來了，準備換航道！';flightPaint();}
+function flightPaint(){const g=state.game;if(g?.type!=='flight')return;g.lanes.forEach((lane,i)=>{$(`#flight-ship-${i}`).style.left=`${(lane+.5)*100/3}%`;});$('#flight-score').textContent=`✦ ${g.score[0]+g.score[1]}　合作連擊 ${g.combo}`;}
+function flightMove(i,dir){const g=state.game;if(g?.type!=='flight'||g.paused||g.resolved||![0,1].includes(i)||![-1,1].includes(dir))return;const next=Math.max(0,Math.min(2,g.lanes[i]+dir));if(next===g.lanes[i])return;g.lanes[i]=next;flightPaint();tone('flip');}
+function flightTick(){const g=state.game;if(g?.type!=='flight')return;const now=performance.now(),dt=Math.min(100,now-g.last);g.last=now;if(!g.paused){g.elapsed+=dt;const ms=FLIGHT_LEVELS[g.level].ms;$('#flight-stage').style.setProperty('--fall',Math.min(1,g.elapsed/ms));
+ if(g.elapsed>=ms&&!g.resolved){g.resolved=true;const hits=g.lanes.map((lane,i)=>lane===g.targets[i]);hits.forEach((hit,i)=>{if(hit)g.score[i]++;else g.bumps[i]++;});g.combo=hits.every(Boolean)?g.combo+1:0;g.best=Math.max(g.best,g.combo);$('#flight-message').textContent=hits.every(Boolean)?`✨ 合作成功！${g.combo} 連擊！`:hits.some(Boolean)?'接到星光了！另一艘的護盾也安全擋住隕石。':'🛡 護盾保護成功！下一波再一起接星光。';tone(hits.some(Boolean)?'success':'shield');flightPaint();}
+ if(g.elapsed>=ms+850){if(g.wave===12){finish('flight',12+Math.floor((g.score[0]+g.score[1])/2),'星際雙人任務完成！',`哥哥收集 ${g.score[0]} 顆、弟弟收集 ${g.score[1]} 顆星光；最佳合作連擊 ${g.best} 次！`);return;}flightWave();}}
+ later(flightTick,50);}
+function arcadePause(force=false){const g=state.game;if(g?.type!=='flight'||force&&g.paused)return;g.paused=force||!g.paused;releaseHeld();g.last=performance.now();$('.flight-stage .reaction-pause').hidden=!g.paused;$$('[data-action="flight-move"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="arcade-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';if(g.paused)stopVoice();}
+// Pipe masks: north=1, east=2, south=4, west=8. A monotone path guarantees a solution.
+function pipeRotate(mask){return ((mask<<1)&15)|(mask>>3);}
+function circuitBegin(){state.game={type:'circuit',round:0,hints:0};circuitNext();}
+function circuitNext(){const g=state.game;if(g?.type!=='circuit'||g.round&&!g.solved)return;if(g.round===3){finish('circuit',15,'光能工程師，接線成功！',`你們完成三座基地的光能接線，使用 ${g.hints} 次提示。仔細觀察、一起想，就能找到路！`);return;}
+ const n=state.player==='big'&&g.round>0?4:3;g.n=n;g.round++;g.solved=false;g.history=[];g.path=[0];let r=0,c=0;while(r<n-1||c<n-1){if(r===n-1||c<n-1&&Math.random()<.5)c++;else r++;g.path.push(r*n+c);}
+ g.answer=Array.from({length:n*n},()=>[5,10,3,6,12,9][Math.floor(Math.random()*6)]);
+ g.path.forEach((cell,k)=>{const prev=k?g.path[k-1]:-1,next=k<g.path.length-1?g.path[k+1]:n*n;const inbound=k===0?8:prev===cell-1?8:1,outbound=k===g.path.length-1?2:next===cell+1?2:4;g.answer[cell]=inbound|outbound;});
+ g.tiles=g.answer.map(mask=>{for(let j=0,t=Math.floor(Math.random()*4);j<t;j++)mask=pipeRotate(mask);return mask;});if(circuitConnected(g))g.tiles[0]=pipeRotate(g.tiles[0]);g.initial=[...g.tiles];circuitRender();}
+function circuitReach(g){const seen=new Set([0]),queue=g.tiles[0]&8?[0]:[];if(!queue.length)return new Set();for(let k=0;k<queue.length;k++){const cell=queue[k],r=Math.floor(cell/g.n),c=cell%g.n;for(const [bit,opp,dr,dc]of[[1,4,-1,0],[2,8,0,1],[4,1,1,0],[8,2,0,-1]]){const nr=r+dr,nc=c+dc,next=nr*g.n+nc;if(nr>=0&&nc>=0&&nr<g.n&&nc<g.n&&(g.tiles[cell]&bit)&&(g.tiles[next]&opp)&&!seen.has(next)){seen.add(next);queue.push(next);}}}return seen;}
+function circuitConnected(g){return Boolean((g.tiles[g.tiles.length-1]&2)&&circuitReach(g).has(g.tiles.length-1));}
+function circuitRender(){const g=state.game;if(g?.type!=='circuit')return;
+ main.innerHTML=screenHead('光能接線','點一下管道，順時針轉 90 度。把 ☀ 接到 🚩！',`第 ${g.round} / 3 座基地`)+`<section class="panel center circuit-board"><p>☀ 從左上角進入，🚩 從右下角右邊出去。<br>亮起的管道代表光已經抵達，沒有時間限制。</p><div class="circuit-frame" style="--dummy:${g.n*2}"><span class="circuit-source" aria-hidden="true">☀</span><div class="circuit-grid" style="--size:${g.n}">${g.tiles.map((_,i)=>`<button data-action="circuit-turn" data-index="${i}" aria-label="第 ${Math.floor(i/g.n)+1} 列第 ${i%g.n+1} 格管道"></button>`).join('')}</div><span class="circuit-exit" aria-hidden="true">🚩</span></div><p id="circuit-message" role="status">試試轉動左上角，讓太陽的光進來！</p><div class="circuit-tools"><button class="secondary" data-action="circuit-undo">↶ 復原一步</button><button class="secondary" data-action="circuit-hint">💡 幫我轉一步</button><button class="secondary" data-action="circuit-reset">⟳ 這關重來</button></div><button class="primary" data-action="circuit-next" hidden>${g.round===3?'🏆 完成任務':'🚀 前往下一座基地'}</button></section>`;circuitPaint();}
+function circuitPaint(){const g=state.game,lit=circuitReach(g);$$('[data-action="circuit-turn"]').forEach((b,i)=>{b.classList.toggle('lit',lit.has(i));b.disabled=g.solved;const mask=g.tiles[i];b.innerHTML=`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${[[1,'M50 0V50'],[2,'M50 50H100'],[4,'M50 50V100'],[8,'M0 50H50']].filter(([bit])=>mask&bit).map(([,d])=>d).join(' ')}"/><circle cx="50" cy="50" r="9"/></svg>`;b.setAttribute('aria-label',`第 ${Math.floor(i/g.n)+1} 列第 ${i%g.n+1} 格，開口朝${[[1,'上'],[2,'右'],[4,'下'],[8,'左']].filter(([bit])=>mask&bit).map(([,n])=>n).join('、')}，${lit.has(i)?'已亮起':'未亮起'}`);});$('[data-action="circuit-undo"]').disabled=!g.history.length||g.solved;$('[data-action="circuit-hint"]').disabled=g.solved;$('[data-action="circuit-reset"]').disabled=g.solved;}
+function circuitTurn(i){const g=state.game;if(g?.type!=='circuit'||g.solved||!Number.isInteger(i)||i<0||i>=g.tiles.length)return;g.history.push([...g.tiles]);g.tiles[i]=pipeRotate(g.tiles[i]);tone('flip');circuitCheck();}
+function circuitCheck(){const g=state.game;if(circuitConnected(g)){g.solved=true;$('#circuit-message').textContent='✨ 光能接通了！你們找到通往基地的路！';$('[data-action="circuit-next"]').hidden=false;tone('success');}circuitPaint();}
+function circuitHint(){const g=state.game;if(g?.type!=='circuit'||g.solved)return;const i=g.path.find(i=>g.tiles[i]!==g.answer[i]);if(i===undefined)return;g.hints++;circuitTurn(i);if(!g.solved)$('#circuit-message').textContent='💡 幫忙轉了一步！觀察亮起的路，再接下一格。';}
+function circuitUndo(){const g=state.game;if(g?.type!=='circuit'||g.solved||!g.history.length)return;g.tiles=g.history.pop();$('#circuit-message').textContent='回到上一步，換個方向試試！';circuitPaint();}
+function circuitReset(){const g=state.game;if(g?.type!=='circuit'||g.solved)return;g.tiles=[...g.initial];g.history=[];$('#circuit-message').textContent='回到這關最初的管道，慢慢觀察再出發！';circuitPaint();}
+
 function startMemory(){
   const count=state.player==='big'?6:4,seen=new Set(),unique=shuffle(DEVICES.filter(d=>d.kind!=='武器')).map(deviceQuestion).filter(h=>{if(seen.has(h.id))return false;seen.add(h.id);return true;}),selected=shuffle(unique).slice(0,count);
   state.game={type:'memory',mode:'memory',cards:shuffle(selected.flatMap(h=>[{id:h.id,kind:'hero',hero:h},{id:h.id,kind:'device',hero:h}])),flipped:[],matched:[],locked:false,pairs:count,tries:0};
@@ -3881,7 +3938,7 @@ function stopVoice(){
   for(const node of activeTones){try{node.stop();}catch{}}activeTones.clear();
 }
 const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！太棒了，你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'救援隊，出動！把溫暖的光，送給好朋友！',kindness:'友善之光！耶！我們一起幫助了好朋友！',victory:'耶！任務成功！擊個掌，你們超棒！',challenge:'注意囉！小挑戰來了，仔細看！'};
-function cueUrl(id){return `assets/voice-${id}.mp3?v=1.5.0`;}
+function cueUrl(id){return `assets/voice-${id}.mp3?v=1.6.0`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
   // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
@@ -3915,14 +3972,24 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>平板也能玩：</b>直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>答錯不扣分、不限時間。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+ releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>街機與動腦：</b>星際飛行哥哥 A／D、弟弟 J／L 左右移動，Esc 暫停；每位玩家有自己的三條航道。光能接線點一下轉 90 度，接通太陽與旗幟；可提示、復原、重來。</li><li><b>平板也能玩：</b>雙人按鈕支援多指同時操作；按鈕區不會拖曳或縮放，頁面其他地方仍能滑動。直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>猜謎與接線可以慢慢想，答錯再試；飛行可選三種速度。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
 document.addEventListener('click',event=>{
   const nav=event.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return;}
-  const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const action=el.dataset.action,index=Number(el.dataset.index);
-  if(action==='reaction-level'){if(state.game?.type==='reaction-setup'&&REACTION_LEVELS[index])reactionSetup(index);}
+  const el=event.target.closest('[data-action]');if(!el||el.disabled)return;if(event.detail!==0&&(touchClicks.get(el)||0)>performance.now()){event.preventDefault();return;}const action=el.dataset.action,index=Number(el.dataset.index);
+  if(action==='flight-level')flightSetup(index);
+  else if(action==='flight-begin')flightBegin(state.game?.level??0);
+  else if(action==='flight-move')flightMove(index,Number(el.dataset.dir));
+  else if(action==='arcade-pause')arcadePause();
+  else if(action==='circuit-turn')circuitTurn(index);
+  else if(action==='circuit-hint')circuitHint();
+  else if(action==='circuit-undo')circuitUndo();
+  else if(action==='circuit-reset')circuitReset();
+  else if(action==='circuit-next')circuitNext();
+  else if(action==='reaction-level'){if(state.game?.type==='reaction-setup'&&REACTION_LEVELS[index])reactionSetup(index);}
   else if(action==='reaction-begin')reactionBegin();
   else if(action==='reaction-input')reactionInput(index,el.dataset.kind);
   else if(action==='reaction-pause')reactionPause();
@@ -3967,6 +4034,7 @@ document.addEventListener('input',event=>{if(event.target.id==='hero-search'){ca
 document.addEventListener('keydown',event=>{
   if($('#info-dialog').open||event.ctrlKey||event.altKey||event.metaKey||event.target.matches('input,textarea,select'))return;
   const g=state.game;if(!g)return;const key=event.key.toLowerCase();
+  if(g.type==='flight'){if(['a','d','j','l','arrowleft','arrowright','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')arcadePause();else flightMove(['j','l'].includes(key)?1:0,['a','j','arrowleft'].includes(key)?-1:1);}return;}
   if(g.type==='reaction'){
     if(['a','s','l','k','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')reactionPause();else reactionInput(['l','k'].includes(key)?1:0,['a','l'].includes(key)?'light':'shield');}return;
   }
@@ -3986,8 +4054,10 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('pointerdown',holdAttack);
 document.addEventListener('pointerup',releaseHeld);
 document.addEventListener('pointercancel',releaseHeld);
+document.addEventListener('lostpointercapture',releaseHeld);
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.battle-dock,.reaction-controls,.flight-controls'))e.preventDefault();});
 window.addEventListener('blur',releaseHeld);
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseBattle(true);reactionPause(true);stopVoice();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);stopVoice();}});
 $('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});
 $('#help-button').addEventListener('click',showHelp);

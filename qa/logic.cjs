@@ -57,7 +57,7 @@ expanded.click('[data-nav="home"]');
 storage.set('ultra-base-v1',JSON.stringify({sound:false}));
 let t=boot();
 assert.equal(t.document.documentElement.lang,'zh-Hant');
-assert.equal(t.document.querySelectorAll('.game-card').length,7);
+assert.equal(t.document.querySelectorAll('.game-card').length,9);
 assert.equal(t.document.querySelectorAll('.player-button.selected').length,1);
 for(const e of t.document.querySelectorAll('img[src]'))assert.ok(fs.existsSync(path.join(root,e.getAttribute('src'))),'image exists');
 // Use actual click and keyboard events for quiz retry and completion.
@@ -118,7 +118,7 @@ t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="battle"]'
 t.click('[data-action="home"]');t.click('[data-action="help"]');assert.equal(t.el('dialog').open,true);t.click('[data-action="close-help"]');assert.equal(t.el('dialog').open,false);
 t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'true');t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'false');
 // Unavailable storage is handled and game still loads.
-const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,7);storage.set('ultra-base-v1',last);
+const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,9);storage.set('ultra-base-v1',last);
 console.log(`PASS: 6 complete game modes; actual click/keyboard handlers; quiz retries; age difficulty; 2-player transform/energy; pause including beams; shields; memory mismatch; 9 badges; ${total} persistent stars; navigation cancellation; background pause; dialog; audio toggle; corrupt-storage recovery.`);
 console.log('Browser screenshots and responsive layout are not validated by this DOM test.');
 
@@ -229,3 +229,30 @@ for(const level of [0,1,2]){
 const slow=boot();slow.click('[data-action="start"][data-game="reaction"]');slow.click('[data-action="reaction-begin"]');slow.advance(1000);slow.advance(10000);for(const s of slow.json('state.game.steps'))slow.run(`reactionInput(${s.pilot},'${s.action}')`);assert.equal(slow.run('state.game.phase'),'reward');assert.equal(slow.run('state.game.quick'),0,'slow responses still complete without bonus');
 slow.document.hidden=true;slow.document.dispatchEvent(new slow.document.defaultView.Event('visibilitychange'));assert.equal(slow.run('state.game.paused'),true,'background pauses reaction training');
 console.log('PASS: all three reaction difficulties, two-player input, relay ordering, lure restraint, concealed four-step memory/retry, pause, slow completion, one-time rewards, replay difficulty and navigation cancellation.');
+// Independent real input paths: releasing one pointer cannot cancel its partner.
+function pointer(t,type,selector,id,pointerType='touch'){const e=new t.document.defaultView.Event(type,{bubbles:true,cancelable:true});Object.assign(e,{button:0,pointerId:id,pointerType});(selector?t.el(selector):t.document).dispatchEvent(e);return e;}
+const multi=boot();multi.run("leave();state.sound=false;beginBattle({coop:true,heroes:[HEROES[2],HEROES[3]],forms:['multi','zero-base'],monsterId:'gomora'})");
+pointer(multi,'pointerdown','[data-action="attack"][data-index="0"]',21);pointer(multi,'pointerdown','[data-action="attack"][data-index="1"]',22);assert.deepEqual(multi.json('state.game.energy'),[1,1]);multi.advance(310);assert.deepEqual(multi.json('state.game.energy'),[2,2]);pointer(multi,'pointerup',null,21);multi.advance(400);assert.deepEqual(multi.json('state.game.energy'),[2,4]);assert.equal(multi.run('heldPointers.size'),1);pointer(multi,'pointercancel',null,22);assert.equal(multi.run('heldPointers.size'),0);const multiHp=multi.run('state.game.hp');multi.advance(600);assert.equal(multi.run('state.game.hp'),multiHp);
+const compat=new multi.document.defaultView.Event('click',{bubbles:true,cancelable:true});Object.assign(compat,{detail:1});multi.el('[data-action="attack"][data-index="1"]').dispatchEvent(compat);assert.equal(multi.run('state.game.hp'),multiHp,'compatibility click is suppressed after touch release');
+pointer(multi,'pointerdown','[data-action="attack"][data-index="0"]',23);multi.key('Escape');assert.equal(multi.run('heldPointers.size'),0);multi.key('Escape');pointer(multi,'pointerdown','[data-action="attack"][data-index="1"]',24);multi.click('[data-action="home"]');assert.equal(multi.run('heldPointers.size'),0);multi.advance(2000);assert.equal(multi.run('state.game'),null);
+// Flight: independent directions, bounds, scoring, pause, all speeds, final reward only.
+for(let level=0;level<3;level++){
+ const f=boot();f.run('state.sound=false');f.click('[data-action="start"][data-game="flight"]');f.click(`[data-action="flight-level"][data-index="${level}"]`);f.click('[data-action="flight-begin"]');assert.equal(f.run('state.game.level'),level);
+ pointer(f,'pointerdown','[data-action="flight-move"][data-index="0"][data-dir="-1"]',31);pointer(f,'pointerdown','[data-action="flight-move"][data-index="1"][data-dir="1"]',32);assert.deepEqual(f.json('state.game.lanes'),[0,2]);pointer(f,'pointerup',null,31);pointer(f,'pointerup',null,32);f.key('a');f.key('l');assert.deepEqual(f.json('state.game.lanes'),[0,2]);
+ f.advance(400);f.key('Escape');const frozen=f.run('state.game.elapsed');f.advance(6000);assert.equal(f.run('state.game.elapsed'),frozen);assert.equal(f.el('[data-action="flight-move"]').disabled,true);f.key('Escape');
+ const stars=f.run('state.stars');for(let wave=1;wave<=12;wave++){
+  f.run('state.game.lanes=[...state.game.targets];flightPaint()');f.advance(f.run('FLIGHT_LEVELS[state.game.level].ms-state.game.elapsed+50'));assert.deepEqual(f.json('state.game.score'),[wave,wave]);assert.equal(f.run('state.stars'),stars);f.advance(850);
+ }
+ assert.equal(f.run('state.game.type'),'result');assert.equal(f.run('state.stars'),stars+24);f.advance(10000);assert.equal(f.run('state.stars'),stars+24);f.click('.result .primary');f.click('[data-action="flight-begin"]');f.click('[data-action="home"]');f.advance(10000);assert.equal(f.run('state.game'),null);
+}
+const miss=boot();miss.run('state.sound=false');miss.click('[data-action="start"][data-game="flight"]');miss.click('[data-action="flight-begin"]');miss.run('state.game.lanes=state.game.targets.map(x=>(x+1)%3)');miss.advance(3250);assert.deepEqual(miss.json('state.game.bumps'),[1,1]);assert.equal(miss.run('state.game.type'),'flight','shields prevent elimination');
+// Puzzle: many random guaranteed-solvable boards, hint progress, undo/reset, no time penalty.
+for(const player of ['little','big'])for(let trial=0;trial<10;trial++){
+ const c=boot();c.run(`state.sound=false;state.player='${player}'`);c.click('[data-action="start"][data-game="circuit"]');const stars=c.run('state.stars');
+ for(let round=1;round<=3;round++){
+  assert.equal(c.run('state.game.round'),round);assert.equal(c.run('state.game.solved'),false);assert.equal(c.run('state.game.n'),player==='big'&&round>1?4:3);const before=c.json('state.game.tiles');c.click('[data-action="circuit-turn"][data-index="0"]');if(!c.run('state.game.solved')){c.click('[data-action="circuit-undo"]');assert.deepEqual(c.json('state.game.tiles'),before);c.click('[data-action="circuit-reset"]');assert.deepEqual(c.json('state.game.tiles'),before);}
+  let turns=0;while(!c.run('state.game.solved')){assert.ok(++turns<=30,'hints must reach a solution');c.click('[data-action="circuit-hint"]');}assert.equal(c.run('circuitConnected(state.game)'),true);assert.equal(c.el('[data-action="circuit-turn"]').disabled,true);c.advance(20000);assert.equal(c.run('state.stars'),stars);c.click('[data-action="circuit-next"]');
+ }
+ assert.equal(c.run('state.game.type'),'result');assert.equal(c.run('state.stars'),stars+15);c.advance(1000);assert.equal(c.run('state.stars'),stars+15);
+}
+console.log('PASS: independent simultaneous pointers/release/cancel, no compatibility double-click, pause/navigation cleanup; all flight speeds/scoring/shields; 60 generated solvable puzzles, hint/undo/reset and completion-only rewards.');
