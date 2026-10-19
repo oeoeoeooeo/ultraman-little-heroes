@@ -9,6 +9,15 @@ module.exports=async function guardQA(page,out,prefix='chromium'){
  await page.locator('[data-action="guard-begin"]').click();
  await page.keyboard.press('a');assert.deepEqual(await page.evaluate(()=>state.game.ready),[true,false]);
  await page.keyboard.press('j');await page.waitForFunction(()=>state.game.phase==='tutorial');
+ // Mobile WebKit fires orientationchange when viewport orientation changes.
+ // Verify the game pauses, then explicitly resume, as a player would.
+ const resize=async(width,height)=>{
+  await page.setViewportSize({width,height});await page.waitForTimeout(120);
+  if(await page.evaluate(()=>state.game.paused)){
+   const clock=await page.evaluate(()=>state.game.clock);await page.waitForTimeout(160);assert.equal(await page.evaluate(()=>state.game.clock),clock,'orientation pause freezes game clock');
+   await page.locator('.guard-pause [data-action="guard-pause"]').click();
+  }
+ };
  const solve=async()=>{
   for(let i=0;i<2;i++){
    while(await page.evaluate(i=>state.game.done[i]<state.game.tasks[i].sequence.length,i)){
@@ -25,22 +34,21 @@ module.exports=async function guardQA(page,out,prefix='chromium'){
  await page.keyboard.press('Escape');const clock=await page.evaluate(()=>state.game.clock);await page.waitForTimeout(250);assert.equal(await page.evaluate(()=>state.game.clock),clock);await page.keyboard.press('Escape');
  await page.waitForFunction(()=>state.game.clock>=state.game.tasks[0].revealUntil);
  for(const [w,h]of[[834,1194],[1024,768],[390,844],[320,740],[844,390]]){
-  await page.setViewportSize({width:w,height:h});await page.locator('.guard-controls').scrollIntoViewIfNeeded();
-  if(await page.evaluate(()=>state.game.paused))await page.locator('.guard-pause [data-action="guard-pause"]').click();
+  await resize(w,h);await page.locator('.guard-controls').scrollIntoViewIfNeeded();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'guard overflow '+w);
   const b=await page.locator('[data-action="guard-input"]').first().boundingBox();assert.ok(b.width>=60&&b.height>=64,'guard touch size '+w+' '+JSON.stringify(b));
   const r=await page.locator('.guard-stage').boundingBox();assert.ok(r.y>=-1&&r.y+r.height<=h+1,'guard stage visible '+w+' '+JSON.stringify(r));
-  await page.screenshot({path:path.join(out,prefix+'-guard-mission-'+w+'.png'),fullPage:true});
+  await page.screenshot({path:path.join(out,prefix+'-guard-mission-'+w+'.png'),fullPage:false});
  }
- await page.setViewportSize({width:834,height:1194});await solve();await page.waitForFunction(()=>state.game.phase==='checkpoint');
+ await resize(834,1194);await solve();await page.waitForFunction(()=>state.game.phase==='checkpoint');
  await page.screenshot({path:path.join(out,prefix+'-guard-checkpoint.png'),fullPage:true});
  await page.locator('[data-action="guard-swap"]').click();assert.deepEqual(await page.evaluate(()=>state.game.roles),[1,0]);assert.equal(await page.evaluate(()=>state.game.tasks[0].count),3);
  await page.waitForFunction(()=>state.game.clock>=state.game.tasks[0].revealUntil);
- await page.setViewportSize({width:320,height:740});await page.locator('.guard-controls').scrollIntoViewIfNeeded();
+ await resize(320,740);await page.locator('.guard-controls').scrollIntoViewIfNeeded();
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  for(const r of await page.locator('[data-action="guard-input"]').evaluateAll(es=>es.map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))))assert.ok(r.width>=60&&r.height>=64,'all three-symbol pads remain large');
  await page.screenshot({path:path.join(out,prefix+'-guard-swapped-320.png'),fullPage:true});
- await page.setViewportSize({width:834,height:1194});
+ await resize(834,1194);
  for(let round=1;round<3;round++){
   await page.waitForFunction(()=>state.game.clock>=state.game.tasks[0].revealUntil);await solve();await page.waitForFunction(()=>state.game.phase==='checkpoint');await page.locator('[data-action="guard-next"]').click();
  }
