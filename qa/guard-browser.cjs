@@ -47,14 +47,14 @@ module.exports=async function guardQA(page,out,prefix='chromium'){
  await resize(320,740);await page.locator('.guard-controls').scrollIntoViewIfNeeded();
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  for(const r of await page.locator('[data-action="guard-input"]').evaluateAll(es=>es.map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))))assert.ok(r.width>=60&&r.height>=64,'all three-symbol pads remain large');
- await page.screenshot({path:path.join(out,prefix+'-guard-swapped-320.png'),fullPage:true});
+ await page.screenshot({path:path.join(out,prefix+'-guard-swapped-320.png'),fullPage:false});
  await resize(834,1194);
  for(let round=1;round<3;round++){
   await page.waitForFunction(()=>state.game.clock>=state.game.tasks[0].revealUntil);await solve();await page.waitForFunction(()=>state.game.phase==='checkpoint');await page.locator('[data-action="guard-next"]').click();
  }
  assert.equal(await page.evaluate(()=>state.game.phase),'ready');
  const stars=await page.evaluate(()=>state.stars);await page.keyboard.press('a');await page.waitForTimeout(200);assert.equal(await page.evaluate(()=>state.game.phase),'ready');
- await page.keyboard.press('j');await page.keyboard.press('Escape');await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>state.game.phase),'beam');await page.keyboard.press('Escape');
+ await page.keyboard.press('j');await page.keyboard.press('Escape');await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>state.game.phase),'beam');await page.keyboard.press('Escape');await page.waitForTimeout(400);
  await page.screenshot({path:path.join(out,prefix+'-guard-beam.png'),fullPage:true});
  await page.waitForSelector('.result');assert.equal(await page.evaluate(()=>state.stars),stars+24);assert.equal(await page.evaluate(()=>state.completed.guard),1);
  await page.screenshot({path:path.join(out,prefix+'-guard-result.png'),fullPage:true});
