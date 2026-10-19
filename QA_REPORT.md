@@ -1,21 +1,43 @@
-# v1.7.0 本機候選版驗證紀錄
+# v1.7.0 驗證紀錄
 
-查核日期：2026-10-19。此版本尚未推送 GitHub、建立遠端標籤或部署；下方 v1.6.0 的雲端結果是歷史紀錄，不能視為 v1.7.0 通過。
+查核日期：2026-10-19。正式遊戲：https://ultraman-heroes-base.web.app
 
-## 本次已完成
+## 新增合作關卡
 
-- `node --check app.js`、`npm test`：通過。守護隊涵蓋各自變身、教學、三站救援、挑戰線索遮蔽與提示再次遮蔽、答錯重試、夥伴進度保留、交換工作、各自準備、演出中暫停、切背景、離開取消，以及 24 顆星星僅結算一次。
-- 新關卡使用實際 DOM 點擊、鍵盤與合成 pointer 事件測試。兩個觸點各自操作、單獨放開、取消與暫停清除已通過；這不等於真實瀏覽器或實體平板驗證。
-- 既有遊戲、53 位英雄、型態／道具／招式／怪獸、徽章、舊存檔、接線與飛行回歸通過；首頁遊戲數更新為十款，九枚徽章保留。
-- `npm run build`、`npm run test:security`：通過。離線單檔約 20 MB；Hosting 產物仍只有原定 98 個白名單檔案，無金鑰、執行期網路 API、遠端啟動依賴或後端。
+「兄弟守護隊」含各自變身、互動教學、巴士／列車／太空基地三站救援、分工交換、各自準備與合體光線。輕鬆線索保留，挑戰看過線索再回想 2～3 步；提示、錯誤與夥伴進度分開處理，完成才發 24 顆星星。可兩人合作或一人輪流。
 
-## 本次待完成
+DOM 測試使用實際點擊、鍵盤與合成 pointer 事件，涵蓋錯誤後重新預覽、提示後再次隱藏、已完成夥伴不重做、交換工作後個別難度、晚一點準備、演出中暫停、背景暫停、離開取消，以及獎勵僅結算一次。原有遊戲、百科、九枚徽章、存檔、音效排序、飛行與接線回歸通過；新增後首頁十款遊戲。
 
-- `qa/guard-browser.cjs` 已接入 Chromium 與 WebKit 測試入口，包含 834×1194、1024×768、390×844、320×740、844×390，以及實際 CDP 同時雙觸點；本輪尚未執行成功。
-- 本機 Playwright 所需瀏覽器未安裝；嘗試以已安裝的 Chrome 啟動時程序中止，不能取得有效截圖。本輪沒有實際完成畫面目視檢查，RWD、文字斷行與按鈕位置均待瀏覽器驗證。
-- GitHub CLI 回報找不到 oauth token，無法使用 Actions 補做測試或推送。請在正常終端機重新登入；不應將 token 傳到對話或專案中。
-- 未對 v1.7.0 執行線上檔案一致性、Google 計費／有效金鑰複查或發布。正式站仍沿用下方 v1.6.0 的既有發布紀錄。
-- 實體 iPad 多指／滑動／音效與兩位孩子試玩尚未完成。預計時長與趣味是設計假設。
+## 實際瀏覽器與視覺檢查
+
+原始碼的 Chromium 與 WebKit 完整流程通過。新關卡檢查 834×1194、1024×768、390×844、320×740、844×390，驗證不橫向溢出、按鈕尺寸、戰場可見、完整三站、交換、暫停、合體與通關；WebKit 旋轉後的自動暫停會明確按繼續再操作。Chromium CDP 同時送入兩個觸點，驗證各自變身、不同任務同時完成、各自放開／取消，以及沒有縮放或選字。
+
+沿用原有九種 RWD 尺寸與舊遊戲完整測試。原始碼執行輸出 155 張截圖，經壓縮 Base64 保留在 Actions log，不使用付費 artifact 或 cache。已實際檢視首頁、Chromium／WebKit 的窄手機與橫向守護隊、平板操作、交換後三圖形按鈕、救援過站與通關；窄手機戰場縮小、文案縮短，基地標籤避免擠壓。
+
+正式網址的 Chromium 與 WebKit 完整回歸測試均通過，另輸出 155 張截圖；已檢視正式站平板合體光線與 320px 交換工作畫面。未在實體 iPad 或兒童上試玩，沒有人工聽感驗證，也未以自動測試推論「孩子一定喜歡」。
+
+## 可重現紀錄
+
+- 最終執行程式來源：`fa2e3085355c6b1ad40ca9e58ffc1b7d23c934c0`。
+- [原始碼完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/39264863524)：成功，含 Chromium、WebKit、功能與安全檢查。
+- [正式網址完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/39265964902)：成功，測試來源 `4411830857ad0677325ebda2a55ce2ff228c269d`。與已測試的執行程式相同，僅調整截圖等待動畫與截圖範圍。
+- 最後文件提交只更新說明與驗證紀錄，沒有改動已測試的程式、資產或部署內容。
+- 部署前以 Git blob hash 核對本機 app.js、style.css、index.html、package.json、asset-manifest.json，均與已通過的遠端程式一致。
+
+## 正式站與安全
+
+Hosting 版本：`projects/948435005577/sites/ultraman-heroes-base/versions/f8a3d9055272ee30`。98 個白名單檔案均與本機 dist 逐位元組一致，index.html 以正式根網址比對，版號為 1.7.0。`.env`、firebase.json、package.json、qa/logic.cjs、hero-catalogue.json 均為 404。
+
+部署前確認 billingEnabled=false、未綁定帳單；部署後 Firebase Web Apps 0、有效 API key 0。Firebase 自動建立的閒置 Browser key 已刪除，撤銷作業 done=true。平台保留端點可能含已撤銷快取值，遊戲不存取它。正式 HTML 的 CSP 為 connect-src 'none'、媒體限本站、禁止 iframe，並有 nosniff 與相關權限限制。靜態安全檢查通過，未新增 API、SDK、付費服務、帳號、追蹤或外部啟動依賴。
+
+公開儲存庫的 secret scanning／push protection 啟用，open secret alerts、Actions artifacts 與 caches 均為 0。私人驗證設定存於專案外，不加入 Git 或 Hosting；發布前已清除本次私人設定檔。
+
+| 正式檔案 | SHA-256 |
+| --- | --- |
+| index.html | 5fc20964dc86a40bd3f4715431f7f2bb2f3d0bea3fd0349afaf8729ba4c7db1e |
+| app.js | 44a1f5edb7ab2bb24e1d9154c94506e321e477a183d1c0b6fff8f2cb9a8361da |
+| style.css | d7ce141d6385977b99f0500e21caa2ec915328927d1ab801e90c384da056d333 |
+| assets/voice-correct.mp3 | f12e91f2281363b8b87b3655df75aae388401759669077644d8c4c55a90dcbf0 |
 
 以下保留上一版歷史驗證紀錄。
 

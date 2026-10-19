@@ -1,6 +1,6 @@
 # 靜態遊戲安全與免費部署範圍
 
-2026-10-19 本機 v1.7.0 候選版：靜態白名單、前端 API／憑證與版號檢查已通過；新增守護隊只使用既有本機素材、音效與 localStorage。尚未部署，沒有重新完成 Google 計費或有效金鑰查核。以下平台狀態與撤銷紀錄屬 v1.6.0 發布時的查核，不代表 v1.7.0 已上線。
+2026-10-19 v1.7.0 已部署：98 個白名單檔案與本機 dist 逐位元組一致，前端 API／憑證與版號檢查通過。Google 專案未綁定帳單、billingEnabled=false、Firebase Web Apps 0；部署自動建立的閒置 Browser key 已刪除且撤銷作業完成，有效 API key 0。守護隊只使用既有本機素材、音效與 localStorage。正式網址的 Chromium／WebKit 完整瀏覽器測試通過，詳見 [QA_REPORT.md](QA_REPORT.md)。
 
 此遊戲只提供靜態 HTML、CSS、JavaScript、PNG、SVG、MP3 和版號 JSON。
 
