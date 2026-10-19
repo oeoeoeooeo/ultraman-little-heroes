@@ -36,11 +36,39 @@ function boot() {
   function advance(ms){const end=clock+ms;let limit=0;while(true){const entry=[...timers.entries()].sort((a,b)=>a[1].at-b[1].at)[0];if(!entry||entry[1].at>end)break;assert.ok(++limit<2000,'runaway timers');clock=entry[1].at;timers.delete(entry[0]);entry[1].fn();}clock=end;}
   return {document,run,json,el,click,key,advance,timers};
 }
+// Cooperative rescue: real controls, preview timing, retained teammate progress,
+// role swaps, pause/background, exact-once reward, and old-save compatibility.
+{
+ const g=boot();g.run('state.sound=false;state.player="together"');g.click('.game-card[data-game="guard"]');
+ assert.equal(g.run('state.game.solo'),false);g.click('[data-action="guard-begin"]');
+ g.key('a');g.key('a');assert.deepEqual(g.json('state.game.ready'),[true,false]);
+ g.key('j');assert.equal(g.run('state.game.phase'),'launch');g.advance(1000);assert.equal(g.run('state.game.phase'),'tutorial');
+ const solve=()=>{for(let i=0;i<2;i++)while(g.run(`state.game.done[${i}]<state.game.tasks[${i}].sequence.length`)){const n=g.run(`state.game.tasks[${i}].sequence[state.game.done[${i}]]`);g.click(`[data-action="guard-input"][data-index="${i}"][data-choice="${n}"]`);}};
+ solve();g.advance(960);assert.equal(g.run('state.game.phase'),'mission');
+ const clock=g.run('state.game.clock');g.key('Escape');g.advance(4000);assert.equal(g.run('state.game.clock'),clock);assert.equal(g.el('.guard-pause').hidden,false);g.key('Escape');g.advance(3100);
+ assert.equal(g.el('[data-action="guard-input"][data-index="0"]').disabled,false);assert.ok(g.el('#guard-clue-0').textContent.includes('？'));
+ g.click('[data-action="guard-hint"][data-index="0"]');assert.equal(g.el('[data-action="guard-input"][data-index="0"]').disabled,true);g.advance(3100);assert.ok(g.el('#guard-clue-0').textContent.includes('？'));
+ // Wrong input replays a preview; the other pilot can finish and stays finished.
+ const wrong=g.run('(state.game.tasks[0].sequence[0]+1)%state.game.tasks[0].count');g.click(`[data-action="guard-input"][data-index="0"][data-choice="${wrong}"]`);
+ assert.equal(g.el('[data-action="guard-input"][data-index="0"]').disabled,true);
+ for(const n of g.json('state.game.tasks[1].sequence'))g.click(`[data-action="guard-input"][data-index="1"][data-choice="${n}"]`);
+ const done=g.run('state.game.done[1]');g.advance(2500);assert.equal(g.run('state.game.done[1]'),done);
+ solve();g.advance(960);assert.equal(g.run('state.game.phase'),'checkpoint');assert.deepEqual(g.json('state.game.contributions'),[1,1]);
+ g.click('[data-action="guard-swap"]');assert.deepEqual(g.json('state.game.roles'),[1,0]);assert.equal(g.run('state.game.tasks[0].count'),3);assert.equal(g.run('state.game.tasks[1].count'),2);
+ for(let r=1;r<3;r++){g.advance(3100);solve();g.advance(960);g.click('[data-action="guard-next"]');}
+ assert.equal(g.run('state.game.phase'),'ready');const stars=g.run('state.stars');g.key('a');g.advance(4000);assert.equal(g.run('state.game.phase'),'ready');assert.equal(g.run('state.stars'),stars);
+ g.key('j');assert.equal(g.run('state.game.phase'),'beam');g.key('Escape');g.advance(5000);assert.equal(g.run('state.game.phase'),'beam');g.key('Escape');g.advance(2800);
+ assert.equal(g.run('state.game.type'),'result');assert.equal(g.run('state.completed.guard'),1);assert.equal(g.run('state.stars'),stars+24);g.advance(5000);assert.equal(g.run('state.stars'),stars+24);
+ g.click('[data-action="start"][data-game="guard"]');g.click('[data-action="guard-mode"][data-index="1"]');g.click('[data-action="guard-begin"]');assert.equal(g.run('state.game.solo'),true);
+ g.document.hidden=true;g.document.dispatchEvent(new g.document.defaultView.Event('visibilitychange'));assert.equal(g.run('state.game.paused'),true);g.click('[data-action="home"]');g.advance(8000);assert.equal(g.run('state.game'),null);
+ assert.equal(g.run('state.completed.guard'),1);storage.clear();
+ console.log('PASS: guard tutorial, three cooperative rescues, per-pilot memory/hints/retry, retained partner progress, role swap, delayed readiness, pause/background, exact-once 24-star reward, solo and old saves.');
+}
 // Expanded encyclopaedia: source/asset integrity, filters and shared-device ambiguity.
 const catalogue=JSON.parse(fs.readFileSync(path.join(root,'hero-catalogue.json'),'utf8'));
 assert.equal(catalogue.length,53);assert.equal(new Set(catalogue.map(h=>h.id)).size,53);
 for(const h of catalogue){assert.ok(h.source.startsWith('https://tsuburaya-prod.com/heroes/'));assert.equal(fs.readFileSync(path.join(root,'assets',h.id+'.png')).subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
-const expanded=boot();assert.equal(expanded.run('BADGES.length'),9);assert.equal(expanded.run('BADGES.every(b=>b.name&&b.description&&b.emoji&&b.goal)'),true);assert.equal(expanded.run('GAMES.length'),9);assert.deepEqual(expanded.json('HEROES'),catalogue);
+const expanded=boot();assert.equal(expanded.run('BADGES.length'),9);assert.equal(expanded.run('BADGES.every(b=>b.name&&b.description&&b.emoji&&b.goal)'),true);assert.equal(expanded.run('GAMES.length'),10);assert.deepEqual(expanded.json('HEROES'),catalogue);
 expanded.click('[data-nav="heroes"]');expanded.click('[data-filter="latest"]');assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,4);
 expanded.run("catalogueSearch='teo';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,1);
 expanded.run("catalogueSearch='<img onerror=alert(1)>';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,0);
@@ -57,7 +85,7 @@ expanded.click('[data-nav="home"]');
 storage.set('ultra-base-v1',JSON.stringify({sound:false}));
 let t=boot();
 assert.equal(t.document.documentElement.lang,'zh-Hant');
-assert.equal(t.document.querySelectorAll('.game-card').length,9);
+assert.equal(t.document.querySelectorAll('.game-card').length,10);
 assert.equal(t.document.querySelectorAll('.player-button.selected').length,1);
 for(const e of t.document.querySelectorAll('img[src]'))assert.ok(fs.existsSync(path.join(root,e.getAttribute('src'))),'image exists');
 // Use actual click and keyboard events for quiz retry and completion.
@@ -118,7 +146,7 @@ t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="battle"]'
 t.click('[data-action="home"]');t.click('[data-action="help"]');assert.equal(t.el('dialog').open,true);t.click('[data-action="close-help"]');assert.equal(t.el('dialog').open,false);
 t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'true');t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'false');
 // Unavailable storage is handled and game still loads.
-const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,9);storage.set('ultra-base-v1',last);
+const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,10);storage.set('ultra-base-v1',last);
 console.log(`PASS: 6 complete game modes; actual click/keyboard handlers; quiz retries; age difficulty; 2-player transform/energy; pause including beams; shields; memory mismatch; 9 badges; ${total} persistent stars; navigation cancellation; background pause; dialog; audio toggle; corrupt-storage recovery.`);
 console.log('Browser screenshots and responsive layout are not validated by this DOM test.');
 
@@ -231,6 +259,15 @@ slow.document.hidden=true;slow.document.dispatchEvent(new slow.document.defaultV
 console.log('PASS: all three reaction difficulties, two-player input, relay ordering, lure restraint, concealed four-step memory/retry, pause, slow completion, one-time rewards, replay difficulty and navigation cancellation.');
 // Independent real input paths: releasing one pointer cannot cancel its partner.
 function pointer(t,type,selector,id,pointerType='touch'){const e=new t.document.defaultView.Event(type,{bubbles:true,cancelable:true});Object.assign(e,{button:0,pointerId:id,pointerType});(selector?t.el(selector):t.document).dispatchEvent(e);return e;}
+{
+ const g=boot();g.run('state.sound=false;state.player="together";state.guardLevels=[0,0]');g.click('.game-card[data-game="guard"]');g.click('[data-action="guard-begin"]');
+ pointer(g,'pointerdown','[data-action="guard-ready"][data-index="0"]',71);pointer(g,'pointerdown','[data-action="guard-ready"][data-index="1"]',72);assert.deepEqual(g.json('state.game.ready'),[true,true]);
+ pointer(g,'pointerup',null,71);assert.equal(g.run('heldPointers.size'),1);pointer(g,'pointercancel',null,72);assert.equal(g.run('heldPointers.size'),0);g.advance(1000);
+ for(let i=0;i<2;i++){const n=g.run(`state.game.tasks[${i}].sequence[0]`);pointer(g,'pointerdown',`[data-action="guard-input"][data-index="${i}"][data-choice="${n}"]`,73+i);}
+ assert.equal(g.run('state.game.phase'),'reward');assert.deepEqual(g.json('state.game.done'),[1,1]);g.key('Escape');assert.equal(g.run('heldPointers.size'),0);
+ const clock=g.run('state.game.clock');g.advance(5000);assert.equal(g.run('state.game.clock'),clock);g.click('[data-action="home"]');g.advance(5000);assert.equal(g.run('state.game'),null);
+ console.log('PASS: guard controls use independent touch contacts; release/cancel/pause/navigation clean up input and stop clocks.');
+}
 const multi=boot();multi.run("leave();state.sound=false;beginBattle({coop:true,heroes:[HEROES[2],HEROES[3]],forms:['multi','zero-base'],monsterId:'gomora'})");
 pointer(multi,'pointerdown','[data-action="attack"][data-index="0"]',21);pointer(multi,'pointerdown','[data-action="attack"][data-index="1"]',22);assert.deepEqual(multi.json('state.game.energy'),[1,1]);multi.advance(310);assert.deepEqual(multi.json('state.game.energy'),[2,2]);pointer(multi,'pointerup',null,21);multi.advance(400);assert.deepEqual(multi.json('state.game.energy'),[2,4]);assert.equal(multi.run('heldPointers.size'),1);pointer(multi,'pointercancel',null,22);assert.equal(multi.run('heldPointers.size'),0);const multiHp=multi.run('state.game.hp');multi.advance(600);assert.equal(multi.run('state.game.hp'),multiHp);
 const compat=new multi.document.defaultView.Event('click',{bubbles:true,cancelable:true});Object.assign(compat,{detail:1});multi.el('[data-action="attack"][data-index="1"]').dispatchEvent(compat);assert.equal(multi.run('state.game.hp'),multiHp,'compatibility click is suppressed after touch release');

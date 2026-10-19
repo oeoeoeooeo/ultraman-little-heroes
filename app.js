@@ -3405,6 +3405,7 @@ const BADGES = [
   {id:'explorer',name:'光之國探險家',emoji:'🚀',description:'完成全部六種任務',goal:6}
 ];
 const GAMES = [
+  {id:'guard',title:'兄弟守護隊',copy:'一人開光盾、一人解機關，合力救回城市！',tag:'全新合作冒險',meta:'分工救援 · 合體光線',bg:'#dcecf5',tagColor:'#427c9c'},
   {id:'quiz',title:'猜猜我是誰',copy:'看看英雄的模樣，你認得他嗎？',tag:'觀察小任務',meta:'認識英雄 · 動動小腦袋',bg:'#dcece5',tagColor:'#6d9382'},
   {id:'forms',title:'型態猜猜看',copy:'顏色變了！找出超人的新力量。',tag:'眼力大挑戰',meta:'型態變化 · 發現超能力',bg:'#e8e5f1',tagColor:'#9a84b4'},
   {id:'device',title:'這是誰的變身器？',copy:'神奇的道具，藏著變身的秘密！',tag:'變身小專家',meta:'認識道具 · 配對找答案',bg:'#f3e9ce',tagColor:'#b8a063'},
@@ -3425,9 +3426,10 @@ const state = {
   collection:Array.isArray(saved.collection)?[...new Set(saved.collection.filter(id=>MONSTERS.some(m=>m.id===id)))]:[],
   team:Array.isArray(saved.team)&&saved.team.length===2&&saved.team.every(id=>HEROES.some(h=>h.id===id))?saved.team:['tiga','zero'],
   questRuns:Number.isFinite(Number(saved.questRuns))?Math.min(99999,Math.max(0,Math.floor(Number(saved.questRuns)))):0,
+  guardLevels:[0,1].map(i=>[0,1].includes(saved.guardLevels?.[i])?saved.guardLevels[i]:i===0?1:0),
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
-function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns}));}catch{}}
+function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns,guardLevels:state.guardLevels}));}catch{}}
 function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.filter(g=>['quiz','forms','device','battle','coop','memory'].includes(g.id)).every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
 function updateChrome(){
   $('#star-total').textContent = state.stars;
@@ -3489,6 +3491,7 @@ function monster(cls='monster-picture',variant=0){
 }
 
 function cardArt(game){
+  if(game.id==='guard')return heroImage(HEROES.find(h=>h.id===state.team[0]),'card-hero',false)+heroImage(HEROES.find(h=>h.id===state.team[1]),'card-hero second',false)+'<span class="question-bubble">🛡</span>';
   if(game.id==='flight')return '<div class="arcade-card-art">✦<br>🚀 🚀</div>';
   if(game.id==='circuit')return '<div class="arcade-card-art">☀ ━ ┓<br>　 ┏ ┛<br>　 ┗ 🚩</div>';
   if(game.id==='quiz')return heroImage(HEROES[0],'card-hero',false)+'<span class="question-bubble">?</span>';
@@ -3502,7 +3505,7 @@ function cardArt(game){
 function cardTitle(game){return game.id==='device'?'這是誰的<span class="keep-word">變身器？</span>':game.title;}
 function renderHome(){
   main.innerHTML=`<section class="page-intro"><div><p class="eyebrow">WELCOME TO THE LAND OF LIGHT</p><h1>小英雄，歡迎回來！<span>👋</span></h1><p class="intro-sub">今天想和超人力霸王，一起展開什麼冒險呢？</p></div><div class="today">${icon('sun')} 每一天都是冒險日</div></section>
-  <section class="hero-banner" aria-label="一起守護地球"><div class="hero-copy"><span class="pill">${icon('sparkle')} 專屬你們的宇宙冒險</span><h2>小小英雄，<br><em>大大冒險！</em></h2><p>猜猜英雄、發現力量，再一起變身。<br>光之國的下一位小英雄，就是你！</p><button class="primary" data-action="start" data-game="coop">${icon('play')} 一起變身，出任務！ ${icon('arrow')}</button></div><div class="hero-art" aria-hidden="true"><div class="hero-disk"></div><div class="orbit"></div>${heroImage(HEROES[2],'tiga',false)}${heroImage(HEROES[3],'zero',false)}<span class="floating-label"><b>✦</b> 勇氣 + 合作 = 無限力量</span><span class="art-star s1">✧</span><span class="art-star s2">✦</span><span class="art-star s3">✧</span></div>${city()}<span class="banner-corner">LET'S SHINE TOGETHER ✦</span></section>
+  <section class="hero-banner" aria-label="一起守護地球"><div class="hero-copy"><span class="pill">${icon('sparkle')} 專屬你們的宇宙冒險</span><h2>小小英雄，<br><em>大大冒險！</em></h2><p>猜猜英雄、發現力量，再一起變身。<br>光之國的下一位小英雄，就是你！</p><button class="primary" data-action="start" data-game="guard">${icon('play')} 兄弟守護隊，出發！ ${icon('arrow')}</button></div><div class="hero-art" aria-hidden="true"><div class="hero-disk"></div><div class="orbit"></div>${heroImage(HEROES[2],'tiga',false)}${heroImage(HEROES[3],'zero',false)}<span class="floating-label"><b>✦</b> 勇氣 + 合作 = 無限力量</span><span class="art-star s1">✧</span><span class="art-star s2">✦</span><span class="art-star s3">✧</span></div>${city()}<span class="banner-corner">LET'S SHINE TOGETHER ✦</span></section>
   ${questHome()}<section class="player-strip" aria-label="選擇玩家模式"><div class="strip-label">今天誰來玩？<span>選一個適合你的模式</span></div><div class="player-options">${[
     ['little','👦🏻','弟弟模式','4 歲・圖片提示多一點'],['big','🧑🏻','哥哥模式','6 歲・挑戰多一點'],['together','🤝','兄弟一起','雙人・合作最好玩']
   ].map(([id,face,title,sub])=>`<button class="player-button ${state.player===id?'selected':''}" data-action="player" data-player="${id}" aria-pressed="${state.player===id}"><span class="player-face">${face}</span><span><b>${title}</b><small>${sub}</small></span><span class="check-dot">✓</span></button>`).join('')}</div></section>
@@ -3545,7 +3548,7 @@ function renderBadges(){main.innerHTML=stickerBook()+screenHead('我的小成就
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
   $('#breadcrumb-text').textContent=GAMES.find(g=>g.id===mode).title;
-  if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='flight')flightSetup();else if(mode==='circuit')circuitBegin();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
+  if(mode==='guard')guardSetup();else if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='flight')flightSetup();else if(mode==='circuit')circuitBegin();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
   const pool = mode==='forms'?FORMS:mode==='device'?DEVICES.filter(d=>d.kind!=='武器').map(deviceQuestion):HEROES;
@@ -3677,12 +3680,12 @@ function questCheckpoint(g){
 function questNext(){const g=state.game;if(g?.type!=='quest-checkpoint')return;const setup=g.setup;leave();beginBattle(setup);main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
 // Every contact owns its lifetime. A second finger never replaces the first.
 const heldPointers=new Map(), touchClicks=new WeakMap();
-const directActions=new Set(['attack','shield','beam','cycle-form','transform','reaction-input','flight-move']);
+const directActions=new Set(['attack','shield','beam','cycle-form','transform','reaction-input','flight-move','guard-input','guard-ready']);
 function releaseHeld(event){
  const ids=event&&Number.isFinite(event.pointerId)?[event.pointerId]:[...heldPointers.keys()];
  for(const id of ids){const press=heldPointers.get(id);if(!press)continue;heldPointers.delete(id);if(touchClicks.has(press.button))touchClicks.set(press.button,performance.now()+1500);press.active=false;press.button.classList.remove('contact-down');try{if(press.button.hasPointerCapture?.(id))press.button.releasePointerCapture(id);}catch{}}
 }
-function directControl(button){const i=Number(button.dataset.index);switch(button.dataset.action){case 'attack':attack(i);break;case 'shield':shield(i);break;case 'beam':fireBeam();break;case 'cycle-form':cycleForm(i);break;case 'transform':transform(i);break;case 'reaction-input':reactionInput(i,button.dataset.kind);break;case 'flight-move':flightMove(i,Number(button.dataset.dir));break;}}
+function directControl(button){const i=Number(button.dataset.index);switch(button.dataset.action){case 'attack':attack(i);break;case 'shield':shield(i);break;case 'beam':fireBeam();break;case 'cycle-form':cycleForm(i);break;case 'transform':transform(i);break;case 'reaction-input':reactionInput(i,button.dataset.kind);break;case 'flight-move':flightMove(i,Number(button.dataset.dir));break;case 'guard-input':guardInput(i,Number(button.dataset.choice));break;case 'guard-ready':guardReady(i);break;}}
 function holdAttack(event){
  const button=event.target.closest('[data-action]');if(!button||button.disabled||!directActions.has(button.dataset.action)||event.button!==0||$('#info-dialog').open)return;
  const touch=event.pointerType==='touch'||event.pointerType==='pen';
@@ -3856,6 +3859,82 @@ function reactionPause(force){
  $$('[data-action="reaction-input"]').forEach(b=>b.disabled=g.paused);$('.reaction-hud [data-action="reaction-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
 }
 
+// Original cooperative adventure. Player difficulty follows the pilot, not the job.
+const GUARD_SITES=[{name:'巴士',icon:'🚌'},{name:'列車',icon:'🚆'},{name:'太空基地',icon:'🛰️'}];
+const GUARD_SYMBOLS=[['★','星星'],['◆','菱形'],['●','圓球']];
+function guardName(i){return state.game?.solo?'小英雄':i?'弟弟':'哥哥';}
+function guardSetup(solo=state.player!=='together'){
+ state.game={type:'guard-setup',solo};
+ main.innerHTML=screenHead('兄弟守護隊','城市的光熄滅了！兩份力量，一起把城市點亮。','城市光盾救援')+`<section class="panel guard-setup"><div class="guard-emblem" aria-hidden="true">🛡️ ✦ 🌟</div><h2>一人守護，一人解機關！</h2><p>先練習，再完成三站救援。<br>各自按「準備好了」，一起發射合體光線！</p><div class="guard-playmode"><button class="secondary" data-action="guard-mode" data-index="0" aria-pressed="${!solo}">🤝 兄弟一起</button><button class="secondary" data-action="guard-mode" data-index="1" aria-pressed="${solo}">👦 一人輪流玩</button></div><div class="guard-team">${[0,1].map(i=>`<section><div class="guard-hero-preview">${heroImage(HEROES.find(h=>h.id===state.team[i]),'',false)}</div><label>${solo?`第 ${i+1} 位英雄`:i?'弟弟的英雄':'哥哥的英雄'}<select data-guard-hero="${i}">${HEROES.map(h=>`<option value="${h.id}" ${state.team[i]===h.id?'selected':''}>${h.short}</option>`).join('')}</select></label><label>任務難度<select data-guard-level="${i}"><option value="0" ${state.guardLevels[i]===0?'selected':''}>輕鬆：看著線索慢慢玩</option><option value="1" ${state.guardLevels[i]===1?'selected':''}>挑戰：記住 2～3 步順序</option></select></label></section>`).join('')}</div><p class="guard-note">可以交換工作；難度跟著自己的英雄。<br>沒有倒數淘汰，提示也不扣星星。</p><button class="primary" data-action="guard-begin">⚡ 出發，變身！</button></section>`;
+}
+function guardBegin(){
+ const setup=state.game;if(setup?.type!=='guard-setup')return;save();stopVoice();
+ state.game={type:'guard',solo:setup.solo,phase:'transform',round:0,roles:[0,1],ready:[false,false],levels:[...state.guardLevels],heroes:state.team.map(id=>HEROES.find(h=>h.id===id)),clock:0,last:performance.now(),paused:false,gate:0,done:[0,0],contributions:[0,0],message:'點自己的變身器，光之力量啟動！'};
+ guardRender();playCue('ready');guardTick();
+}
+function guardRound(practice=false){
+ const g=state.game;if(g?.type!=='guard')return;g.phase=practice?'tutorial':'mission';g.practice=practice;g.done=[0,0];g.ready=[false,false];g.message=practice?'先試一次：看圖案，按一樣的按鈕！':'看清楚線索，兩人各完成自己的任務！';
+ g.tasks=[0,1].map(i=>{const role=g.roles[i],count=role===0?2:(g.levels[i]?3:2),length=practice||!g.levels[i]?1:Math.min(3,g.round+2);return {role,count,sequence:Array.from({length},()=>Math.floor(Math.random()*count)),revealUntil:!practice&&g.levels[i]?g.clock+3000:Infinity,notice:''};});
+ guardRender();
+}
+function guardSymbols(role){return role===0?[['↑','上方'],['↓','下方']]:GUARD_SYMBOLS;}
+function guardRender(){
+ const g=state.game;if(g?.type!=='guard')return;releaseHeld();
+ const working=['tutorial','mission','reward'].includes(g.phase),phase=g.phase;
+ main.innerHTML=screenHead('兄弟守護隊','看怪獸、解機關，讓城市重新發光！',g.solo?'一人輪流合作':'雙人合作冒險')+`<section class="guard-board"><div class="guard-hud"><strong>${phase==='transform'||phase==='launch'?'⚡ 英雄集合':g.practice?'🛡️ 一起練習':`救援 ${Math.min(g.round+1,3)} / 3`}</strong><button class="secondary" data-action="guard-pause">Ⅱ 暫停</button></div><div class="guard-stage" data-phase="${phase}"><div class="guard-sky" aria-hidden="true">✦　 ·　 ✧　 ·　 ✦</div><div class="guard-scene"><div class="guard-heroes">${g.heroes.map((h,i)=>`<div class="guard-avatar" id="guard-avatar-${i}">${heroImage(h,'',false)}<span>${g.solo?`英雄 ${i+1}`:guardName(i)}</span></div>`).join('')}</div><div class="guard-city"><div class="guard-buildings">${[0,1,2].map(i=>`<span class="guard-building ${i<g.round||(['checkpoint','ready','beam'].includes(phase)&&i===g.round)?'lit':''}">${GUARD_SITES[i].icon}<b>${GUARD_SITES[i].name}</b><small>${i<g.round||(['checkpoint','ready','beam'].includes(phase)&&i===g.round)?'✓ 救援成功':'等待光能'}</small></span>`).join('')}</div></div>${monster('guard-monster',MONSTERS.find(m=>m.id==='gomora')||MONSTERS[0])}<div class="guard-light" aria-hidden="true"><i></i><i></i><i></i></div></div><div class="guard-caption"><h2 id="guard-scene-title">${phase==='transform'?'各自變身，英雄出場！':phase==='launch'?'光之力量，啟動！':g.practice?'先練習：護盾與星光':phase==='checkpoint'?`${GUARD_SITES[g.round].name}救援成功！`:phase==='ready'?'合體光線，等你們準備！':phase==='beam'?'兩份勇氣，一起發光！':`守護${GUARD_SITES[g.round].name}！`}</h2><p id="guard-message" role="status" aria-live="polite">${g.message}</p></div></div><div class="guard-controls">${[0,1].map(i=>`<section class="guard-pilot" id="guard-pilot-${i}" aria-label="${g.solo?`英雄 ${i+1}`:guardName(i)}操作區"><h3>${g.solo?`英雄 ${i+1}`:guardName(i)} · ${g.heroes[i].short}</h3>${working?`<p class="guard-job">${g.roles[i]===0?'🛡️ 守護員：按順序擋住能量波':'🔎 探索員：按順序找到光能'}</p><div class="guard-clue" id="guard-clue-${i}"></div><div class="guard-pad">${guardSymbols(g.roles[i]).slice(0,g.tasks[i].count).map(([symbol,label],choice)=>`<button data-action="guard-input" data-index="${i}" data-choice="${choice}"><span aria-hidden="true">${symbol}</span><b>${g.roles[i]===0?'擋':''}${label}</b><kbd>${i?['J','K','L'][choice]:['A','S','D'][choice]}</kbd></button>`).join('')}</div><p class="guard-status" id="guard-status-${i}" role="status"></p><button class="guard-hint secondary" data-action="guard-hint" data-index="${i}">💡 再看線索</button>`:phase==='transform'||phase==='launch'?`<div class="guard-device">${devicePicture(g.heroes[i])}</div><button class="guard-large" data-action="guard-ready" data-index="${i}">⚡ 變身！ <kbd>${i?'J':'A'}</kbd></button>`:phase==='ready'||phase==='beam'?`<div class="guard-ready-orb" aria-hidden="true">✦</div><button class="guard-large" data-action="guard-ready" data-index="${i}">✋ 準備好了 <kbd>${i?'J':'A'}</kbd></button>`:`<p class="guard-job">✓ ${g.roles[i]===0?'光盾保護成功':'光能機關啟動'}</p><strong class="guard-thanks">${g.solo?'小英雄':guardName(i)}，這一份力量很棒！</strong>`}</section>`).join('')}</div>${phase==='checkpoint'?`<div class="guard-checkpoint"><p>兩位都有貢獻！${g.round<2?'下一站要交換工作嗎？':'三站都救回來了！'}</p>${g.round<2?'<button class="secondary" data-action="guard-swap">⇄ 交換工作再出發</button>':''}<button class="primary" data-action="guard-next">${g.round<2?'保持工作，下一站 →':'🌈 一起準備合體光線'}</button></div>`:''}<p class="guard-note">${g.solo?'一人依序完成兩份任務。':'哥哥 A／S／D　弟弟 J／K／L；也可同時點各自的按鈕。'}<br>Esc 暫停；提示不扣分，準備好會一直亮燈。</p><div class="guard-pause" hidden><strong>城市等你，慢慢休息。</strong><button class="primary" data-action="guard-pause">▶ 繼續救援</button><button class="secondary" data-action="home">回基地</button></div></section>`;
+ guardPaint();
+}
+function guardPaint(){
+ const g=state.game;if(g?.type!=='guard')return;
+ const working=['tutorial','mission','reward'].includes(g.phase);$('.guard-board').classList.toggle('is-paused',g.paused);$('.guard-pause').hidden=!g.paused;
+ $('.guard-hud [data-action="guard-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';$('#guard-message').textContent=g.message;
+ g.heroes.forEach((h,i)=>{
+  const task=g.tasks?.[i],complete=working&&g.done[i]>=task.sequence.length,ready=g.ready[i];$(`#guard-avatar-${i}`).classList.toggle('powered',working?complete:ready);$(`#guard-pilot-${i}`).classList.toggle('is-done',working?complete:ready);
+  if(working){const memory=!g.practice&&g.levels[i]===1,watching=memory&&g.clock<task.revealUntil,hidden=memory&&!watching&&!complete,symbols=guardSymbols(task.role);
+   $(`#guard-clue-${i}`).innerHTML=task.sequence.map((v,j)=>`<span class="${j<g.done[i]?'done':''}" aria-label="${j<g.done[i]?'已完成':hidden?'待回想':symbols[v][1]}">${j<g.done[i]?'✓':hidden?'？':symbols[v][0]}</span>`).join('');
+   $(`#guard-status-${i}`).textContent=complete?'✓ 做到了！你的能量已保存。':watching?'先記住順序，等問號亮起再出手！':task.notice||`${hidden?'回想順序':'照著線索'}，第 ${g.done[i]+1} / ${task.sequence.length} 步`;
+   $$(`#guard-pilot-${i} [data-action="guard-input"]`).forEach(b=>{b.disabled=g.paused||complete||watching||g.phase==='reward';});
+   $(`#guard-pilot-${i} .guard-hint`).disabled=g.paused||complete||g.phase==='reward';
+  }else{const b=$(`#guard-pilot-${i} [data-action="guard-ready"]`);if(b){b.disabled=g.paused||ready||!['transform','ready'].includes(g.phase);b.innerHTML=ready?'✓ 已準備，等夥伴！':`${g.phase==='transform'?'⚡ 變身！':'✋ 準備好了'} <kbd>${i?'J':'A'}</kbd>`;}}
+ });
+}
+function guardReady(i){
+ const g=state.game;if(g?.type!=='guard'||g.paused||![0,1].includes(i)||!['transform','ready'].includes(g.phase)||g.ready[i])return;
+ g.ready[i]=true;tone('success');g.message=`${g.solo?`英雄 ${i+1}`:guardName(i)}準備好了！另一份力量可以慢慢來。`;
+ if(g.ready.every(Boolean)){const transforming=g.phase==='transform';g.phase=transforming?'launch':'beam';g.phaseEnd=g.clock+(transforming?900:2600);g.message=transforming?'兩位英雄集合！先一起練習。':'光盾與星光合在一起，城市重新亮起！';$('.guard-stage').dataset.phase=g.phase;$('#guard-scene-title').textContent=transforming?'變身完成！':'合體光線，發射！';playCue(transforming?'transform':'beam');}
+ guardPaint();
+}
+function guardInput(i,choice){
+ const g=state.game;if(g?.type!=='guard'||g.paused||!['tutorial','mission'].includes(g.phase)||![0,1].includes(i))return;
+ const task=g.tasks[i];if(g.done[i]>=task.sequence.length||!Number.isInteger(choice)||choice<0||choice>=task.count||(!g.practice&&g.levels[i]&&g.clock<task.revealUntil))return;
+ if(choice!==task.sequence[g.done[i]]){task.notice='再試一次！點「再看線索」就有提示。';if(!g.practice&&g.levels[i]){g.done[i]=0;task.revealUntil=g.clock+2400;task.hiddenPainted=false;}tone('try');}
+ else{g.done[i]++;task.notice='';$('.guard-stage').dataset.flash=task.role===0?'shield':'star';g.flashUntil=g.clock+650;tone('attack');if(g.done[i]===task.sequence.length&&!g.practice)g.contributions[i]++;}
+ if(g.tasks.every((t,j)=>g.done[j]===t.sequence.length)){g.phase='reward';g.phaseEnd=g.clock+850;g.message=g.practice?'練習成功！準備開始城市救援！':'合作成功！兩份力量都完成了救援。';tone('success');}
+ guardPaint();
+}
+function guardHint(i){const g=state.game;if(g?.type!=='guard'||g.paused||!['tutorial','mission'].includes(g.phase)||![0,1].includes(i))return;const task=g.tasks[i];task.revealUntil=g.clock+3000;task.hiddenPainted=false;task.notice='照著線索慢慢試，提示不扣星星。';guardPaint();}
+function guardNext(swap=false){
+ const g=state.game;if(g?.type!=='guard'||g.paused||g.phase!=='checkpoint')return;
+ if(g.round===2){g.phase='ready';g.practice=false;g.ready=[false,false];g.message='各點自己的準備按鈕，不用同時按！';guardRender();return;}
+ if(swap)g.roles.reverse();g.round++;guardRound();
+}
+function guardPause(force){
+ const g=state.game;if(g?.type!=='guard')return;g.paused=force===undefined?!g.paused:force;g.last=performance.now();releaseHeld();if(g.paused)stopVoice();guardPaint();
+}
+function guardTick(){
+ const g=state.game;if(g?.type!=='guard')return;const now=performance.now(),dt=Math.min(120,Math.max(0,now-g.last));g.last=now;
+ if(!g.paused){g.clock+=dt;if(g.flashUntil&&g.clock>=g.flashUntil){delete $('.guard-stage').dataset.flash;g.flashUntil=0;}
+  if(g.phase==='launch'&&g.clock>=g.phaseEnd)guardRound(true);
+  else if(g.phase==='reward'&&g.clock>=g.phaseEnd){if(g.practice)guardRound(false);else{g.phase='checkpoint';g.message=`你們一起救回了${GUARD_SITES[g.round].name}！`;guardRender();}}
+  else if(g.phase==='beam'&&g.clock>=g.phaseEnd){const solo=g.solo;finish('guard',24,'城市重新發光了！',`${solo?'你的兩位英雄':`哥哥完成 ${g.contributions[0]} 份任務，弟弟完成 ${g.contributions[1]} 份任務`}，一起救回巴士、列車與太空基地！`);return;}
+  else if(['tutorial','mission'].includes(g.phase)){
+   // Repaint only when a memory preview expires, rather than rebuilding UI every frame.
+   for(const t of g.tasks)if(!t.hiddenPainted&&g.clock>=t.revealUntil){t.hiddenPainted=true;guardPaint();}
+  }
+ }
+ if(state.game===g)later(guardTick,80);
+}
+
 const FLIGHT_LEVELS=[{name:'小小駕駛',ms:3200},{name:'勇敢飛行',ms:2400},{name:'王牌機師',ms:1700}];
 function flightSetup(level=state.player==='big'?1:0){
  if(!FLIGHT_LEVELS[level])return;state.game={type:'flight-setup',level};
@@ -3936,7 +4015,7 @@ function stopVoice(){
   for(const node of activeTones){try{node.stop();}catch{}}activeTones.clear();
 }
 const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！太棒了，你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'救援隊，出動！把溫暖的光，送給好朋友！',kindness:'友善之光！耶！我們一起幫助了好朋友！',victory:'耶！任務成功！擊個掌，你們超棒！',challenge:'注意囉！小挑戰來了，仔細看！'};
-function cueUrl(id){return `assets/voice-${id}.mp3?v=1.6.0`;}
+function cueUrl(id){return `assets/voice-${id}.mp3?v=1.7.0`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
   // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
@@ -3970,7 +4049,7 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
- releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);
+ releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);
   $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>街機與動腦：</b>星際飛行哥哥 A／D、弟弟 J／L 左右移動，Esc 暫停；每位玩家有自己的三條航道。光能接線點一下轉 90 度，接通太陽與旗幟；可提示、復原、重來。</li><li><b>平板也能玩：</b>雙人按鈕支援多指同時操作；按鈕區不會拖曳或縮放，頁面其他地方仍能滑動。直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>猜謎與接線可以慢慢想，答錯再試；飛行可選三種速度。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
@@ -3979,6 +4058,13 @@ document.addEventListener('click',event=>{
   const nav=event.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return;}
   const el=event.target.closest('[data-action]');if(!el||el.disabled)return;if(event.detail!==0&&(touchClicks.get(el)||0)>performance.now()){event.preventDefault();return;}const action=el.dataset.action,index=Number(el.dataset.index);
   if(action==='flight-level')flightSetup(index);
+  else if(action==='guard-mode')guardSetup(index===1);
+  else if(action==='guard-begin')guardBegin();
+  else if(action==='guard-ready')guardReady(index);
+  else if(action==='guard-input')guardInput(index,Number(el.dataset.choice));
+  else if(action==='guard-hint')guardHint(index);
+  else if(action==='guard-pause')guardPause();
+  else if(action==='guard-next'||action==='guard-swap')guardNext(action==='guard-swap');
   else if(action==='flight-begin')flightBegin(state.game?.level??0);
   else if(action==='flight-move')flightMove(index,Number(el.dataset.dir));
   else if(action==='arcade-pause')arcadePause();
@@ -4029,9 +4115,15 @@ document.addEventListener('click',event=>{
   else if(action==='memory-help'){if(state.sound)speak('找出英雄和他的變身器，配成一對。點兩張卡片翻開看看，不一樣就記住位置，下次再試一次！');else toast('點兩張卡片，找出英雄和他的變身器！');}
 });
 document.addEventListener('input',event=>{if(event.target.id==='hero-search'){catalogueSearch=event.target.value;filterHeroCards();}});
+document.addEventListener('change',event=>{
+ const e=event.target;if(state.game?.type!=='guard-setup')return;
+ if(e.matches('[data-guard-hero]')&&HEROES.some(h=>h.id===e.value)){state.team[Number(e.dataset.guardHero)]=e.value;save();e.closest('section').querySelector('.guard-hero-preview').innerHTML=heroImage(HEROES.find(h=>h.id===e.value),'',false);}
+ if(e.matches('[data-guard-level]')&&['0','1'].includes(e.value)){state.guardLevels[Number(e.dataset.guardLevel)]=Number(e.value);save();}
+});
 document.addEventListener('keydown',event=>{
   if($('#info-dialog').open||event.ctrlKey||event.altKey||event.metaKey||event.target.matches('input,textarea,select'))return;
   const g=state.game;if(!g)return;const key=event.key.toLowerCase();
+  if(g.type==='guard'){const keys=['a','s','d','j','k','l'];if(key==='escape'){event.preventDefault();if(!event.repeat)guardPause();}else if(keys.includes(key)){event.preventDefault();if(event.repeat)return;const index=keys.indexOf(key),i=index<3?0:1;if(['transform','ready'].includes(g.phase)){if(index%3===0)guardReady(i);}else guardInput(i,index%3);}return;}
   if(g.type==='flight'){if(['a','d','j','l','arrowleft','arrowright','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')arcadePause();else flightMove(['j','l'].includes(key)?1:0,['a','j','arrowleft'].includes(key)?-1:1);}return;}
   if(g.type==='reaction'){
     if(['a','s','l','k','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')reactionPause();else reactionInput(['l','k'].includes(key)?1:0,['a','l'].includes(key)?'light':'shield');}return;
@@ -4053,9 +4145,10 @@ document.addEventListener('pointerdown',holdAttack);
 document.addEventListener('pointerup',releaseHeld);
 document.addEventListener('pointercancel',releaseHeld);
 document.addEventListener('lostpointercapture',releaseHeld);
-document.addEventListener('contextmenu',e=>{if(e.target.closest('.battle-dock,.reaction-controls,.flight-controls'))e.preventDefault();});
-window.addEventListener('blur',releaseHeld);
-document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);stopVoice();}});
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.battle-dock,.reaction-controls,.flight-controls,.guard-controls'))e.preventDefault();});
+window.addEventListener('blur',()=>{releaseHeld();guardPause(true);});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);stopVoice();}});
+window.addEventListener('orientationchange',()=>guardPause(true));
 $('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});
 $('#help-button').addEventListener('click',showHelp);

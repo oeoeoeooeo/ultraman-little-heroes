@@ -23,6 +23,7 @@ const path=require('node:path');
  await page.keyboard.press('Escape');const hp=await page.evaluate(()=>state.game.hp);await page.waitForTimeout(1000);assert.equal(await page.evaluate(()=>state.game.hp),hp);await page.keyboard.press('Escape');
  await page.locator('[data-nav="home"]').click();await page.locator('[data-action="help"]').click();await page.locator('[data-action="voice-preview"]').click();await page.waitForFunction(()=>state.cue&&!state.cue.paused&&state.cue.currentTime>.1);assert.equal(await page.evaluate(()=>state.cue.error),null);await page.locator('[data-action="close-help"]').click();await page.locator('#sound-button').click();assert.equal(await page.evaluate(()=>state.cue),null);
  await require('./reaction-browser.cjs')(page,path.join(__dirname,'screenshots'),'webkit');
+ await require('./guard-browser.cjs')(page,path.join(__dirname,'screenshots'),'webkit');
  await require('./arcade-browser.cjs')(page,path.join(__dirname,'screenshots'),'webkit');
  assert.deepEqual(errors,[]);await browser.close();console.log('PASS: WebKit touch emulation, document scrolling, visible battle at three sizes, readable controls layered light/pause and real gesture-started MP3/mute. Not physical-device Safari validation.');
 })().catch(e=>{console.error(e);process.exit(1);});
