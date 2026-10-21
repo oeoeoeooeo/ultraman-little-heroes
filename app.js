@@ -4005,7 +4005,7 @@ function spacePaint(){
  $('.space-board').classList.toggle('is-paused',g.paused);$('.space-pause').hidden=!g.paused;
  $('.space-hud [data-action="space-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
  $('#space-progress').textContent=g.chapter===2?'最後任務 · 光能全滿再合體':`${SPACE_CHAPTERS[g.chapter].name} · ${Math.max(1,g.wave)} / 4`;
- $('#space-message').textContent=g.message;
+ if($('#space-message').textContent!==g.message)$('#space-message').textContent=g.message;
  $$('[data-space-chapter]').forEach((e,i)=>{e.classList.toggle('current',i===g.chapter);e.classList.toggle('done',i<g.chapter);e.setAttribute('aria-current',i===g.chapter?'step':'false');});
  $('#space-boss-status').textContent=g.hits.map((n,i)=>`${spaceName(i)} ${'●'.repeat(n)}${'○'.repeat(3-n)}`).join('　');
  for(let i=0;i<g.count;i++){
@@ -4021,7 +4021,7 @@ function spacePaint(){
   const ready=$(`[data-action="space-ready"][data-index="${i}"]`);ready.hidden=!['ready','beam'].includes(g.phase);ready.disabled=g.paused||g.ready[i]||g.phase==='beam';ready.classList.toggle('selected',g.ready[i]);ready.setAttribute('aria-pressed',String(g.ready[i]));ready.innerHTML=g.ready[i]?'✓ 準備好了，力量保留！':`✋ 準備放必殺技 <kbd>${i?'K':'S'}</kbd>`;
   $$(`#space-console-${i} .space-pad button`).forEach(b=>{b.disabled=g.paused||!active||g.resolved?.[i];});$(`#space-console-${i} .space-pad`).hidden=['ready','beam'].includes(g.phase);
   $$(`#space-energy-${i} i`).forEach((e,j)=>e.classList.toggle('lit',j<g.hits[i]));
-  $(`#space-console-note-${i}`).textContent=g.chapter<2?'✦ 接星光　☄ 發射或閃開':g.hits[i]===3?'力量已滿！等夥伴，也能繼續幫忙。':'把飛船移到 ◎ 下方，發射光線！';
+  $(`#space-console-note-${i}`).textContent=g.chapter<2?'接星光・碎隕石':g.hits[i]===3?'力量已滿！等夥伴，也能繼續幫忙。':'對準 ◎，發射光線！';
  }
  spaceOverlay();
 }
