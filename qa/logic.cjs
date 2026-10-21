@@ -36,6 +36,7 @@ function boot() {
   function advance(ms){const end=clock+ms;let limit=0;while(true){const entry=[...timers.entries()].sort((a,b)=>a[1].at-b[1].at)[0];if(!entry||entry[1].at>end)break;assert.ok(++limit<2000,'runaway timers');clock=entry[1].at;timers.delete(entry[0]);entry[1].fn();}clock=end;}
   return {document,run,json,el,click,key,advance,timers};
 }
+require('./space-logic.cjs')(boot,pointer,storage);
 // Cooperative rescue: real controls, preview timing, retained teammate progress,
 // role swaps, pause/background, exact-once reward, and old-save compatibility.
 {
@@ -68,7 +69,7 @@ function boot() {
 const catalogue=JSON.parse(fs.readFileSync(path.join(root,'hero-catalogue.json'),'utf8'));
 assert.equal(catalogue.length,53);assert.equal(new Set(catalogue.map(h=>h.id)).size,53);
 for(const h of catalogue){assert.ok(h.source.startsWith('https://tsuburaya-prod.com/heroes/'));assert.equal(fs.readFileSync(path.join(root,'assets',h.id+'.png')).subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
-const expanded=boot();assert.equal(expanded.run('BADGES.length'),9);assert.equal(expanded.run('BADGES.every(b=>b.name&&b.description&&b.emoji&&b.goal)'),true);assert.equal(expanded.run('GAMES.length'),10);assert.deepEqual(expanded.json('HEROES'),catalogue);
+const expanded=boot();assert.equal(expanded.run('BADGES.length'),9);assert.equal(expanded.run('BADGES.every(b=>b.name&&b.description&&b.emoji&&b.goal)'),true);assert.equal(expanded.run('GAMES.length'),11);assert.deepEqual(expanded.json('HEROES'),catalogue);
 expanded.click('[data-nav="heroes"]');expanded.click('[data-filter="latest"]');assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,4);
 expanded.run("catalogueSearch='teo';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,1);
 expanded.run("catalogueSearch='<img onerror=alert(1)>';filterHeroCards()");assert.equal(expanded.document.querySelectorAll('.library-card:not([hidden])').length,0);
@@ -85,7 +86,7 @@ expanded.click('[data-nav="home"]');
 storage.set('ultra-base-v1',JSON.stringify({sound:false}));
 let t=boot();
 assert.equal(t.document.documentElement.lang,'zh-Hant');
-assert.equal(t.document.querySelectorAll('.game-card').length,10);
+assert.equal(t.document.querySelectorAll('.game-card').length,11);
 assert.equal(t.document.querySelectorAll('.player-button.selected').length,1);
 for(const e of t.document.querySelectorAll('img[src]'))assert.ok(fs.existsSync(path.join(root,e.getAttribute('src'))),'image exists');
 // Use actual click and keyboard events for quiz retry and completion.
@@ -146,7 +147,7 @@ t.click('[data-nav="home"]');t.click('[data-action="start"][data-game="battle"]'
 t.click('[data-action="home"]');t.click('[data-action="help"]');assert.equal(t.el('dialog').open,true);t.click('[data-action="close-help"]');assert.equal(t.el('dialog').open,false);
 t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'true');t.click('#sound-button');assert.equal(t.el('#sound-button').getAttribute('aria-pressed'),'false');
 // Unavailable storage is handled and game still loads.
-const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,10);storage.set('ultra-base-v1',last);
+const last=storage.get('ultra-base-v1');storage.set('ultra-base-v1','not json');const fallback=boot();assert.equal(fallback.document.querySelectorAll('.game-card').length,11);storage.set('ultra-base-v1',last);
 console.log(`PASS: 6 complete game modes; actual click/keyboard handlers; quiz retries; age difficulty; 2-player transform/energy; pause including beams; shields; memory mismatch; 9 badges; ${total} persistent stars; navigation cancellation; background pause; dialog; audio toggle; corrupt-storage recovery.`);
 console.log('Browser screenshots and responsive layout are not validated by this DOM test.');
 

@@ -3405,6 +3405,7 @@ const BADGES = [
   {id:'explorer',name:'光之國探險家',emoji:'🚀',description:'完成全部六種任務',goal:6}
 ];
 const GAMES = [
+  {id:'space',title:'宇宙飛行救援',copy:'駕駛英雄飛船、發射光線，一起救回太空基地！',tag:'全新宇宙街機',meta:'單人／雙人 · 飛行與射擊',bg:'#dce5fc',tagColor:'#5865a8'},
   {id:'guard',title:'兄弟守護隊',copy:'一人開光盾、一人解機關，合力救回城市！',tag:'全新合作冒險',meta:'分工救援 · 合體光線',bg:'#dcecf5',tagColor:'#427c9c'},
   {id:'quiz',title:'猜猜我是誰',copy:'看看英雄的模樣，你認得他嗎？',tag:'觀察小任務',meta:'認識英雄 · 動動小腦袋',bg:'#dcece5',tagColor:'#6d9382'},
   {id:'forms',title:'型態猜猜看',copy:'顏色變了！找出超人的新力量。',tag:'眼力大挑戰',meta:'型態變化 · 發現超能力',bg:'#e8e5f1',tagColor:'#9a84b4'},
@@ -3427,9 +3428,10 @@ const state = {
   team:Array.isArray(saved.team)&&saved.team.length===2&&saved.team.every(id=>HEROES.some(h=>h.id===id))?saved.team:['tiga','zero'],
   questRuns:Number.isFinite(Number(saved.questRuns))?Math.min(99999,Math.max(0,Math.floor(Number(saved.questRuns)))):0,
   guardLevels:[0,1].map(i=>[0,1].includes(saved.guardLevels?.[i])?saved.guardLevels[i]:i===0?1:0),
+  spaceLevels:[0,1].map(i=>[0,1].includes(saved.spaceLevels?.[i])?saved.spaceLevels[i]:i===0?1:0),
   page:'home', game:null, token:0, timers:new Set(), toastTimer:null, audio:null
 };
-function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns,guardLevels:state.guardLevels}));}catch{}}
+function save(){try{localStorage.setItem('ultra-base-v1',JSON.stringify({player:state.player,sound:state.sound,stars:state.stars,completed:state.completed,collection:state.collection,team:state.team,questRuns:state.questRuns,guardLevels:state.guardLevels,spaceLevels:state.spaceLevels}));}catch{}}
 function hasBadge(id){if(id==='first')return Object.values(state.completed).some(n=>n>0);if(id==='stars')return state.stars>=50;if(id==='explorer')return GAMES.filter(g=>['quiz','forms','device','battle','coop','memory'].includes(g.id)).every(g=>state.completed[g.id]>0);return state.completed[id]>0;}
 function updateChrome(){
   $('#star-total').textContent = state.stars;
@@ -3491,6 +3493,7 @@ function monster(cls='monster-picture',variant=0){
 }
 
 function cardArt(game){
+  if(game.id==='space')return '<div class="space-card-orbit"></div>'+heroImage(HEROES.find(h=>h.id===state.team[0]),'card-hero',false)+'<span class="space-card-ray">✦</span>';
   if(game.id==='guard')return heroImage(HEROES.find(h=>h.id===state.team[0]),'card-hero',false)+heroImage(HEROES.find(h=>h.id===state.team[1]),'card-hero second',false)+'<span class="question-bubble">🛡</span>';
   if(game.id==='flight')return '<div class="arcade-card-art">✦<br>🚀 🚀</div>';
   if(game.id==='circuit')return '<div class="arcade-card-art">☀ ━ ┓<br>　 ┏ ┛<br>　 ┗ 🚩</div>';
@@ -3505,7 +3508,7 @@ function cardArt(game){
 function cardTitle(game){return game.id==='device'?'這是誰的<span class="keep-word">變身器？</span>':game.title;}
 function renderHome(){
   main.innerHTML=`<section class="page-intro"><div><p class="eyebrow">WELCOME TO THE LAND OF LIGHT</p><h1>小英雄，歡迎回來！<span>👋</span></h1><p class="intro-sub">今天想和超人力霸王，一起展開什麼冒險呢？</p></div><div class="today">${icon('sun')} 每一天都是冒險日</div></section>
-  <section class="hero-banner" aria-label="一起守護地球"><div class="hero-copy"><span class="pill">${icon('sparkle')} 專屬你們的宇宙冒險</span><h2>小小英雄，<br><em>大大冒險！</em></h2><p>猜猜英雄、發現力量，再一起變身。<br>光之國的下一位小英雄，就是你！</p><button class="primary" data-action="start" data-game="guard">${icon('play')} 兄弟守護隊，出發！ ${icon('arrow')}</button></div><div class="hero-art" aria-hidden="true"><div class="hero-disk"></div><div class="orbit"></div>${heroImage(HEROES[2],'tiga',false)}${heroImage(HEROES[3],'zero',false)}<span class="floating-label"><b>✦</b> 勇氣 + 合作 = 無限力量</span><span class="art-star s1">✧</span><span class="art-star s2">✦</span><span class="art-star s3">✧</span></div>${city()}<span class="banner-corner">LET'S SHINE TOGETHER ✦</span></section>
+  <section class="hero-banner" aria-label="一起守護地球"><div class="hero-copy"><span class="pill">${icon('sparkle')} 全新・宇宙飛行救援</span><h2>小小英雄，<br><em>大大冒險！</em></h2><p>駕駛英雄飛船，閃過隕石、發射光線。<br>一起出發，救回閃亮的太空基地！</p><button class="primary" data-action="start" data-game="space">${icon('play')} 宇宙救援，出發！ ${icon('arrow')}</button></div><div class="hero-art" aria-hidden="true"><div class="hero-disk"></div><div class="orbit"></div>${heroImage(HEROES[2],'tiga',false)}${heroImage(HEROES[3],'zero',false)}<span class="floating-label"><b>✦</b> 勇氣 + 合作 = 無限力量</span><span class="art-star s1">✧</span><span class="art-star s2">✦</span><span class="art-star s3">✧</span></div>${city()}<span class="banner-corner">LET'S SHINE TOGETHER ✦</span></section>
   ${questHome()}<section class="player-strip" aria-label="選擇玩家模式"><div class="strip-label">今天誰來玩？<span>選一個適合你的模式</span></div><div class="player-options">${[
     ['little','👦🏻','弟弟模式','4 歲・圖片提示多一點'],['big','🧑🏻','哥哥模式','6 歲・挑戰多一點'],['together','🤝','兄弟一起','雙人・合作最好玩']
   ].map(([id,face,title,sub])=>`<button class="player-button ${state.player===id?'selected':''}" data-action="player" data-player="${id}" aria-pressed="${state.player===id}"><span class="player-face">${face}</span><span><b>${title}</b><small>${sub}</small></span><span class="check-dot">✓</span></button>`).join('')}</div></section>
@@ -3548,7 +3551,7 @@ function renderBadges(){main.innerHTML=stickerBook()+screenHead('我的小成就
 function startGame(mode){
   leave();state.page='home';updateChrome();window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});
   $('#breadcrumb-text').textContent=GAMES.find(g=>g.id===mode).title;
-  if(mode==='guard')guardSetup();else if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='flight')flightSetup();else if(mode==='circuit')circuitBegin();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
+  if(mode==='space')spaceSetup();else if(mode==='guard')guardSetup();else if(['quiz','forms','device'].includes(mode))startQuiz(mode);else if(mode==='reaction')reactionSetup();else if(mode==='flight')flightSetup();else if(mode==='circuit')circuitBegin();else if(mode==='memory')startMemory();else startSelection(mode==='coop');
 }
 function startQuiz(mode){
   const pool = mode==='forms'?FORMS:mode==='device'?DEVICES.filter(d=>d.kind!=='武器').map(deviceQuestion):HEROES;
@@ -3680,19 +3683,23 @@ function questCheckpoint(g){
 function questNext(){const g=state.game;if(g?.type!=='quest-checkpoint')return;const setup=g.setup;leave();beginBattle(setup);main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
 // Every contact owns its lifetime. A second finger never replaces the first.
 const heldPointers=new Map(), touchClicks=new WeakMap();
-const directActions=new Set(['attack','shield','beam','cycle-form','transform','reaction-input','flight-move','guard-input','guard-ready']);
+const directActions=new Set(['attack','shield','beam','cycle-form','transform','reaction-input','flight-move','guard-input','guard-ready','space-move','space-fire','space-ready']);
 function releaseHeld(event){
  const ids=event&&Number.isFinite(event.pointerId)?[event.pointerId]:[...heldPointers.keys()];
  for(const id of ids){const press=heldPointers.get(id);if(!press)continue;heldPointers.delete(id);if(touchClicks.has(press.button))touchClicks.set(press.button,performance.now()+1500);press.active=false;press.button.classList.remove('contact-down');try{if(press.button.hasPointerCapture?.(id))press.button.releasePointerCapture(id);}catch{}}
 }
-function directControl(button){const i=Number(button.dataset.index);switch(button.dataset.action){case 'attack':attack(i);break;case 'shield':shield(i);break;case 'beam':fireBeam();break;case 'cycle-form':cycleForm(i);break;case 'transform':transform(i);break;case 'reaction-input':reactionInput(i,button.dataset.kind);break;case 'flight-move':flightMove(i,Number(button.dataset.dir));break;case 'guard-input':guardInput(i,Number(button.dataset.choice));break;case 'guard-ready':guardReady(i);break;}}
+function directControl(button){const i=Number(button.dataset.index);switch(button.dataset.action){case 'attack':attack(i);break;case 'shield':shield(i);break;case 'beam':fireBeam();break;case 'cycle-form':cycleForm(i);break;case 'transform':transform(i);break;case 'reaction-input':reactionInput(i,button.dataset.kind);break;case 'flight-move':flightMove(i,Number(button.dataset.dir));break;case 'guard-input':guardInput(i,Number(button.dataset.choice));break;case 'guard-ready':guardReady(i);break;case 'space-move':spaceMove(i,Number(button.dataset.dir));break;case 'space-fire':spaceFire(i);break;case 'space-ready':spaceReady(i);break;}}
 function holdAttack(event){
  const button=event.target.closest('[data-action]');if(!button||button.disabled||!directActions.has(button.dataset.action)||event.button!==0||$('#info-dialog').open)return;
  const touch=event.pointerType==='touch'||event.pointerType==='pen';
- if(!touch&&button.dataset.action!=='attack')return;
+ if(!touch&&!['attack','space-fire'].includes(button.dataset.action))return;
  releaseHeld(event);const press={active:true,button,index:Number(button.dataset.index),token:state.token};heldPointers.set(event.pointerId,press);button.classList.add('contact-down');
  try{button.setPointerCapture?.(event.pointerId);}catch{}
  if(touch){event.preventDefault();touchClicks.set(button,performance.now()+1500);directControl(button);}
+ if(button.dataset.action==='space-fire'){
+  function repeatFire(){if(!press.active)return;const g=state.game;if(press.token!==state.token||g?.type!=='space'||g.paused||!['flight','boss'].includes(g.phase)){releaseHeld({pointerId:event.pointerId});return;}spaceFire(press.index);later(repeatFire,240);}
+  later(repeatFire,480);return;
+ }
  if(button.dataset.action!=='attack')return;
  function repeat(){const g=state.game;if(!press.active)return;if(press.token!==state.token||g?.type!=='battle'||g.paused||g.firing||g.finished){releaseHeld({pointerId:event.pointerId});return;}attack(press.index);later(repeat,190);}
  later(repeat,300);
@@ -3935,6 +3942,133 @@ function guardTick(){
  if(state.game===g)later(guardTick,80);
 }
 
+// Original arcade rescue. Each pilot has their own travel time and retained progress.
+const SPACE_CHAPTERS=[{name:'穿越星海',hint:'移到星星的航道，接住星光！',color:'#98dfff'},{name:'隕石救援',hint:'對準隕石發射光線，也可以左右閃開！',color:'#ffcb8d'},{name:'基地守門戰',hint:'對準 ◎ 發射！每位英雄點亮三格力量。',color:'#e4b5ff'}];
+function spaceName(i,g=state.game){return g?.solo?'小英雄':i?'弟弟':'哥哥';}
+function spaceSetup(solo=state.player!=='together'){
+ state.game={type:'space-setup',solo};
+ main.innerHTML=screenHead('宇宙飛行救援','太空基地失去星光了，英雄飛船準備出動！','全新宇宙街機')+`<section class="space-setup panel"><div class="space-launch-art" aria-hidden="true"><span class="space-launch-planet"></span>${heroImage(HEROES.find(h=>h.id===state.team[0]),'',false)}<span class="space-launch-spark">✦</span><b>SPACE RESCUE</b></div><h2>駕駛飛船，讓基地重新發光！</h2><div class="space-how"><p><b>① ◀　▶</b>左右換航道<br>接星光、閃隕石</p><p><b>② ⚡ 發射</b>光線擊碎隕石<br>長按可以連續射擊</p><p><b>③ ◎ 核心</b>對準怪獸的光圈<br>集滿力量放必殺技</p></div><div class="guard-playmode"><button class="secondary" data-action="space-mode" data-index="1" aria-pressed="${solo}">👦 一人駕駛</button><button class="secondary" data-action="space-mode" data-index="0" aria-pressed="${!solo}">🤝 兄弟一起</button></div><div class="guard-team space-team">${Array.from({length:solo?1:2},(_,i)=>`<section><div class="guard-hero-preview">${heroImage(HEROES.find(h=>h.id===state.team[i]),'',false)}</div><label>${spaceName(i)}的英雄<select data-space-hero="${i}">${HEROES.map(h=>`<option value="${h.id}" ${state.team[i]===h.id?'selected':''}>${h.short}</option>`).join('')}</select></label><label>飛行難度<select data-space-level="${i}"><option value="0" ${state.spaceLevels[i]===0?'selected':''}>輕鬆：慢慢飛・4 秒一波</option><option value="1" ${state.spaceLevels[i]===1?'selected':''}>挑戰：快一點・2.8 秒一波</option></select></label></section>`).join('')}</div><p class="space-setup-note">哥哥 <kbd>A</kbd> 左　<kbd>S</kbd> 發射　<kbd>D</kbd> 右<br>${solo?'也能使用 ←／空白鍵／→。':'弟弟 <kbd>J</kbd> 左　<kbd>K</kbd> 發射　<kbd>L</kbd> 右。'}<br>平板按大按鈕；碰到隕石有護盾保護，星光不會被扣掉。</p><button class="primary" data-action="space-begin">🚀 準備好了，出發！</button></section>`;
+}
+function spaceBegin(){
+ const setup=state.game;if(setup?.type!=='space-setup')return;
+ save();stopVoice();
+ const count=setup.solo?1:2;
+ state.game={type:'space',solo:setup.solo,count,heroes:state.team.slice(0,count).map(id=>HEROES.find(h=>h.id===id)),levels:state.spaceLevels.slice(0,count),lanes:Array(count).fill(1),stars:Array(count).fill(0),cleared:Array(count).fill(0),hits:Array(count).fill(0),bumps:Array(count).fill(0),ready:Array(count).fill(false),shots:Array(count).fill(null),cooldown:Array(count).fill(0),flash:Array(count).fill(0),clock:0,last:performance.now(),paused:false,chapter:0,wave:0,phase:'launch',phaseEnd:1400,message:'英雄飛船啟動！先找找閃亮的星星。'};
+ spaceRender();playCue('ready');spaceTick();window.scrollTo({top:0,behavior:'instant'});
+}
+function spaceRender(){
+ const g=state.game;if(g?.type!=='space')return;releaseHeld();
+ main.innerHTML=screenHead('宇宙飛行救援','左右駕駛、發射光線，守護我們的太空基地。',g.solo?'單人駕駛':'兄弟合作')+`<section class="space-board ${g.solo?'solo':''}"><div class="space-stage"><div class="space-hud"><span class="space-live-dot" aria-hidden="true"></span><strong id="space-progress"></strong><button class="secondary" data-action="space-pause">Ⅱ 暫停</button></div><ol class="space-route" aria-label="救援進度">${SPACE_CHAPTERS.map((s,i)=>`<li data-space-chapter="${i}"><span>${i+1}</span>${s.name}</li>`).join('')}</ol><div class="space-view" data-phase="${g.phase}"><div class="space-destination"><div class="space-planet" aria-hidden="true"></div><div class="space-station"><span aria-hidden="true">🛰</span><b>星光基地</b></div><div class="space-boss">${monster('space-boss-image',MONSTERS.find(m=>m.id==='zetton'))}<div><b>傑頓・基地守門戰</b><span id="space-boss-status"></span></div></div></div><div class="space-tracks">${g.heroes.map((h,i)=>`<section class="space-track" id="space-track-${i}" aria-label="${spaceName(i)}的飛行航道"><header><b>${spaceName(i)} · ${h.short}</b><span id="space-pilot-score-${i}"></span></header><div class="space-lanes">${[0,1,2].map(lane=>`<div class="space-lane"><span class="space-target" id="space-target-${i}-${lane}"></span></div>`).join('')}</div><div class="space-shot" id="space-shot-${i}" aria-hidden="true"></div><div class="space-craft" id="space-craft-${i}"><div class="space-shield"></div>${heroImage(h,'',false)}<span class="space-pod" aria-hidden="true"></span><span class="space-thrust" aria-hidden="true"></span></div><span class="space-pilot-pop" id="space-pop-${i}" role="status"></span></section>`).join('')}</div><div class="space-phase-overlay" id="space-phase-overlay" hidden></div></div><p class="space-message" id="space-message" role="status" aria-live="polite"></p><div class="space-pause" hidden><strong>飛船停好了，休息一下！</strong><p>準備好再繼續，進度會留在這裡。</p><button class="primary" data-action="space-pause">▶ 繼續救援</button><button class="secondary" data-action="home">回基地</button></div></div><div class="space-controls">${g.heroes.map((h,i)=>`<section class="space-console" id="space-console-${i}" aria-label="${spaceName(i)}駕駛台"><h2>${spaceName(i)}駕駛台 <small>${g.levels[i]?'挑戰':'輕鬆'}</small></h2><div class="space-energy" id="space-energy-${i}" aria-label="必殺技能量"><span>光能</span>${[0,1,2].map(()=>'<i></i>').join('')}</div><div class="space-pad"><button data-action="space-move" data-index="${i}" data-dir="-1" aria-label="${spaceName(i)}向左"><b>◀</b><span>向左 <kbd>${i?'J':'A'}</kbd></span></button><button class="space-fire" data-action="space-fire" data-index="${i}" aria-label="${spaceName(i)}發射光線"><b>⚡</b><span>發射 <kbd>${i?'K':'S'}</kbd></span></button><button data-action="space-move" data-index="${i}" data-dir="1" aria-label="${spaceName(i)}向右"><b>▶</b><span>向右 <kbd>${i?'L':'D'}</kbd></span></button></div><button class="space-ready" data-action="space-ready" data-index="${i}" hidden>✋ 準備放必殺技 <kbd>${i?'K':'S'}</kbd></button><p class="space-console-note" id="space-console-note-${i}">左右駕駛，對準再發射。</p></section>`).join('')}</div><p class="space-footnote">${g.solo?'一人一艘飛船，方向鍵也能玩。':'兩人能同時按；各自收集光能，完成的力量會留下。'} Esc 暫停。</p></section>`;
+ spacePaint();
+}
+function spaceWave(){
+ const g=state.game;if(g?.type!=='space')return;
+ g.phase=g.chapter===2?'boss':'flight';g.wave++;g.waveStart=g.clock;g.shots.fill(null);g.resolved=Array(g.count).fill(false);g.objects=g.heroes.map((_,i)=>{
+  const target=Math.floor(Math.random()*3);return [0,1,2].map(lane=>({kind:lane===target?(g.chapter===2?'core':'star'):'rock',cleared:false}));
+ });
+ g.message=SPACE_CHAPTERS[g.chapter].hint;
+ g.heroes.forEach((_,i)=>{$(`#space-pop-${i}`).textContent='';});spacePaint();
+}
+function spaceMove(i,dir){
+ const g=state.game;if(g?.type!=='space'||g.paused||!['flight','boss'].includes(g.phase)||!Number.isInteger(i)||i<0||i>=g.count||![-1,1].includes(dir)||g.resolved[i])return;
+ const lane=Math.max(0,Math.min(2,g.lanes[i]+dir));if(lane===g.lanes[i])return;g.lanes[i]=lane;spacePaint();tone('flip');
+}
+function spaceFire(i){
+ const g=state.game;if(g?.type!=='space'||g.paused||!['flight','boss'].includes(g.phase)||!Number.isInteger(i)||i<0||i>=g.count||g.resolved[i]||g.clock<g.cooldown[i])return;
+ const lane=g.lanes[i],object=g.objects[i][lane];
+ g.shots[i]={lane,hitAt:g.clock+200,until:g.clock+400,hit:false,object};g.cooldown[i]=g.clock+450;spacePaint();tone('attack');
+}
+function spaceHit(i,shot){
+ const g=state.game,object=shot.object;shot.hit=true;
+ if(object.cleared)return;
+ if(object.kind==='rock'){object.cleared=true;g.cleared[i]++;g.flash[i]=g.clock+450;$(`#space-pop-${i}`).textContent='✨ 隕石擊碎！';tone('success');}
+ else if(object.kind==='core'){
+  object.cleared=true;g.hits[i]=Math.min(3,g.hits[i]+1);g.flash[i]=g.clock+500;
+  $(`#space-pop-${i}`).textContent=g.hits[i]===3?'✦ 我的力量集滿了！':`◎ 命中！光能 ${g.hits[i]} / 3`;tone('success');
+  if(g.hits.every(n=>n===3)){
+   g.phase='ready';g.shots.fill(null);g.message=g.solo?'光能全滿！按「準備放必殺技」，讓基地重新發光！':'兩份光能都集滿了！各自按「準備放必殺技」，一起發光！';releaseHeld();spaceOverlay();
+  }
+ }
+}
+function spaceOverlay(){
+ const g=state.game,overlay=$('#space-phase-overlay');if(!overlay||g?.type!=='space')return;
+ const phase=g.phase;overlay.hidden=!['launch','checkpoint','ready','beam'].includes(phase);
+ const key=`${phase}-${g.chapter}`;if(overlay.dataset.phaseKey===key)return;overlay.dataset.phaseKey=key;
+ if(phase==='launch')overlay.innerHTML='<span>FLIGHT SYSTEM · READY</span><strong>英雄飛船，出發！</strong><p>先找星光，左右換航道。</p>';
+ if(phase==='checkpoint')overlay.innerHTML=`<span>SECTOR ${g.chapter+1} · CLEAR</span><strong>${g.chapter===0?'穿越星海成功！':'隕石帶突破成功！'}</strong><p>${g.chapter===0?'接下來試試光線，把隕石擊碎！':'太空基地就在前方！對準光圈，充滿三格力量。'}</p><button class="primary" data-action="space-next">${g.chapter===0?'⚡ 前往隕石帶':'🛰 前往基地守門戰'} →</button>`;
+ if(phase==='ready')overlay.innerHTML=`<span>FINAL COMBINATION</span><strong>最後一擊，${g.solo?'準備發射！':'一起發光！'}</strong><p>${g.solo?'按下方的準備按鈕，發射必殺光線。':'各自按下方的準備按鈕。<br>先準備好會一直亮燈，等夥伴就好！'}</p>`;
+ if(phase==='beam')overlay.innerHTML='<span>LIGHT POWER · FULL</span><strong>光之力量，發射！</strong><p>基地的星光回來了！</p>';
+}
+function spacePaint(){
+ const g=state.game;if(g?.type!=='space')return;
+ const active=['flight','boss'].includes(g.phase),view=$('.space-view');view.dataset.phase=g.phase;view.dataset.chapter=g.chapter;
+ $('.space-board').classList.toggle('is-paused',g.paused);$('.space-pause').hidden=!g.paused;
+ $('.space-hud [data-action="space-pause"]').textContent=g.paused?'▶ 繼續':'Ⅱ 暫停';
+ $('#space-progress').textContent=g.chapter===2?'最後任務 · 光能全滿再合體':`${SPACE_CHAPTERS[g.chapter].name} · ${Math.max(1,g.wave)} / 4`;
+ $('#space-message').textContent=g.message;
+ $$('[data-space-chapter]').forEach((e,i)=>{e.classList.toggle('current',i===g.chapter);e.classList.toggle('done',i<g.chapter);e.setAttribute('aria-current',i===g.chapter?'step':'false');});
+ $('#space-boss-status').textContent=g.hits.map((n,i)=>`${spaceName(i)} ${'●'.repeat(n)}${'○'.repeat(3-n)}`).join('　');
+ for(let i=0;i<g.count;i++){
+  const track=$(`#space-track-${i}`),ms=g.levels[i]?2800:4000,fall=active?Math.min(1,(g.clock-g.waveStart)/ms):0;
+  track.style.setProperty('--approach',fall);track.classList.toggle('space-impact',g.flash[i]>g.clock);track.classList.toggle('pilot-done',g.chapter===2&&g.hits[i]===3);
+  $(`#space-craft-${i}`).style.left=`${(g.lanes[i]+.5)*100/3}%`;
+  $(`#space-pilot-score-${i}`).textContent=`✦ ${g.stars[i]}　⚡ ${g.cleared[i]}`;
+  for(let lane=0;lane<3;lane++){
+   const e=$(`#space-target-${i}-${lane}`),object=g.objects?.[i]?.[lane];e.hidden=!active||!object||object.cleared||g.resolved[i];
+   if(object){e.className='space-target '+object.kind;e.textContent={star:'✦',rock:'☄',core:'◎'}[object.kind];e.setAttribute('aria-label',{star:'星光：移過來接住',rock:'隕石：發射或閃開',core:'核心：對準發射'}[object.kind]);}
+  }
+  const shot=g.shots[i],ray=$(`#space-shot-${i}`);ray.hidden=!shot||g.clock>=shot.until||!active;if(shot){ray.style.left=`${(shot.lane+.5)*100/3}%`;ray.style.setProperty('--ray-age',Math.min(1,(g.clock-shot.hitAt+200)/200));}
+  const ready=$(`[data-action="space-ready"][data-index="${i}"]`);ready.hidden=!['ready','beam'].includes(g.phase);ready.disabled=g.paused||g.ready[i]||g.phase==='beam';ready.classList.toggle('selected',g.ready[i]);ready.setAttribute('aria-pressed',String(g.ready[i]));ready.innerHTML=g.ready[i]?'✓ 準備好了，力量保留！':`✋ 準備放必殺技 <kbd>${i?'K':'S'}</kbd>`;
+  $$(`#space-console-${i} .space-pad button`).forEach(b=>{b.disabled=g.paused||!active||g.resolved?.[i];});$(`#space-console-${i} .space-pad`).hidden=['ready','beam'].includes(g.phase);
+  $$(`#space-energy-${i} i`).forEach((e,j)=>e.classList.toggle('lit',j<g.hits[i]));
+  $(`#space-console-note-${i}`).textContent=g.chapter<2?'✦ 接星光　☄ 發射或閃開':g.hits[i]===3?'力量已滿！等夥伴，也能繼續幫忙。':'把飛船移到 ◎ 下方，發射光線！';
+ }
+ spaceOverlay();
+}
+function spaceNext(){
+ const g=state.game;if(g?.type!=='space'||g.paused||g.phase!=='checkpoint')return;g.chapter++;g.wave=0;spaceWave();
+}
+function spaceReady(i){
+ const g=state.game;if(g?.type!=='space'||g.paused||g.phase!=='ready'||!Number.isInteger(i)||i<0||i>=g.count||g.ready[i])return;
+ g.ready[i]=true;tone('transform');
+ if(g.ready.every(Boolean)){g.phase='beam';g.phaseEnd=g.clock+2300;g.message='英雄光線突破守門怪獸，太空基地重新亮起來！';playCue('beam');}
+ spacePaint();
+}
+function spacePause(force=false){
+ const g=state.game;if(g?.type!=='space'||force&&g.paused)return;g.paused=force||!g.paused;g.last=performance.now();releaseHeld();if(g.paused)stopVoice();spacePaint();
+}
+function spaceTick(){
+ const g=state.game;if(g?.type!=='space')return;
+ const now=performance.now(),dt=Math.min(100,Math.max(0,now-g.last));g.last=now;
+ if(!g.paused){
+  g.clock+=dt;
+  if(g.phase==='launch'&&g.clock>=g.phaseEnd)spaceWave();
+  if(['flight','boss'].includes(g.phase)){
+   for(let i=0;i<g.count;i++){
+    const shot=g.shots[i];if(shot&&!shot.hit&&g.clock>=shot.hitAt&&!g.resolved[i])spaceHit(i,shot);
+    if(!['flight','boss'].includes(g.phase))break;
+    if(!g.resolved[i]&&g.clock-g.waveStart>=(g.levels[i]?2800:4000)){
+     g.resolved[i]=true;const object=g.objects[i][g.lanes[i]];
+     if(object.kind==='star'&&!object.cleared){object.cleared=true;g.stars[i]++;g.flash[i]=g.clock+500;$(`#space-pop-${i}`).textContent='✦ 星光收好了！';tone('success');}
+     else if(object.kind==='rock'&&!object.cleared){g.bumps[i]++;g.flash[i]=g.clock+650;$(`#space-pop-${i}`).textContent='🛡 護盾保護！繼續飛！';tone('shield');}
+     else if(g.chapter===2&&g.hits[i]<3&&!object.cleared)$(`#space-pop-${i}`).textContent='下一波，對準 ◎ 再發射！';
+    }
+   }
+   if(['flight','boss'].includes(g.phase)&&g.resolved.every(Boolean)&&g.clock-g.waveStart>=Math.max(...g.levels.map(l=>l?2800:4000))+700){
+    if(g.chapter<2&&g.wave===4){g.phase='checkpoint';g.message='這一段救援完成！休息一下，再按「前往」出發。';releaseHeld();tone('success');}
+    else spaceWave();
+   }
+  }
+  if(g.phase==='beam'&&g.clock>=g.phaseEnd){
+   const solo=g.solo,stars=24+Math.min(12,g.stars.reduce((a,b)=>a+b,0)+g.cleared.reduce((a,b)=>a+b,0));
+   const copy=g.heroes.map((h,i)=>`${spaceName(i,g)}接住 ${g.stars[i]} 顆星光、擊碎 ${g.cleared[i]} 顆隕石`).join('；')+'。每位英雄都充滿三格力量，太空基地救援成功！';
+   finish('space',stars,'太空基地，重新發光！',copy);state.game.spaceSolo=solo;return;
+  }
+  spacePaint();
+ }
+ later(spaceTick,40);
+}
+
 const FLIGHT_LEVELS=[{name:'小小駕駛',ms:3200},{name:'勇敢飛行',ms:2400},{name:'王牌機師',ms:1700}];
 function flightSetup(level=state.player==='big'?1:0){
  if(!FLIGHT_LEVELS[level])return;state.game={type:'flight-setup',level};
@@ -4015,7 +4149,7 @@ function stopVoice(){
   for(const node of activeTones){try{node.stop();}catch{}}activeTones.clear();
 }
 const CUES={welcome:'小英雄，出發囉！光之力量，啟動！',correct:'答對了！太棒了，你觀察得很仔細！',transform:'變身！光之力量，全開！',ready:'小英雄準備好了！一起守護地球！',beam:'光之力量！發射！',rescue:'救援隊，出動！把溫暖的光，送給好朋友！',kindness:'友善之光！耶！我們一起幫助了好朋友！',victory:'耶！任務成功！擊個掌，你們超棒！',challenge:'注意囉！小挑戰來了，仔細看！'};
-function cueUrl(id){return `assets/voice-${id}.mp3?v=1.7.0`;}
+function cueUrl(id){return `assets/voice-${id}.mp3?v=1.8.0`;}
 function playCue(id,after=''){
   if(!state.sound||document.hidden)return;stopVoice();const epoch=voiceEpoch;
   // Start in the click/key handler for tablet media policies; the cheer file contains its opening pause.
@@ -4049,8 +4183,8 @@ function tone(type){
 function toast(text){clearTimeout(state.toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');state.toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2800);}
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=$('#confetti');box.innerHTML='';for(let i=0;i<45;i++){const el=document.createElement('i');el.style.cssText=`left:${Math.random()*100}%;background:${['#efbc61','#9cc6a4','#e89475','#c6b5d6'][i%4]};--drift:${Math.random()*250-125}px;animation-delay:${Math.random()*.7}s;`;box.append(el);}later(()=>box.innerHTML='',3500);}
 function showHelp(){
- releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);
-  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>街機與動腦：</b>星際飛行哥哥 A／D、弟弟 J／L 左右移動，Esc 暫停；每位玩家有自己的三條航道。光能接線點一下轉 90 度，接通太陽與旗幟；可提示、復原、重來。</li><li><b>平板也能玩：</b>雙人按鈕支援多指同時操作；按鈕區不會拖曳或縮放，頁面其他地方仍能滑動。直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>猜謎與接線可以慢慢想，答錯再試；飛行可選三種速度。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
+ releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);spacePause(true);
+  $('#dialog-content').innerHTML=`<span class="pill">給爸爸媽媽的小筆記</span><h2>陪孩子，一起變成光。</h2><p>這是為 4 歲與 6 歲小朋友設計的家庭同樂基地，全繁體中文、沒有廣告，也不需要帳號。</p><ul><li><b>弟弟模式：</b>三個選項、英雄圖片提示、語音讀題；翻牌配對四組。</li><li><b>哥哥模式：</b>增加至四個選項，自己觀察線索；翻牌配對六組。型態題固定最多三個選項，選項來自同一位英雄。</li><li><b>兄弟合作：</b>哥哥按 A 攻擊、S 護盾；弟弟按 L 攻擊、K 護盾。兩人的能量滿了，按空白鍵發射光線。</li><li><b>宇宙飛行救援：</b>單人或兄弟一起駕駛。哥哥 A／S／D、弟弟 J／K／L，依序是左、發射、右；單人也可用方向鍵與空白鍵。長按發射可連射。先穿越星海、突破隕石帶，再各自對準光圈命中三次，按準備發射必殺技；碰撞有護盾，不扣星光。</li><li><b>街機與動腦：</b>星際飛行哥哥 A／D、弟弟 J／L 左右移動，Esc 暫停；每位玩家有自己的三條航道。光能接線點一下轉 90 度，接通太陽與旗幟；可提示、復原、重來。</li><li><b>平板也能玩：</b>雙人按鈕支援多指同時操作；按鈕區不會拖曳或縮放，頁面其他地方仍能滑動。直接點大按鈕。猜題可按數字鍵，對戰按 Esc 暫停，切換分頁會自動暫停。</li><li><b>星星救援旅程：</b>從首頁直接出發，三站各找三個線索，完成後收怪獸貼紙。貼紙簿在「我的小成就」。長按攻擊能集氣；兄弟一人滿格後，可多按一下，送夥伴一格能量，每人每場一次。</li><li>兄弟反應特訓有三種難度：看訊號、輪流接力、真假星光與記憶接力；A／S 是哥哥，L／K 是弟弟，Esc 暫停。反應快可收節奏星，慢慢完成也有獎勵。</li><li>猜謎與接線可以慢慢想，答錯再試；飛行可選三種速度。星星在完成任務後發放，保存在目前瀏覽器。</li><li>聲音可在右上角切換。歡呼使用隨遊戲下載的「活力教練」聲音；讀題使用裝置的中文聲音。<button class="secondary" data-action="voice-preview">♫ 試聽活力教練</button></li></ul><p>使用本機可用的繁體中文字型顯示（macOS 以蘋方體為主）。角色圖片取自 <a href="https://tsuburaya-prod.com/heroes" target="_blank" rel="noopener">圓谷製作官方英雄大百科</a>；怪獸圖片也來自圓谷官方百科；型態與道具為簡化配色示意。<br>對戰按 D／J 換型態。力量型攻擊更強、速度型集氣更快、守護型護盾更久、慈愛型擅長救援。怪獸的挑戰玩法是家庭遊戲設計。這是家庭自用的非官方粉絲作品，角色權利屬原權利人。</p><button class="primary" data-action="close-help">準備好了，一起玩！</button>`;
   $('#info-dialog').showModal();
 }
 
@@ -4058,6 +4192,13 @@ document.addEventListener('click',event=>{
   const nav=event.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return;}
   const el=event.target.closest('[data-action]');if(!el||el.disabled)return;if(event.detail!==0&&(touchClicks.get(el)||0)>performance.now()){event.preventDefault();return;}const action=el.dataset.action,index=Number(el.dataset.index);
   if(action==='flight-level')flightSetup(index);
+  else if(action==='space-mode'&&state.game?.type==='space-setup')spaceSetup(index===1);
+  else if(action==='space-begin')spaceBegin();
+  else if(action==='space-move')spaceMove(index,Number(el.dataset.dir));
+  else if(action==='space-fire')spaceFire(index);
+  else if(action==='space-ready')spaceReady(index);
+  else if(action==='space-next')spaceNext();
+  else if(action==='space-pause')spacePause();
   else if(action==='guard-mode')guardSetup(index===1);
   else if(action==='guard-begin')guardBegin();
   else if(action==='guard-ready')guardReady(index);
@@ -4084,7 +4225,7 @@ document.addEventListener('click',event=>{
   else if(action==='quest-target')questTarget(index);
   else if(action==='home')navigate('home');
   else if(action==='badges')navigate('badges');
-  else if(action==='start'){if(el.dataset.game==='reaction'&&state.game?.type==='result')reactionSetup(state.game.reactionLevel??1);else if(el.dataset.game==='flight'&&state.game?.type==='result')flightSetup(state.game.flightLevel??0);else startGame(el.dataset.game);}
+  else if(action==='start'){if(el.dataset.game==='space'&&state.game?.type==='result')spaceSetup(state.game.spaceSolo??state.player!=='together');else if(el.dataset.game==='reaction'&&state.game?.type==='result')reactionSetup(state.game.reactionLevel??1);else if(el.dataset.game==='flight'&&state.game?.type==='result')flightSetup(state.game.flightLevel??0);else startGame(el.dataset.game);}
   else if(action==='player'){state.player=el.dataset.player;save();renderHome();tone('flip');toast(state.player==='little'?'弟弟模式：一起慢慢看、慢慢玩！':state.player==='big'?'哥哥模式：小英雄，來挑戰看看！':'兄弟模式：兩份勇氣，一起發光！');}
   else if(action==='encyclopedia-tab'){encyclopediaTab=el.dataset.tab;renderHeroes();}
   else if(action==='read-entry'){stopVoice();const rows={forms:FORMS,devices:DEVICES,moves:MOVES,monsters:MONSTERS}[el.dataset.tab];const x=rows.find(x=>x.id===el.dataset.id);speak(`${x.name}。${x.description||x.fact||'光之力量，準備發射！'}`);}
@@ -4116,13 +4257,28 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('input',event=>{if(event.target.id==='hero-search'){catalogueSearch=event.target.value;filterHeroCards();}});
 document.addEventListener('change',event=>{
- const e=event.target;if(state.game?.type!=='guard-setup')return;
+ const e=event.target;
+ if(state.game?.type==='space-setup'){
+  const i=Number(e.dataset.spaceHero??e.dataset.spaceLevel);if(!Number.isInteger(i)||i<0||i>=(state.game.solo?1:2))return;
+  if(e.matches('[data-space-hero]')&&HEROES.some(h=>h.id===e.value)){state.team[i]=e.value;save();e.closest('section').querySelector('.guard-hero-preview').innerHTML=heroImage(HEROES.find(h=>h.id===e.value),'',false);}
+  if(e.matches('[data-space-level]')&&['0','1'].includes(e.value)){state.spaceLevels[i]=Number(e.value);save();}
+  return;
+ }
+ if(state.game?.type!=='guard-setup')return;
  if(e.matches('[data-guard-hero]')&&HEROES.some(h=>h.id===e.value)){state.team[Number(e.dataset.guardHero)]=e.value;save();e.closest('section').querySelector('.guard-hero-preview').innerHTML=heroImage(HEROES.find(h=>h.id===e.value),'',false);}
  if(e.matches('[data-guard-level]')&&['0','1'].includes(e.value)){state.guardLevels[Number(e.dataset.guardLevel)]=Number(e.value);save();}
 });
 document.addEventListener('keydown',event=>{
   if($('#info-dialog').open||event.ctrlKey||event.altKey||event.metaKey||event.target.matches('input,textarea,select'))return;
   const g=state.game;if(!g)return;const key=event.key.toLowerCase();
+  if(g.type==='space'){
+   const keys=['a','s','d','j','k','l'];if(![...keys,'arrowleft','arrowright',' ','escape'].includes(key))return;event.preventDefault();
+   if(key==='escape'){if(!event.repeat)spacePause();return;}
+   const i=['j','k','l'].includes(key)?1:0;
+   if(['s','k',' '].includes(key)){if(g.phase==='ready'){if(!event.repeat)spaceReady(i);}else spaceFire(i);}
+   else if(!event.repeat)spaceMove(i,['a','j','arrowleft'].includes(key)?-1:1);
+   return;
+  }
   if(g.type==='guard'){const keys=['a','s','d','j','k','l'];if(key==='escape'){event.preventDefault();if(!event.repeat)guardPause();}else if(keys.includes(key)){event.preventDefault();if(event.repeat)return;const index=keys.indexOf(key),i=index<3?0:1;if(['transform','ready'].includes(g.phase)){if(index%3===0)guardReady(i);}else guardInput(i,index%3);}return;}
   if(g.type==='flight'){if(['a','d','j','l','arrowleft','arrowright','escape'].includes(key)){event.preventDefault();if(event.repeat)return;if(key==='escape')arcadePause();else flightMove(['j','l'].includes(key)?1:0,['a','j','arrowleft'].includes(key)?-1:1);}return;}
   if(g.type==='reaction'){
@@ -4145,10 +4301,10 @@ document.addEventListener('pointerdown',holdAttack);
 document.addEventListener('pointerup',releaseHeld);
 document.addEventListener('pointercancel',releaseHeld);
 document.addEventListener('lostpointercapture',releaseHeld);
-document.addEventListener('contextmenu',e=>{if(e.target.closest('.battle-dock,.reaction-controls,.flight-controls,.guard-controls'))e.preventDefault();});
-window.addEventListener('blur',()=>{releaseHeld();guardPause(true);});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);stopVoice();}});
-window.addEventListener('orientationchange',()=>guardPause(true));
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.battle-dock,.reaction-controls,.flight-controls,.guard-controls,.space-controls'))e.preventDefault();});
+window.addEventListener('blur',()=>{releaseHeld();guardPause(true);spacePause(true);});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseHeld();pauseBattle(true);reactionPause(true);arcadePause(true);guardPause(true);spacePause(true);stopVoice();}});
+window.addEventListener('orientationchange',()=>{guardPause(true);spacePause(true);});
 $('#sound-button').addEventListener('click',()=>{state.sound=!state.sound;save();updateChrome();if(!state.sound){stopVoice();toast('聲音關閉，安靜玩也很開心。');}else{playCue('welcome');toast('聲音開啟！準備一起冒險。');}});
 $('#fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('這個瀏覽器沒有提供全螢幕功能。');}catch{toast('可用瀏覽器的全螢幕選單放大遊戲。');}});
 $('#help-button').addEventListener('click',showHelp);
