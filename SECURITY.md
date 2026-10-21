@@ -1,5 +1,7 @@
 # 靜態遊戲安全與免費部署範圍
 
+2026-10-22 v1.8.0 已部署：98 個白名單靜態檔案與本機 dist 逐位元組一致，版號、正式 CSP 與開發檔案 404 檢查通過。部署前後皆為 billingEnabled=false、未綁定帳單、Firebase Web Apps 0。CLI 自動建立的 Browser key 已移除，撤銷完成；讀取平台保留 init 端點後，有效 API key 仍為 0。宇宙飛行救援沿用本機圖片、音效與 localStorage，未新增網路服務。原始碼與正式站台的 Chromium／WebKit 完整回歸通過，詳見 [QA_REPORT.md](QA_REPORT.md)。
+
 2026-10-19 v1.7.0 已部署：98 個白名單檔案與本機 dist 逐位元組一致，前端 API／憑證與版號檢查通過。Google 專案未綁定帳單、billingEnabled=false、Firebase Web Apps 0；部署自動建立的閒置 Browser key 已刪除且撤銷作業完成，有效 API key 0。守護隊只使用既有本機素材、音效與 localStorage。正式網址的 Chromium／WebKit 完整瀏覽器測試通過，詳見 [QA_REPORT.md](QA_REPORT.md)。
 
 此遊戲只提供靜態 HTML、CSS、JavaScript、PNG、SVG、MP3 和版號 JSON。
@@ -7,7 +9,7 @@
 - 沒有 Firebase Web SDK、雲端資料庫、Cloud Functions、Cloud Run、App Hosting、第三方 AI／付費 TTS、分析追蹤、廣告或付款功能。
 - 前端沒有 API 金鑰、存取權杖、服務帳號或環境變數；不呼叫 `fetch`、XMLHttpRequest、WebSocket 等網路介面。
 - 九段歡呼 MP3 在製作時由 Mac 本機語音產生，遊戲只播放本站音檔；讀題使用瀏覽器提供的 Speech Synthesis；不提供麥克風輸入、不錄音、不傳送孩子的姓名或聲音。
-- 星星、玩家模式、最近英雄組合、怪獸貼紙與旅程次數僅儲存在目前瀏覽器的 localStorage。不設登入、密碼或伺服器存檔。
+- 星星、玩家模式、最近英雄組合、守護隊／宇宙救援的個別難度、怪獸貼紙與旅程次數僅儲存在目前瀏覽器的 localStorage。不設登入、密碼或伺服器存檔。
 - Hosting 設定以 `connect-src 'none'` 阻止前端連線，媒體只允許本站與離線嵌入的 data URI，禁止 iframe 嵌入、內嵌腳本、外掛物件與表單送出，並設定 `nosniff`、無 referrer 和相機／麥克風／定位／付款權限限制。
 - `style-src` 允許 inline style，用於卡片配色、集氣條與動畫樣式；JavaScript 不允許 inline script 或 eval。
 - `scripts/prepare_hosting.py` 用明確白名單建立 `dist`：只有 98 個靜態檔案。開發依賴、測試、CI、說明、離線單檔、`.env`、憑證、log 和 Firebase CLI 快取不部署。

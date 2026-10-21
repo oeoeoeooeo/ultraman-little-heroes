@@ -1,3 +1,47 @@
+# v1.8.0 宇宙飛行救援驗證紀錄
+
+查核日期：2026-10-22。正式遊戲：https://ultraman-heroes-base.web.app
+
+## 新關卡與流程
+
+新增單人／雙人宇宙街機：各自選英雄與難度、四波穿越星海、四波隕石救援、各自三次守門核心命中、保留個別準備狀態與最後合體光線。哥哥 A／S／D、弟弟 J／K／L；單人支援方向鍵與空白鍵，觸控支援獨立多指與長按連射。碰撞有護盾，不扣星光、不淘汰。
+
+本機 `node --check app.js`、`npm test`、`npm run build`、`npm run test:security` 通過。新增測試檢查個別飛行時間、光線保留原航道、延遲命中、暫停中的光線、雙指各自放開／取消、碰撞後繼續、完成者等待夥伴、準備不必同時、合體中暫停、單人、重玩、說明／背景暫停、離開取消與 24～36 顆星星只發一次。原有遊戲及存檔檢查亦通過。
+
+## 實際瀏覽器與畫面
+
+原始碼的 Chromium 與 WebKit 完整回歸均通過。新關卡檢查 1440×1100、834×1194、1024×768、390×844、320×740、844×390，包含完整三段、單人、選角、個別難度、暫停、等待夥伴、合體與通關。控制鈕至少 44px 寬、54px 高，操作時戰場保持可見。窄手機的發射鍵放在方向鍵下方；短橫向將駕駛台放在戰場旁。Chromium CDP 送入同時存在的雙觸點，驗證各自長按連射、分開放手、取消與方向操作，沒有縮放或選字。
+
+原有九種首頁尺寸（320px～1920px）、百科、對戰、合作、反應、星際飛行、接線、三站救援、貼紙、徽章、進度保存、音檔解碼與播放、朗讀排序均回歸通過。沒有瀏覽器腳本錯誤或執行期第三方請求。離線單檔成功建置，約 20.06 MB，圖片與音檔全部內嵌。
+
+原始碼測試輸出 187 張截圖，以壓縮 Base64 留在既有 Actions log，不使用付費 artifact／cache。已實際檢視 Chromium 與 WebKit 的平板、320px／390px 直向、844px 橫向、設定、守門戰、等待夥伴、合體、結果與首頁入口；窄手機提示已縮短，避免單字落行。
+
+正式網址完整測試另輸出 187 張截圖；已實際檢視正式站 WebKit 的 320px 飛行操作與平板合體畫面，確認窄手機按鈕、提示文字、英雄與最終演出正常呈現。
+
+未以實體 iPad 或真人兒童試玩，沒有本版人工聽感測試。不能以自動測試推論孩子的主觀趣味。
+
+## 可重現紀錄
+
+- 已測試的執行程式與測試來源：`0dc377b535080edc816fd793d558894c8824afe6`。
+- [原始碼完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/39633210369)：成功，含 Chromium、WebKit、流程、離線建置與安全檢查。
+- [正式網址完整測試](https://github.com/oeoeoeooeo/ultraman-little-heroes/actions/runs/39634445582)：成功，含 Chromium、WebKit 與完整回歸檢查。
+- 部署前已核對本機執行程式、版號、素材清單與上述測試來源相同。後續文件修改不改動已測試程式。
+
+## 正式站與安全
+
+Hosting 版本：`sites/ultraman-heroes-base/versions/0e38ce1fae55037b`，UTC 2026-10-21 16:24:01 發布。版號 1.8.0，98 個白名單檔案均與本機 dist 逐位元組一致，首頁以正式根網址核對。`.env`、firebase.json、package.json、qa/logic.cjs、hero-catalogue.json 均為 404。正式 HTML 的 CSP 保留 `connect-src 'none'`，並設定 nosniff。
+
+部署前後均確認 billingEnabled=false，billingAccountName 為空，Firebase Web Apps 0。Firebase CLI 本次自動建立一把 Browser key，已移除且撤銷作業完成；讀取平台保留 init 端點後再次確認有效 API key 仍為 0，暫存驗證憑證已清除。遊戲沒有使用該端點，也沒有新增 API、SDK、帳號、付款、追蹤或後端。詳見 [SECURITY.md](SECURITY.md)。
+
+| 正式檔案 | SHA-256 |
+| --- | --- |
+| index.html | 2866bb76dd7b5a3f8bed71c02a433f70f4870e2c86c1f428951828b593496981 |
+| app.js | f42a45e86c0757c53db7b4092fee2a07d5132ecd2705531ead5d920cacd6bfd8 |
+| style.css | 75d2573313033c0f181f8a26fc63af33efd7bfbd800df6a08992695cc6b13384 |
+| assets/voice-correct.mp3 | f12e91f2281363b8b87b3655df75aae388401759669077644d8c4c55a90dcbf0 |
+
+---
+
 # v1.7.0 驗證紀錄
 
 查核日期：2026-10-19。正式遊戲：https://ultraman-heroes-base.web.app
